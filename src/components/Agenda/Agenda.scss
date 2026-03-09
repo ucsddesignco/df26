@@ -2,13 +2,13 @@
   padding: 64px 72px;
   background: #f3f3f3;
   color: #111111;
-}
 
-.agenda-section-title {
-  margin: 0 0 28px;
-  font-size: 3.25rem;
-  font-weight: 700;
-  line-height: 1;
+  &-title {
+    margin: 0 0 28px;
+    font-size: 3.25rem;
+    font-weight: 700;
+    line-height: 1;
+  }
 }
 
 .agenda-grid {
@@ -56,10 +56,10 @@
 @media (max-width: 900px) {
   .agenda-section {
     padding: 48px 24px;
-  }
 
-  .agenda-section-title {
-    font-size: 2.5rem;
+    &-title {
+      font-size: 2.5rem;
+    }
   }
 
   .agenda-grid {
@@ -75,11 +75,11 @@
 @media (max-width: 600px) {
   .agenda-section {
     padding: 32px 16px;
-  }
 
-  .agenda-section-title {
-    font-size: 2rem;
-    margin-bottom: 20px;
+    &-title {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
   }
 
   .agenda-header {

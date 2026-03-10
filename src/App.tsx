@@ -1,4 +1,4 @@
-import Agenda from "./components/Agenda/Agenda";
+import Agenda from "./Components/Agenda/Agenda";
 
 function App() {
   return <Agenda />;

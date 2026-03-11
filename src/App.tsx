@@ -1,14 +1,13 @@
-// import { useState } from "react";
-import "./App.scss";
-import FAQ from './Components/FAQ/FAQ'
+import FAQ from "./Components/FAQ/FAQ";
 import Agenda from "./Components/Agenda/Agenda";
 
 function App() {
-  return <>
-    <Agenda />;
-    <FAQ/>
-    
-  </>;
+  return (
+    <>
+      <Agenda />
+      <FAQ />
+    </>
+  );
 }
 
 

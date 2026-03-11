@@ -5,7 +5,7 @@ import MuiAccordionSummary, {
   type AccordionSummaryProps,
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import "./FAQ.scss";
+import "./Faq.scss";
 
 const faqData = [
   {

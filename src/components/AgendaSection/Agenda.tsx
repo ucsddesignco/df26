@@ -25,11 +25,7 @@ type AgendaColumnProps = {
   items: AgendaItem[];
 };
 
-function AgendaColumn({
-  dayLabel,
-  dateLabel,
-  items,
-}: AgendaColumnProps) {
+function AgendaColumn({ dayLabel, dateLabel, items }: AgendaColumnProps) {
   return (
     <div className="agenda-column">
       <div className="agenda-header">

@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Neue Plak";
+  src: url("../../fonts/neue-plak/Neue\ Plak\ W05\ Extended\ Bold.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+.button{
+  position: relative;
+  font-family: "Neue Plak";
+  background-color: #191919;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 16px;
+  text-wrap: nowrap;
+  border-radius: 0px;
+  font-size: 1rem;
+  border: none;
+  width: fit-content;
+  box-sizing: border-box;
+  max-height: 35px;
+
+  span {
+    margin-top: -5px;
+  }
+}

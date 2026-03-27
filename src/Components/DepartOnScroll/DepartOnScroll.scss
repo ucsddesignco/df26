@@ -1,4 +1,5 @@
 .motion {
   position: relative;
   width: 100%;
+  overflow-x: hidden; // stop horizontal scroll bar during train animation
 }

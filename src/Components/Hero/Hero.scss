@@ -9,5 +9,59 @@
     width: 100%;
     height: 820px;
     background-color: pink;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    .train-wrapper {
+      height: 40vh;
+      width: 200vw;
+      max-width: none;
+      margin: 0 auto;
+
+      > svg,
+      > .train-svg {
+        height: 100%;
+        width: 100%;
+        display: block;
+      }
+    }
+
+    .hero-footer {
+      background-color: black;
+      height: 146px;
+      width: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
+      border-bottom: solid 2px black;
+      padding: 10px 0;
+      display: flex;  
+      
+      .marquee-content {
+        display: flex;
+        flex-shrink: 0;
+        gap: 80px;           
+        padding-right: 80px;
+        min-width: 100%;    
+        animation: scroll-right 30s linear infinite;
+      }
+
+      .scrolling-text {
+        color: white;
+        font-size: 72px;
+        white-space: nowrap;
+        margin-top: 20px;
+      }
+
+      // To scroll right smoothly, we start pushed to the left (-100%) and animate to 0%
+      @keyframes scroll-right {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(0%);
+        }
+      }
+    }
   }
 }

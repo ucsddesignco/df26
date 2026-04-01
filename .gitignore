@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local pnpm config / store (optional: remove .npmrc from here if you want to commit shared settings)
+.npmrc
+.pnpm-store/

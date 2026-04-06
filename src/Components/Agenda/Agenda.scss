@@ -1,103 +1,324 @@
+// Red-line spec — all values explicit (px)
+$color-bg: #ffffff;
+$color-header: #211f1b;
+$color-day1-line: #e87b7b;
+$color-day2-line: #8a9a31;
+$color-title: #000000;
+$color-time: #5c5c5c;
+$color-eyebrow: #9e9e9e;
+
+// Section
+$section-pad-top: 24px;
+$section-pad-x: 16px;
+$title-to-columns: 8px;
+
+// Header bar
+$header-pad-y: 10.5px;
+$header-pad-x: 16px;
+
+// Timeline (red annotations)
+$node-center-x: 31px; // from column / content left
+$node-size: 16px;
+$node-radius: 8px;
+$line-width: 2px;
+$text-gap: 10px; // node → copy
+$text-start: 49px; // 31 + 8 + 10
+
+// Row height chosen so flex vertical center matches circle centers (see math below)
+$row-h: 80px;
+
+// Day 1 — circle centers below timeline top: 40, 40+121.04, +122.04
+$d1-c1: 40px;
+$d1-line-height: 243.08px; // 121.04 + 122.04 (first center → last center)
+
+// Day 2 — first center 150px below header; 150px between centers
+$d2-c1: 150px;
+$d2-gap: 150px;
+$d2-line-height: 600px; // 4 × 150 (5 nodes)
+
+// Margins between rows: (next center − prev center) − row-h
+$d1-mt-2: 41.04px; // 121.04 − 80
+$d1-mt-3: 42.04px; // 122.04 − 80
+$d2-ol-pad-top: 110px; // first row starts so center at 150: 110 + 40 = 150
+$d2-mt: 70px; // 150 − 80
+
+// Illustration: 89.62px from last circle center → image top
+// last center 40px above row bottom when row-h 80 → add 89.62 − 40 = 49.62 below ol
+$decoration-margin-top: 49.62px;
+
 .agenda-section {
-    padding: 64px 72px;
-    background: #f3f3f3;
-    color: #111111;
-  
-    &-title {
-      margin: 0 0 28px;
-      font-size: 3.25rem;
-      font-weight: 700;
-      line-height: 1;
-    }
+  position: relative;
+  padding: $section-pad-top $section-pad-x 64px;
+  background-color: $color-bg;
+  color: $color-title;
+  overflow: clip;
+  font-family:
+    Inter,
+    "NB International",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  &__grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.22;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   }
-  
-  .agenda-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
+
+  &__inner {
+    position: relative;
+    z-index: 1;
   }
-  
-  .agenda-column {
-    width: 100%;
-    min-width: 0;
-  }
-  
-  .agenda-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    background: #111111;
-    color: #ffffff;
-    padding: 12px 16px;
-    margin-bottom: 6px;
-    font-size: 1rem;
-    font-weight: 500;
-  }
-  
-  .agenda-item {
-    padding: 30px 18px;
-    border-bottom: 1px solid #8e8e8e;
-  }
-  
-  .agenda-time {
-    margin: 0 0 10px;
-    font-size: 0.95rem;
-    font-weight: 500;
-  }
-  
-  .agenda-title {
-    margin: 0;
-    font-size: 2rem;
+
+  &-eyebrow {
+    margin: 0 0 4px;
+    font-size: 12px;
     font-weight: 400;
-    line-height: 1.1;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $color-eyebrow;
   }
-  
-  @media (max-width: 900px) {
-    .agenda-section {
-      padding: 48px 24px;
-  
-      &-title {
-        font-size: 2.5rem;
-      }
-    }
-  
-    .agenda-grid {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-  
-    .agenda-title {
-      font-size: 1.65rem;
-    }
+
+  &-title {
+    margin: 0 0 $title-to-columns;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: $color-title;
   }
-  
-  @media (max-width: 600px) {
-    .agenda-section {
-      padding: 32px 16px;
-  
-      &-title {
-        font-size: 2rem;
-        margin-bottom: 20px;
-      }
-    }
-  
-    .agenda-header {
-      padding: 10px 12px;
-      font-size: 0.9rem;
-    }
-  
-    .agenda-item {
-      padding: 22px 10px;
-    }
-  
-    .agenda-time {
-      font-size: 0.85rem;
-      margin-bottom: 8px;
-    }
-  
-    .agenda-title {
-      font-size: 1.35rem;
-      line-height: 1.2;
-    }
+}
+
+.agenda-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.agenda-column {
+  width: 100%;
+  min-width: 0;
+
+  &--day-one {
+    --agenda-line: #{$color-day1-line};
+    --agenda-node-mid: #f2b4b4;
   }
+
+  &--day-two {
+    --agenda-line: #{$color-day2-line};
+    --agenda-node-mid: #c5d67a;
+  }
+}
+
+.agenda-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: $color-header;
+  color: #ffffff;
+  padding: $header-pad-y $header-pad-x;
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+
+  &__day {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  &__date {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+}
+
+.agenda-timeline {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    min-height: $row-h;
+    height: $row-h;
+  }
+
+  &__track {
+    position: relative;
+    flex: 0 0 $text-start;
+    width: $text-start;
+    align-self: stretch;
+    min-height: $row-h;
+  }
+}
+
+.agenda-column--day-one .agenda-timeline::before {
+  content: "";
+  position: absolute;
+  left: calc(#{$node-center-x} - #{$line-width * 0.5});
+  top: $d1-c1;
+  width: $line-width;
+  height: $d1-line-height;
+  background: var(--agenda-line);
+  border-radius: 2px;
+}
+
+.agenda-column--day-one .agenda-timeline__row:nth-child(2) {
+  margin-top: $d1-mt-2;
+}
+
+.agenda-column--day-one .agenda-timeline__row:nth-child(3) {
+  margin-top: $d1-mt-3;
+}
+
+.agenda-column--day-two .agenda-timeline {
+  padding-top: $d2-ol-pad-top;
+}
+
+.agenda-column--day-two .agenda-timeline::before {
+  content: "";
+  position: absolute;
+  left: calc(#{$node-center-x} - #{$line-width * 0.5});
+  top: $d2-c1;
+  width: $line-width;
+  height: $d2-line-height;
+  background: var(--agenda-line);
+  border-radius: 2px;
+}
+
+.agenda-column--day-two .agenda-timeline__row:nth-child(n + 2) {
+  margin-top: $d2-mt;
+}
+
+.agenda-marker {
+  position: absolute;
+  left: calc(#{$node-center-x} - #{$node-radius});
+  top: 50%;
+  transform: translateY(-50%);
+  width: $node-size;
+  height: $node-size;
+  border-radius: 50%;
+  box-sizing: border-box;
+  z-index: 1;
+
+  &--terminal {
+    background: #ffffff;
+    border: 1px solid #000000;
+  }
+
+  &--middle {
+    border: 1px solid #000000;
+  }
+}
+
+.agenda-column--day-one .agenda-marker--middle {
+  background: var(--agenda-node-mid);
+}
+
+.agenda-column--day-two .agenda-marker--middle {
+  background: var(--agenda-node-mid);
+}
+
+.agenda-item {
+  flex: 1;
+  padding: 0;
+  min-width: 0;
+}
+
+.agenda-time {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-time;
+}
+
+.agenda-title {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: $color-title;
+}
+
+.agenda-timeline__row--dash .agenda-item {
+  position: relative;
+}
+
+.agenda-timeline__row--dash .agenda-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  translate: 0 -50%;
+  height: 0;
+  border-top: 1px dashed #c4c4c4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.agenda-timeline__row--dash .agenda-time,
+.agenda-timeline__row--dash .agenda-title {
+  position: relative;
+  z-index: 1;
+  background: $color-bg;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 6px;
+  margin-left: -6px;
+  display: inline-block;
+}
+
+.agenda-decoration {
+  display: block;
+  width: 100%;
+  max-width: min(320px, 100%);
+  height: auto;
+  margin-top: $decoration-margin-top;
+  margin-left: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.08));
+}
+
+@media (max-width: 900px) {
+  .agenda-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .agenda-decoration {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .agenda-section-title {
+    font-size: 32px;
+  }
+
+  .agenda-title {
+    font-size: 18px;
+  }
+}

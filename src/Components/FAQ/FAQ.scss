@@ -1,10 +1,11 @@
 .container {
-    padding: 0 120px;
+    padding: 72px 120px;
     font-family: "NB International";
   }
   .title {
     font-size: 32px;
     font-family: "Neue Plak";
+    padding-bottom: 24px;
   }
   
   .faq {
@@ -70,5 +71,17 @@
   
     &__answer {
       font-size: 16px;
+    }
+  }
+
+  @media (max-width: 744px) {
+    .container {
+      padding: 72px 80px;
+    }
+  }
+
+   @media (max-width: 390px) {
+    .container {
+      padding: 72px 40px;
     }
   }

@@ -5,25 +5,29 @@
   font-style: normal;
 }
 
-.button{
+.button {
   position: relative;
   font-family: "Neue Plak";
   background-color: #191919;
   text-decoration: none;
   color: white;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   padding: 8px 16px;
-  text-wrap: nowrap;
   border-radius: 0px;
   font-size: 1rem;
   border: none;
-  width: fit-content;
   box-sizing: border-box;
-  max-height: 35px;
+  height: 42px;
+  cursor: pointer;
 
-  span {
-    margin-top: -5px;
+  .content-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-wrap: nowrap;
+
+    span {
+      margin-top: -5px;
+    }
   }
 }

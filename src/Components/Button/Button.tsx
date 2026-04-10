@@ -38,8 +38,10 @@ const Button = ({
           className={`button ${className}`}
           disabled={disabled}
         >
-          <span>{text}</span>
-          {icon && icon}
+          <div className="content-container">
+            {icon && icon}
+            <span>{text}</span>
+          </div>
         </button>
       )}
     </>

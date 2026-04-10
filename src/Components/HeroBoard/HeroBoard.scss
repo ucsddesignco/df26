@@ -1,0 +1,142 @@
+// currently think there is an issue importing the font properly
+// grain is being rendered 3x, which lead to browser performance issues
+
+.hero-board {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .board-legs {
+    display: flex; 
+    justify-content: space-between;
+    width: 100%;
+    height: fit-content;
+    padding: 0 70px;
+    box-sizing: border-box;
+
+    .left-leg, .right-leg{
+      width: 21px;
+      height: 104px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none'%3E%3Cg filter='url(%23grain)'%3E%3Crect width='100%25' height='100%25' fill='%2324241D'/%3E%3C/g%3E%3Cdefs%3E%3Cfilter id='grain' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeFlood flood-opacity='0' result='BackgroundImageFix'/%3E%3CfeBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.566' stitchTiles='stitch' numOctaves='3' result='noise' seed='3550'/%3E%3CfeColorMatrix in='noise' type='luminanceToAlpha' result='alphaNoise'/%3E%3CfeComponentTransfer in='alphaNoise' result='coloredNoise1'%3E%3CfeFuncA type='discrete' tableValues='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 '/%3E%3C/feComponentTransfer%3E%3CfeComposite operator='in' in2='shape' in='coloredNoise1' result='noise1Clipped'/%3E%3CfeFlood flood-color='%23F1EBE5' flood-opacity='0.5' result='color1Flood'/%3E%3CfeComposite operator='in' in2='noise1Clipped' in='color1Flood' result='color1'/%3E%3CfeMerge result='effect1_noise'%3E%3CfeMergeNode in='shape'/%3E%3CfeMergeNode in='color1'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-color: #2B2B23;
+    }
+  }
+
+  .board-container {
+    display: flex;
+    flex-direction: column;
+    width: 602px;
+    height: 100%;
+    justify-content: center;
+    align-items: flex-start;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200' fill='none'%3E%3Cg filter='url(%23grain)'%3E%3Crect width='100%25' height='100%25' fill='%2324241D'/%3E%3C/g%3E%3Cdefs%3E%3Cfilter id='grain' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeFlood flood-opacity='0' result='BackgroundImageFix'/%3E%3CfeBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.566' stitchTiles='stitch' numOctaves='3' result='noise' seed='3550'/%3E%3CfeColorMatrix in='noise' type='luminanceToAlpha' result='alphaNoise'/%3E%3CfeComponentTransfer in='alphaNoise' result='coloredNoise1'%3E%3CfeFuncA type='discrete' tableValues='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 '/%3E%3C/feComponentTransfer%3E%3CfeComposite operator='in' in2='shape' in='coloredNoise1' result='noise1Clipped'/%3E%3CfeFlood flood-color='%23F1EBE5' flood-opacity='0.5' result='color1Flood'/%3E%3CfeComposite operator='in' in2='noise1Clipped' in='color1Flood' result='color1'/%3E%3CfeMerge result='effect1_noise'%3E%3CfeMergeNode in='shape'/%3E%3CfeMergeNode in='color1'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-color: #2B2B23;
+    border-radius: 8px;
+    font-family: "NB International";
+
+    
+    .header {
+      display: flex;
+      align-items: flex-start;
+      width: 100%;
+      padding: 16px;
+      border-bottom: 1px solid #F2F4EE;
+      gap: 16px;
+
+      .icon-wrapper {
+        display: flex;
+        flex-shrink: 0;
+      }
+
+      .header-text {
+        display: flex;
+        flex-direction: column;
+        gap: 5.66px;
+        color: #EEF0F1;
+        line-height: 1.2;
+        
+        .main-text {
+          font-size: 3rem;
+          font-weight: 600;
+        }
+
+        .sub-text {
+          font-size: 1rem;
+          font-style: normal;
+          font-weight: 400;
+        }
+      }
+    }
+    .details-section {
+      padding: 16px 24px;
+      width: 100%;
+
+      .details-column-container {
+        display: grid;
+        grid-template-columns: repeat(4, auto);
+        gap: 16px;
+      }
+      .column {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .column-header {
+
+          .header-text {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #AEB032;
+          }
+        }
+
+        .card {
+          display: flex;
+          background-color: #61636580;
+          height: 36px;
+          border-radius: 2.807px;
+          padding: 10px 12px;
+          align-items: center;
+          align-self: stretch;
+          gap: 3.509px;
+          flex: 1;
+
+          .card-text {
+            color: #F6F5F4;
+            text-align: center;
+            font-family: "NB International";
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 100%;
+            letter-spacing: 0.64px;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+
+    .button.register-button {
+      background-color: #EEF0F1;
+      color: #2B2B23;
+
+      padding: 1rem 1.25rem;
+      width: 100%;
+      margin-top: 14px;
+      border-radius: 4px;
+
+      /* Size for mobile */
+      font-size: 1rem;
+      height: 42px;
+
+
+      @media(min-width: 744px) {
+        font-size: 1.25rem;
+        height: 60px;
+      }
+    }
+  }
+}

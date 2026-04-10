@@ -1,6 +1,6 @@
 export default function OpenInNew() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="27.9781" height="27.9781" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <mask id="mask0_2341_10285" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="18" height="18">
         <rect width="18" height="18" fill="#D9D9D9" />
       </mask>

@@ -31,10 +31,10 @@ export default function HeroBoard() {
                   <p className='header-text'>Remark</p>
                 </div>
                 <div className='card'>
-                  <p className='card-text'>Day 1</p>
+                  <p className='card-text'>DAY 1</p>
                 </div>
                 <div className='card'>
-                  <p className='card-text'>Day 2</p>
+                  <p className='card-text'>DAY 2</p>
                 </div>
               </div>
 
@@ -44,10 +44,10 @@ export default function HeroBoard() {
                   <p className='header-text'>Date</p>
                 </div>
                 <div className='card'>
-                  <p className='card-text'>May 9</p>
+                  <p className='card-text'>MAY 9</p>
                 </div>
                 <div className='card'>
-                  <p className='card-text'>May 10</p>
+                  <p className='card-text'>MAY 10</p>
                 </div>
               </div>
 

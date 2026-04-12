@@ -1,0 +1,1 @@
+export type ThemeType = 'morning' | 'afternoon' | 'night';

@@ -5,6 +5,8 @@ import MuiAccordionSummary, {
   type AccordionSummaryProps,
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import Sticker from "../Sticker/Sticker";
+import type { ThemeType } from "../../types/theme";
 import "./FAQ.scss";
 
 const faqData = [
@@ -66,32 +68,40 @@ export default function FAQ() {
     (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
+  // hard coded theme FOR NOW - will update with shamita's implementation
+  const [currentTheme] = useState<ThemeType>("night");
 
   return (
     <div className="container">
-      <p className="title">FAQ</p>
-      <div className="faq">
-        {faqData.map((item) => (
-          <Accordion
-            key={item.id}
-            expanded={expanded === item.id}
-            onChange={handleChange(item.id)}
-            className="faq__item"
-          >
-            <AccordionSummary className="faq__question">
-              {item.question}
-              <span
-                className={`faq__icon ${expanded === item.id ? "faq__icon--open" : ""}`}
-              >
-                <span className="faq__icon-horizontal" />
-                <span className="faq__icon-vertical" />
-              </span>
-            </AccordionSummary>
-            <AccordionDetails className="faq__answer">
-              {item.answer}
-            </AccordionDetails>
-          </Accordion>
-        ))}
+      <div className="faq-wrapper">
+        <Sticker theme={currentTheme} className="sticker-1" />
+        <Sticker theme={currentTheme} className="sticker-2" />
+        <Sticker theme={currentTheme} className="sticker-3" />
+        <Sticker theme={currentTheme} className="sticker-4" />
+        <p className="title">FAQ</p>
+        <div className="faq">
+          {faqData.map((item) => (
+            <Accordion
+              key={item.id}
+              expanded={expanded === item.id}
+              onChange={handleChange(item.id)}
+              className="faq__item"
+            >
+              <AccordionSummary className="faq__question">
+                {item.question}
+                <span
+                  className={`faq__icon ${expanded === item.id ? "faq__icon--open" : ""}`}
+                >
+                  <span className="faq__icon-horizontal" />
+                  <span className="faq__icon-vertical" />
+                </span>
+              </AccordionSummary>
+              <AccordionDetails className="faq__answer">
+                {item.answer}
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </div>
       </div>
     </div>
   );

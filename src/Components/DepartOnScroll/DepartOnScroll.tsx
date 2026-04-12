@@ -15,41 +15,62 @@ function mapRange(value: number, inMin: number, inMax: number, outMin: number, o
   return ((clampedValue - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
 
+/** Helper function that sets the trigger point at different breakpoints */
+const getResponsiveTriggerPoint = (width: number, height: number) => {
+  if (width <= 743) {
+    return height * 0.4; // Mobile Trigger point
+  } else if (width <= 1279) {
+    return height * 0.2; // Tablet Trigger point
+  }
+  return height * 0.386; // Desktop Trigger point
+};
+
 export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [trainState, setTrainState] = useState<TrainState>("entering");
 
   const isBrowser = typeof window !== "undefined";
-  const triggerPoint = isBrowser ? window.innerHeight * 0.386 : 400;
-  const parallaxAmount = isBrowser ? window.innerWidth * 0.2 : 50;
-  const [windowWidth, setWindowWidth] = useState(isBrowser ? window.innerWidth : 1280);
+  const [windowSize, setWindowSize] = useState({
+    width: isBrowser ? window.innerWidth : 1280,
+    height: isBrowser ? window.innerHeight : 800,
+  });
+
 
   // Handles updating the window width state when the screen size changes
   useEffect(() => {
     if (!isBrowser) return;
     
-    const handleResize = () => setWindowWidth(window.innerWidth); 
-    window.addEventListener("resize", handleResize);
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
     
+    window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [isBrowser]);
 
+
+  const currentTriggerPoint = getResponsiveTriggerPoint(windowSize.width, windowSize.height);
+  const parallaxAmount = isBrowser ? windowSize.width * 0.2 : 50;
+
   const { scrollY } = useScroll(); // Scroll sensor
-  const parallaxX = useTransform(scrollY, [0, triggerPoint], [0, parallaxAmount]); // parallax-scroll
+  const parallaxX = useTransform(scrollY, [0, currentTriggerPoint], [0, parallaxAmount]); // parallax-scroll
 
   useMotionValueEvent(scrollY, "change", (latestScroll) => {
-    const triggerPoint = window.innerHeight * 0.386; // Trigger point
+    const activeTrigger = getResponsiveTriggerPoint(window.innerWidth, window.innerHeight);
 
     const previousScroll = scrollY.getPrevious() || 0;
     const isScrollingDown = latestScroll > previousScroll;
 
-    if (isScrollingDown && latestScroll > triggerPoint) {
+    if (isScrollingDown && latestScroll > activeTrigger) {
       if (trainState == "parked") {
         setTrainState("leaving");
       }
     }
 
-    if (latestScroll < triggerPoint) {
+    if (latestScroll < activeTrigger) {
       if (trainState == "gone") {
         setTrainState("arriving");
       }
@@ -110,8 +131,8 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
           variants={trainVariants}
           initial="offscreen"
           animate={trainState}
-          custom={windowWidth}
-          style={{ willChange: "transform" }}
+          custom={windowSize.width}
+          style={{ willChange: "transform", pointerEvents: "none" }}
           onAnimationComplete={(completedVariant) => {
             if (completedVariant === "entering") {
               setTrainState("parked");

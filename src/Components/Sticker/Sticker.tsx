@@ -11,7 +11,7 @@ interface StickerProps {
 const Sticker = ({ theme, className }: StickerProps) => {
   const renderSvg = () => {
     switch (theme) {
-      case 'morning': return <Flower />; 
+      case 'sunrise-sunset': return <Flower />; 
       case 'afternoon': return <Leaf />;
       case 'night': return <Star />;
       default: return null;

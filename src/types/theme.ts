@@ -1,1 +1,1 @@
-export type ThemeType = 'morning' | 'afternoon' | 'night';
+export type ThemeType = 'sunrise-sunset' | 'afternoon' | 'night';

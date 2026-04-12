@@ -69,7 +69,7 @@ export default function FAQ() {
       setExpanded(newExpanded ? panel : false);
     };
   // hard coded theme FOR NOW - will update with shamita's implementation
-  const [currentTheme] = useState<ThemeType>("night");
+  const [currentTheme] = useState<ThemeType>("sunrise-sunset");
 
   return (
     <div className="container">

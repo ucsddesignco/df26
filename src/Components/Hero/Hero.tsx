@@ -1,7 +1,9 @@
 import "./Hero.scss";
 import HeroBoard from "../HeroBoard/HeroBoard";
 import TrainTrack from "../../SVGS/TrainTrack";
-import TrainSVG from "../../SVGS/TrainSVG";
+import BigTrainSVG from "../../SVGS/BigTrainSVG";
+import MedTrainSVG from "../../SVGS/MedTrainSVG";
+import SmallTrainSVG from "../../SVGS/SmallTrainSVG";
 import DepartOnScroll from "../DepartOnScroll/DepartOnScroll";
 
 export default function Hero() {
@@ -12,8 +14,14 @@ export default function Hero() {
           <HeroBoard/>
         </div>
         <DepartOnScroll>
-          <div className="train-wrapper">
-            <TrainSVG />
+          <div className="train-wrapper big-train">
+            <BigTrainSVG />
+          </div>
+          <div className="train-wrapper med-train">
+            <MedTrainSVG />
+          </div>
+          <div className="train-wrapper small-train">
+            <SmallTrainSVG />
           </div>
         </DepartOnScroll>
         <div className="train-track">

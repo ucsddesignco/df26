@@ -1,4 +1,4 @@
-export default function TrainSVG() {
+export default function BigTrainSVG() {
   return (
     <svg width="2013" height="183" viewBox="0 0 2013 183" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_gn_2450_1439)">

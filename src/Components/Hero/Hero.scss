@@ -8,7 +8,7 @@
   .hero-section {
     background-color: #F8CABA;
     width: 100%;
-    height: 760px;
+    height: 721px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -27,14 +27,47 @@
       line-height: 0;
       margin-bottom: -1px;
 
-      > svg,
-      > .train-svg {
+      &.big-train {
         display: block;
-        flex-shrink: 0;
-        min-width: 2013px;
-        height: 183px;
+        > svg {
+          max-width: none;
+        }
+      }
+      &.med-train {
+        display: none;
+        > svg {
+          max-width: none;
+        }
+      }
+      &.small-train {
+        display: none;
+        > svg {
+          max-width: none;
+        }
+      }
+      /* Tablet (744px - 1279px) */
+      @media (max-width: 1279px) {
+        &.big-train {
+          display: none;
+        }
+
+        &.med-train {
+          display: block;
+        }
+      }
+
+      /* Mobile (390px - 743px) */
+      @media (max-width: 743px) {
+        &.med-train {
+          display: none;
+        }
+
+        &.small-train {
+          display: block;
+        }
       }
     }
+
     .train-track {
       width: 100%;
       line-height: 0;

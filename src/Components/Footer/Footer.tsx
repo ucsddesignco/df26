@@ -7,6 +7,7 @@ import { RightDoor } from "./assets/RightDoor";
 import { LeftDoor } from "./assets/LeftDoor";
 import TrainWall from "./assets/TrainWall";
 import type { ThemeType } from "../../types/theme";
+import Backdrop from "./assets/Backdrop";
 
 export default function Footer() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +17,9 @@ export default function Footer() {
     <footer>
       <div className="banner-wrapper">
         <div className="banner" onClick={() => setIsOpen(!isOpen)}>
+          <div className="backdrop">
+            <Backdrop theme={currentTheme} />
+          </div>
           <TrainWall side="left" theme={currentTheme} />
           <TrainWall side="right" theme={currentTheme} />
           <div className="container">

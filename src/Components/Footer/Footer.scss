@@ -13,7 +13,7 @@ footer {
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: #EBE1DA;
+    background-color: #ebe1da;
   }
   .banner {
     display: flex;
@@ -27,6 +27,11 @@ footer {
     max-width: 1280px;
     width: 1280px;
     // outline: 2px solid red;
+
+    .backdrop {
+      width: 100%;
+      position: absolute
+    }
 
     .wall {
       position: absolute;

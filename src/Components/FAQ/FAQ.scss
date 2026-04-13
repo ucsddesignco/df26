@@ -1,18 +1,58 @@
 .container {
-    padding: 72px 120px;
-    font-family: "NB International";
+  padding: 72px 120px;
+  font-family: "NB International";
+}
+
+.faq-wrapper {
+  position: relative;
+  z-index: 1;
+
+  .sticker-1, .sticker-2, .sticker-3, .sticker-4 {
+    z-index: 999;
   }
+
+  .sticker-1 {
+    position: absolute;
+    left: -45px;
+    top: 343.932px;
+    transform-origin: center;
+    transform: scale(0.8) rotate(136.629deg);
+  }
+  .sticker-2 {
+    position: absolute;
+    left: -90px;
+    top: 410.932px;
+    transform-origin: center;
+    transform: scale(0.6) rotate(120.24deg);
+  }
+  .sticker-3 {
+    position: absolute;
+    right: 50px;
+    top: 0.932px;
+    transform-origin: center;
+    transform: scale(1.1) rotate(62.656deg);
+  }
+  .sticker-4 {
+    position: absolute;
+    right: -50px;
+    top: 194.469px;
+    transform-origin: center;
+    transform: scale(0.7) rotate(165.964deg);
+  }
+
   .title {
     font-size: 32px;
     font-family: "Neue Plak";
     padding-bottom: 24px;
   }
-  
+
   .faq {
     border: 1px solid #000000;
     width: 100%;
+    z-index: 2;
     &__item {
       border-bottom: 1px solid #000000;
+      z-index: 2;
       padding: 32px 40px;
       display: flex;
       flex-direction: column;
@@ -21,7 +61,7 @@
         border-bottom: none;
       }
     }
-  
+
     &__question {
       padding: 0;
       width: 100%;
@@ -35,14 +75,13 @@
       margin: 0;
       justify-content: space-between;
       align-items: center;
-  
     }
     &__icon {
       position: relative;
       width: 24px;
       height: 24px;
       flex-shrink: 0;
-  
+
       &-horizontal {
         position: absolute;
         width: 20px;
@@ -52,7 +91,7 @@
         border: 1px solid #191919;
         display: block;
       }
-  
+
       &-vertical {
         position: absolute;
         width: 0px;
@@ -63,25 +102,29 @@
         display: block;
         transition: transform 0.2s ease;
       }
-  
+
       &--open &-vertical {
         transform: rotate(-90deg);
       }
     }
-  
+
     &__answer {
       font-size: 16px;
     }
   }
+}
 
-  @media (max-width: 744px) {
-    .container {
-      padding: 72px 80px;
-    }
+@media (max-width: 744px) {
+  .container {
+    padding: 72px 80px;
   }
+}
 
-   @media (max-width: 390px) {
-    .container {
-      padding: 72px 40px;
-    }
+@media (max-width: 390px) {
+  .container {
+    padding: 72px 40px;
   }
+  .sticker-1, .sticker-2, .sticker-3, .sticker-4 {
+    transform: scale(0.3);
+  }
+}

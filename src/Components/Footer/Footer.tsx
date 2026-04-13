@@ -16,8 +16,8 @@ export default function Footer() {
     <footer>
       <div className="banner" onClick={() => setIsOpen(!isOpen)}>
         <div className="footer-bg"></div>
-        <TrainWall side="left" />
-        <TrainWall side="right" />
+        <TrainWall side="left" theme={currentTheme} />
+        <TrainWall side="right" theme={currentTheme} />
         <div className="container">
           {/* Left Door Wrapper */}
           <motion.div

@@ -1,10 +1,20 @@
+import { type ThemeType } from "../../../types/theme";
+
 interface TrainWallProps {
   side: 'left' | 'right';
+  theme: ThemeType;
 }
 
-export default function TrainWall({ side }: TrainWallProps) {
+const windowStrokeColors: Record<ThemeType, string> = {
+      "sunrise-sunset": "#AEB032",
+      afternoon: "#D97706",
+      night: "#6366F1",
+    };
+
+export default function TrainWall({ side, theme }: TrainWallProps) {
   return (
     <div
+    
       style={{
         transform: side === 'left'
           ? 'translateY(-50%) scaleX(-1) translateX(calc(100% - 127px))'
@@ -18,7 +28,7 @@ export default function TrainWall({ side }: TrainWallProps) {
           <rect x="7.2334" y="45.2334" width="1499" height="517" stroke="#C7BAB3" strokeWidth="12"/>
         </g>
         <g filter="url(#filter1_gn_3012_13971)">
-          <rect x="65.2334" y="1.2334" width="62" height="652" fill="#AEB032"/>
+          <rect x="65.2334" y="1.2334" width="62" height="652" fill={windowStrokeColors[theme]}/>
         </g>
         <defs>
           <filter id="filter0_gn_3012_13971" x="3.38554e-05" y="38" width="1513.47" height="531.467" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">

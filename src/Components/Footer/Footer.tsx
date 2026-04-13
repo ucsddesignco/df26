@@ -14,41 +14,42 @@ export default function Footer() {
 
   return (
     <footer>
-      <div className="banner" onClick={() => setIsOpen(!isOpen)}>
-        <div className="footer-bg"></div>
-        <TrainWall side="left" theme={currentTheme} />
-        <TrainWall side="right" theme={currentTheme} />
-        <div className="container">
-          {/* Left Door Wrapper */}
-          <motion.div
-            className="door-wrapper left"
-            initial={false}
-            // Starts at -100% (immediately left of the center line)
-            // Slides further left to open
-            animate={{ x: isOpen ? "-100%" : "-49%" }}
-            transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
-          >
-            <LeftDoor theme={currentTheme} />
-          </motion.div>
+      <div className="banner-wrapper">
+        <div className="banner" onClick={() => setIsOpen(!isOpen)}>
+          <TrainWall side="left" theme={currentTheme} />
+          <TrainWall side="right" theme={currentTheme} />
+          <div className="container">
+            {/* Left Door Wrapper */}
+            <motion.div
+              className="door-wrapper left"
+              initial={false}
+              // Starts at -100% (immediately left of the center line)
+              // Slides further left to open
+              animate={{ x: isOpen ? "-119%" : "-49%" }}
+              transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
+            >
+              <LeftDoor theme={currentTheme} />
+            </motion.div>
 
-          {/* RIGHT DOOR */}
-          <motion.div
-            className="door-wrapper right"
-            initial={false}
-            // Starts at 0% (immediately right of the center line)
-            // Slides right to open
-            animate={{ x: isOpen ? "100%" : "49%" }}
-            transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
-          >
-            <RightDoor theme={currentTheme} />
-          </motion.div>
+            {/* RIGHT DOOR */}
+            <motion.div
+              className="door-wrapper right"
+              initial={false}
+              // Starts at 0% (immediately right of the center line)
+              // Slides right to open
+              animate={{ x: isOpen ? "119%" : "49%" }}
+              transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
+            >
+              <RightDoor theme={currentTheme} />
+            </motion.div>
 
-          <h1>Secure Your Spot!</h1>
+            {/* <h1>Secure Your Spot!</h1>
           <Button
             text="Register"
             icon={<DCoArrow />}
             className="register-button"
-          ></Button>
+          ></Button> */}
+          </div>
         </div>
       </div>
       <div className="footer-text">

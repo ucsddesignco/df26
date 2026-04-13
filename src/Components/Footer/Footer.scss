@@ -8,14 +8,13 @@ footer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-  .footer-bg {
-    // background-color: red;
-    width: 1440px;
-    height: 480px;
-    position: absolute;
-  }
 
+  .banner-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #EBE1DA;
+  }
   .banner {
     display: flex;
     justify-content: center;
@@ -27,11 +26,11 @@ footer {
     position: relative;
     max-width: 1280px;
     width: 1280px;
-    outline: 2px solid red;
+    // outline: 2px solid red;
 
     .wall {
       position: absolute;
-      top: 58%;
+      top: 57.3%;
       width: 1514px;
       height: 655px;
       pointer-events: none;
@@ -111,6 +110,7 @@ footer {
 
   .footer-text {
     display: flex;
+    width: 100%;
     flex-direction: row;
     justify-content: space-between;
     padding: 64px 120px;

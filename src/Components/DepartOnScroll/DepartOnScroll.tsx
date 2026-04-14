@@ -105,7 +105,7 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
     }),
     entering: (width: number) => ({
       x: getResponsivePositions(width).parkedPosition,
-      transition: { duration: 1.2, delay: 1, ease: "easeInOut" },
+      transition: { type:"spring", delay: 1, stiffness: 75, damping: 12, mass: 1.0 },  
     }),
     parked: (width: number) => ({
       x: getResponsivePositions(width).parkedPosition,

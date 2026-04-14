@@ -1,0 +1,20 @@
+.judges-section{
+    padding: 0 0 0 7.5rem;
+
+    h1{
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        // background-color: red;
+        max-width: fit-content;
+        margin-left: 1rem;
+    }
+
+    @media (max-width: 818px)
+    {
+        padding: 0 0 0 4rem;
+    }
+
+    @media (max-width: 650px){
+        padding: 0 0 0 2rem;
+    }
+}

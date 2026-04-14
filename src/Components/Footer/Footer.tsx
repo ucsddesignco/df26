@@ -11,7 +11,7 @@ import Backdrop from "./assets/Backdrop";
 
 export default function Footer() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentTheme] = useState<ThemeType>("sunrise-sunset");
+  const [currentTheme] = useState<ThemeType>("night");
 
   return (
     <footer>

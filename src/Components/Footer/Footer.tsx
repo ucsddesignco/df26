@@ -29,7 +29,7 @@ export default function Footer() {
               initial={false}
               // Starts at -100% (immediately left of the center line)
               // Slides further left to open
-              animate={{ x: isOpen ? "-119%" : "-49%" }}
+              animate={{ x: isOpen ? "-117%" : "-49%" }}
               transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
             >
               <LeftDoor theme={currentTheme} />
@@ -41,7 +41,7 @@ export default function Footer() {
               initial={false}
               // Starts at 0% (immediately right of the center line)
               // Slides right to open
-              animate={{ x: isOpen ? "119%" : "49%" }}
+              animate={{ x: isOpen ? "117%" : "49%" }}
               transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
             >
               <RightDoor theme={currentTheme} />

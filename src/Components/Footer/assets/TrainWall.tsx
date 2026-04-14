@@ -7,8 +7,8 @@ interface TrainWallProps {
 
 const windowStrokeColors: Record<ThemeType, string> = {
       "sunrise-sunset": "#AEB032",
-      afternoon: "#D97706",
-      night: "#6366F1",
+      afternoon: "#FA9025",
+      night: "#5A8CD3",
     };
 
 export default function TrainWall({ side, theme }: TrainWallProps) {

@@ -28,7 +28,7 @@ export default function HeroBoard() {
               {/* Column 1 -- Remark*/}
               <div className='column'>
                 <div className='column-header'>
-                  <p className='header-text'>Remark</p>
+                  <p className='header-text'>Line</p>
                 </div>
                 <div className='card'>
                   <p className='card-text'>DAY 1</p>

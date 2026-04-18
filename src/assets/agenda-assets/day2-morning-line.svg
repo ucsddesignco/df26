@@ -1,0 +1,21 @@
+<svg width="35" height="638" viewBox="0 0 35 638" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_g_2206_2985)">
+<rect x="10.5996" y="18.1035" width="13" height="599" fill="#989713"/>
+<circle cx="15.5897" cy="15.5897" r="13.5897" transform="matrix(1 0 0 -1 1.59961 32.7798)" fill="#F1EBE5" stroke="#2B2B23" stroke-width="4"/>
+<circle cx="15.5897" cy="15.5897" r="13.5897" transform="matrix(1 0 0 -1 1.59961 489.844)" fill="#F1EBE5" stroke="#989713" stroke-width="4"/>
+<circle cx="15.5897" cy="15.5897" r="13.5897" transform="matrix(1 0 0 -1 1.59961 336.844)" fill="#F1EBE5" stroke="#989713" stroke-width="4"/>
+<circle cx="15.5897" cy="15.5897" r="13.5897" transform="matrix(1 0 0 -1 1.59961 183.844)" fill="#F1EBE5" stroke="#989713" stroke-width="4"/>
+<circle cx="15.5897" cy="15.5897" r="13.5897" transform="matrix(1 0 0 -1 1.59961 636.284)" fill="#F1EBE5" stroke="#2B2B23" stroke-width="4"/>
+</g>
+<defs>
+<filter id="filter0_g_2206_2985" x="-0.000390649" y="9.76324e-05" width="34.3797" height="637.884" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.10204081237316132 0.10204081237316132" numOctaves="3" seed="1037" />
+<feDisplacementMap in="shape" scale="3.2000000476837158" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_2206_2985">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+</defs>
+</svg>

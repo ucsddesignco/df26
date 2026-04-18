@@ -13,6 +13,8 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.3.9",
+    "embla-carousel-accessibility": "9.0.0-rc01",
+    "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.38.0",
     "hamburger-react": "^2.5.2",
     "lint-check": "^0.0.2",

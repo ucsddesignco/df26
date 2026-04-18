@@ -27,10 +27,13 @@ footer {
     max-width: 1280px;
     width: 1280px;
     // outline: 2px solid red;
+    z-index: inherit;
 
     .backdrop {
       width: 100%;
-      position: absolute
+      position: absolute;
+      z-index: 0;
+      top: 0;
     }
 
     .wall {
@@ -79,6 +82,7 @@ footer {
         z-index: 1;
       }
 
+
       .register-button {
         z-index: 1;
       }
@@ -94,14 +98,6 @@ footer {
 
         z-index: 10;
         pointer-events: none;
-
-        &.left {
-          // right: 50%;
-        }
-
-        &.right {
-          // left: 50%;
-        }
 
         svg {
           width: 100%;
@@ -124,6 +120,13 @@ footer {
     letter-spacing: 0.72px;
   }
 }
+
+
+.footer-button {
+  position: absolute;
+  z-index: 1;
+}
+
 
 @media (max-width: 744px) {
   footer {

@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import "./Footer.scss";
-import Button from "../Button/Button";
-import DCoArrow from "../../SVGS/DCoArrow";
+// import Button from "../Button/Button";
+// import DCoArrow from "../../SVGS/DCoArrow";
 import { RightDoor } from "./assets/RightDoor";
 import { LeftDoor } from "./assets/LeftDoor";
 import TrainWall from "./assets/TrainWall";
 import type { ThemeType } from "../../types/theme";
 import Backdrop from "./assets/Backdrop";
+import { FooterButton } from "./assets/FooterButton";
 
 export default function Footer() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,9 +18,6 @@ export default function Footer() {
     <footer>
       <div className="banner-wrapper">
         <div className="banner" onClick={() => setIsOpen(!isOpen)}>
-          <div className="backdrop">
-            <Backdrop theme={currentTheme} />
-          </div>
           <TrainWall side="left" theme={currentTheme} />
           <TrainWall side="right" theme={currentTheme} />
           <div className="container">
@@ -47,12 +45,26 @@ export default function Footer() {
               <RightDoor theme={currentTheme} />
             </motion.div>
 
-            {/* <h1>Secure Your Spot!</h1>
-          <Button
-            text="Register"
-            icon={<DCoArrow />}
-            className="register-button"
-          ></Button> */}
+            <AnimatePresence>
+              {isOpen && (
+                <motion.button
+                  className="footerbutton"
+                  key="footer-button"
+                  initial={{ opacity: 0, x: "-50%", y: "-50%" }} // Start state
+                  animate={{ opacity: 1, x: "-50%", y: "-50%" }} // Active state
+                  exit={{ opacity: 0 }} // State when isOpen becomes false
+                  transition={{ duration: 0.3 }} // Timing
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="footer-button2">
+                    <FooterButton />
+                  </div>
+                </motion.button>
+              )}
+            </AnimatePresence>
+            <div className="backdrop">
+              <Backdrop theme={currentTheme} />
+            </div>
           </div>
         </div>
       </div>

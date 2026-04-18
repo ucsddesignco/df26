@@ -13,6 +13,7 @@ const ThemeBackdrops: Record<ThemeType, React.ReactNode> = {
       viewBox="0 0 1280 480"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMidYMid slice"
     >
       <g clip-path="url(#clip0_2493_10247)">
         <rect width="1280" height="480" fill="#F8CABA" />
@@ -349,6 +350,7 @@ const ThemeBackdrops: Record<ThemeType, React.ReactNode> = {
       viewBox="0 0 1280 480"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMidYMid slice"
     >
       <g clipPath="url(#clip0_2669_12754)">
         <rect width="1280" height="480" fill="#C4E8EF" />
@@ -767,6 +769,7 @@ const ThemeBackdrops: Record<ThemeType, React.ReactNode> = {
       viewBox="0 0 1280 480"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMidYMid slice"
     >
       <g clipPath="url(#clip0_2685_14847)">
         <rect width="1280" height="480" fill="#C8B2C1" />

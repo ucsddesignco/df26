@@ -1,71 +1,198 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState, type CSSProperties } from "react";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import "./Footer.scss";
 // import Button from "../Button/Button";
 // import DCoArrow from "../../SVGS/DCoArrow";
-import { RightDoor } from "./assets/RightDoor";
-import { LeftDoor } from "./assets/LeftDoor";
-import TrainWall from "./assets/TrainWall";
 import type { ThemeType } from "../../types/theme";
-import Backdrop from "./assets/Backdrop";
-import { FooterButton } from "./assets/FooterButton";
+import {
+  ResponsiveBackdrop,
+  ResponsiveFooterButton,
+  ResponsiveLeftDoor,
+  ResponsiveRightDoor,
+  ResponsiveTrainWall,
+  type FooterBreakpoint,
+} from "./assets/FooterResponsiveAssets";
+
+const footerButtonVariants: Variants = {
+  hidden: { opacity: 0, x: "-50%", y: "-50%" },
+  visible: {
+    opacity: 1,
+    x: "-50%",
+    y: "-50%",
+    transition: { duration: 0.35, delay: 0.45, ease: [0.65, 0, 0.35, 1] },
+  },
+  exit: {
+    opacity: 0,
+    x: "-50%",
+    y: "-50%",
+    transition: { duration: 0.3, ease: [0.65, 0, 0.35, 1] },
+  },
+};
+
+const MOBILE_BREAKPOINT = 392;
+const TABLET_BREAKPOINT = 744;
+
+type LayoutPreset = {
+  doors: {
+    width: number;
+    height: number;
+    top: number;
+    scale: number;
+  };
+  walls: {
+    left: {
+      width: number;
+      height: number;
+      top: string;
+      offset: number;
+      scale: number;
+    };
+    right: {
+      width: number;
+      height: number;
+      top: string;
+      offset: number;
+      scale: number;
+    };
+  };
+};
 
 export default function Footer() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentTheme] = useState<ThemeType>("sunrise-sunset");
+  const [currentTheme] = useState<ThemeType>("night");
+  const [breakpoint, setBreakpoint] = useState<FooterBreakpoint>("desktop");
+
+  useEffect(() => {
+    const updateBreakpoint = () => {
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        setBreakpoint("mobile");
+        return;
+      }
+      if (window.innerWidth <= TABLET_BREAKPOINT) {
+        setBreakpoint("tablet");
+        return;
+      }
+      setBreakpoint("desktop");
+    };
+
+    updateBreakpoint();
+    window.addEventListener("resize", updateBreakpoint);
+    return () => window.removeEventListener("resize", updateBreakpoint);
+  }, []);
+
+  const doorOpenByBreakpoint: Record<FooterBreakpoint, string> = {
+    desktop: "70%",
+    tablet: "66%",
+    mobile: "82%",
+  };
+  const openDistance = doorOpenByBreakpoint[breakpoint];
+
+  const layoutByBreakpoint: Partial<Record<FooterBreakpoint, LayoutPreset>> = {
+    tablet: {
+      doors: { width: 321, height: 715, top: -130, scale: 1 },
+      walls: {
+        left: { width: 644, height: 317, top: "50%", offset: -660, scale: 1.5 },
+        right: { width: 644, height: 317, top: "50%", offset: -660, scale: 1.5 },
+      },
+    },
+    mobile: {
+      doors: { width: 169, height: 375, top: -76, scale: 1 },
+      walls: {
+        left: { width: 346, height: 224, top: "50%", offset: -385, scale: 1.5 },
+        right: { width: 346, height: 224, top: "50%", offset: -385, scale: 1.5 },
+      },
+    },
+  };
+  const activeLayout = layoutByBreakpoint[breakpoint];
+  const doorScale = activeLayout?.doors.scale ?? 1;
+  const doorStyle: CSSProperties | undefined = activeLayout
+    ? {
+        width: activeLayout.doors.width,
+        height: activeLayout.doors.height,
+        top: activeLayout.doors.top,
+      }
+    : undefined;
+  const wallStyleBySide: Record<"left" | "right", CSSProperties | undefined> = {
+    left: activeLayout
+      ? {
+          width: activeLayout.walls.left.width,
+          height: activeLayout.walls.left.height,
+          top: activeLayout.walls.left.top,
+          left: activeLayout.walls.left.offset,
+          transform: `translateY(-50%) scale(${activeLayout.walls.left.scale})`,
+        }
+      : undefined,
+    right: activeLayout
+      ? {
+          width: activeLayout.walls.right.width,
+          height: activeLayout.walls.right.height,
+          top: activeLayout.walls.right.top,
+          right: activeLayout.walls.right.offset,
+          transform: `translateY(-50%) scale(${activeLayout.walls.right.scale})`,
+        }
+      : undefined,
+  };
 
   return (
     <footer>
       <div className="banner-wrapper">
-        <div className="banner" onClick={() => setIsOpen(!isOpen)}>
-          <TrainWall side="left" theme={currentTheme} />
-          <TrainWall side="right" theme={currentTheme} />
+        <div className={`banner banner--${breakpoint}`} onClick={() => setIsOpen(!isOpen)}>
+          <ResponsiveTrainWall
+            side="left"
+            theme={currentTheme}
+            breakpoint={breakpoint}
+            style={wallStyleBySide.left}
+          />
+          <ResponsiveTrainWall
+            side="right"
+            theme={currentTheme}
+            breakpoint={breakpoint}
+            style={wallStyleBySide.right}
+          />
           <div className="container">
             {/* Left Door Wrapper */}
             <motion.div
               className="door-wrapper left"
               initial={false}
-              // Starts at -100% (immediately left of the center line)
-              // Slides further left to open
-              animate={{ x: isOpen ? "-117%" : "-49%" }}
+              style={doorStyle}
+              animate={{ x: isOpen ? `-${openDistance}` : "0.5%", scale: doorScale }}
               transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
             >
-              <LeftDoor theme={currentTheme} />
+              <ResponsiveLeftDoor theme={currentTheme} breakpoint={breakpoint} />
             </motion.div>
 
             {/* RIGHT DOOR */}
             <motion.div
               className="door-wrapper right"
               initial={false}
-              // Starts at 0% (immediately right of the center line)
-              // Slides right to open
-              animate={{ x: isOpen ? "117%" : "49%" }}
+              style={doorStyle}
+              animate={{ x: isOpen ? openDistance : "-0.5%", scale: doorScale }}
               transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
             >
-              <RightDoor theme={currentTheme} />
+              <ResponsiveRightDoor theme={currentTheme} breakpoint={breakpoint} />
             </motion.div>
 
-            <AnimatePresence>
-              {isOpen && (
-                <motion.button
-                  className="footerbutton"
-                  key="footer-button"
-                  initial={{ opacity: 0, x: "-50%", y: "-50%" }} // Start state
-                  animate={{ opacity: 1, x: "-50%", y: "-50%" }} // Active state
-                  exit={{ opacity: 0 }} // State when isOpen becomes false
-                  transition={{ duration: 0.3 }} // Timing
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="footer-button2">
-                    <FooterButton />
-                  </div>
-                </motion.button>
-              )}
-            </AnimatePresence>
             <div className="backdrop">
-              <Backdrop theme={currentTheme} />
+              <ResponsiveBackdrop theme={currentTheme} breakpoint={breakpoint} />
             </div>
           </div>
+
+          <AnimatePresence>
+            {isOpen && (
+              <motion.button
+                type="button"
+                className="footer-banner-button"
+                key="footer-button"
+                variants={footerButtonVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ResponsiveFooterButton breakpoint={breakpoint} />
+              </motion.button>
+            )}
+          </AnimatePresence>
         </div>
       </div>
       <div className="footer-text">

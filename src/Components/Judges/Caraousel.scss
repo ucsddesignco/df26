@@ -1,0 +1,31 @@
+
+$judge-card-min: 17.5rem; // 280px — same visual size on tablet + phone
+
+.embla__viewport {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+  gap: 0.1rem;
+}
+
+.embla__slide {
+  // desktop: ~3 slides visible
+  flex: 0 0 clamp(#{$judge-card-min}, 30%, 22rem);
+
+  // tablet + phone: fixed card width so images dony keep shrinking with the viewport
+  @media (max-width: 1024px) {
+    flex: 0 0 $judge-card-min;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    // border: 2px solid black;
+  }
+}

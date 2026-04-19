@@ -188,20 +188,38 @@
      HEADER
      ========================= */
   
-  .agenda-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: var(--agenda-header-height);
-    padding: var(--agenda-header-padding-y) var(--agenda-header-padding-x);
-    box-sizing: border-box;
-    background: var(--agenda-header-bg);
-    color: var(--agenda-text-inverse);
-    outline: var(--agenda-header-outline-width) solid var(--agenda-header-outline);
-    outline-offset: -0.5px;
-    overflow: hidden;
-    margin-bottom: var(--agenda-header-to-timeline-gap);
-  }
+     .agenda-header {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: var(--agenda-header-height);
+      padding: var(--agenda-header-padding-y) var(--agenda-header-padding-x);
+      box-sizing: border-box;
+      color: var(--agenda-text-inverse);
+      overflow: visible;               /* was: hidden — let texture bleed slightly */
+      margin-bottom: var(--agenda-header-to-timeline-gap);
+      background: transparent;          /* background moves to ::before */
+    }
+    
+    /* The textured background layer — filter only applies here, not to text */
+    .agenda-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;                         /* fill the header exactly */
+      background: var(--agenda-header-bg);
+      outline: var(--agenda-header-outline-width) solid var(--agenda-header-outline);
+      outline-offset: -0.5px;
+      filter: url(#agenda-roughen-soft);
+      z-index: 0;
+    }
+    
+    /* Keep the text above the textured background */
+    .agenda-header__day,
+    .agenda-header__date {
+      position: relative;
+      z-index: 1;
+    }
   
   .agenda-header__day {
     font-size: var(--agenda-header-day-size);

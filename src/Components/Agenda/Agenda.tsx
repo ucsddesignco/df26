@@ -228,17 +228,48 @@ export default function Agenda() {
           <filter id="agenda-roughen">
             <feTurbulence
               type="fractalNoise"
-              baseFrequency="0.04"
-              numOctaves="2"
-              seed="3"
+              baseFrequency="0.15"
+              numOctaves="4"
+              seed="4"
               result="noise"
             />
             <feDisplacementMap
               in="SourceGraphic"
               in2="noise"
-              scale="5"
+              scale="2"
             />
           </filter>
+          {/* NEW: softer filter for the header bar */}
+          {/* Grainy paper-print texture for the header bar */}
+<filter id="agenda-roughen-soft">
+  <feTurbulence
+    type="fractalNoise"
+    baseFrequency="0.9"
+    numOctaves="2"
+    seed="7"
+    result="noise"
+  />
+  <feColorMatrix
+    in="noise"
+    type="matrix"
+    values="0 0 0 0 0
+            0 0 0 0 0
+            0 0 0 0 0
+            0 0 0 0.35 0"
+    result="noiseAlpha"
+  />
+  <feComposite in="noiseAlpha" in2="SourceGraphic" operator="in" result="grain" />
+  <feDisplacementMap
+    in="SourceGraphic"
+    in2="noise"
+    scale="1.2"
+    result="roughEdges"
+  />
+  <feMerge>
+    <feMergeNode in="roughEdges" />
+    <feMergeNode in="grain" />
+  </feMerge>
+</filter>
         </defs>
       </svg>
 

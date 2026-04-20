@@ -44,7 +44,7 @@ const themeStyles: Record<Theme, ThemeStyle> = {
   night: {
     day1Color: "#E8CE8A", //yellow
     day2Color: "#5A8CD3", //blue
-    image: nightImg, 
+    image: nightImg,
   },
 };
 
@@ -239,43 +239,43 @@ export default function Agenda() {
               scale="2"
             />
           </filter>
-          {/* NEW: softer filter for the header bar */}
           {/* Grainy paper-print texture for the header bar */}
-<filter id="agenda-roughen-soft">
-  <feTurbulence
-    type="fractalNoise"
-    baseFrequency="0.9"
-    numOctaves="2"
-    seed="7"
-    result="noise"
-  />
-  <feColorMatrix
-    in="noise"
-    type="matrix"
-    values="0 0 0 0 0
-            0 0 0 0 0
-            0 0 0 0 0
-            0 0 0 0.35 0"
-    result="noiseAlpha"
-  />
-  <feComposite in="noiseAlpha" in2="SourceGraphic" operator="in" result="grain" />
-  <feDisplacementMap
-    in="SourceGraphic"
-    in2="noise"
-    scale="1.2"
-    result="roughEdges"
-  />
-  <feMerge>
-    <feMergeNode in="roughEdges" />
-    <feMergeNode in="grain" />
-  </feMerge>
-</filter>
+          <filter id="agenda-roughen-soft">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.9"
+              numOctaves="2"
+              seed="7"
+              result="noise"
+            />
+            <feColorMatrix
+              in="noise"
+              type="matrix"
+              values="0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 0 0.35 0"
+              result="noiseAlpha"
+            />
+            <feComposite in="noiseAlpha" in2="SourceGraphic" operator="in" result="grain" />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="1.2"
+              result="roughEdges"
+            />
+            <feMerge>
+              <feMergeNode in="roughEdges" />
+              <feMergeNode in="grain" />
+            </feMerge>
+          </filter>
         </defs>
       </svg>
 
       <h2 className="agenda-section-title">Agenda</h2>
 
-      {/* Mobile tabs — hidden on desktop via CSS */}
+      {/* Mobile tabs — hidden on desktop via CSS.
+          Each tab contains the day label AND the date, stacked. */}
       <div className="agenda-tabs" role="tablist" aria-label="Agenda days">
         <button
           role="tab"
@@ -283,7 +283,8 @@ export default function Agenda() {
           className={`agenda-tab ${activeTab === "day1" ? "is-active" : ""}`}
           onClick={() => setActiveTab("day1")}
         >
-          Day One
+          <span className="agenda-tab__day">Day One</span>
+          <span className="agenda-tab__date">SAT, MAY 9</span>
         </button>
         <button
           role="tab"
@@ -291,7 +292,8 @@ export default function Agenda() {
           className={`agenda-tab ${activeTab === "day2" ? "is-active" : ""}`}
           onClick={() => setActiveTab("day2")}
         >
-          Day Two
+          <span className="agenda-tab__day">Day Two</span>
+          <span className="agenda-tab__date">SUN, MAY 10</span>
         </button>
       </div>
 

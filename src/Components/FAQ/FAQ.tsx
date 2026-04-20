@@ -73,6 +73,64 @@ export default function FAQ() {
 
   return (
     <div className="container">
+       <svg
+        width="0"
+        height="0"
+        style={{ position: "absolute" }}
+        aria-hidden="true"
+      >
+        <defs>
+          <filter id="agenda-roughen">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.15"
+              numOctaves="4"
+              seed="4"
+              result="noise"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="2"
+            />
+          </filter>
+          <filter id="agenda-roughen-soft">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.9"
+              numOctaves="2"
+              seed="7"
+              result="noise"
+            />
+            <feColorMatrix
+              in="noise"
+              type="matrix"
+              values="0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 0 0.35 0"
+              result="noiseAlpha"
+            />
+            <feComposite
+              in="noiseAlpha"
+              in2="SourceGraphic"
+              operator="in"
+              result="grain"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="1.2"
+              result="roughEdges"
+            />
+            <feMerge>
+              <feMergeNode in="roughEdges" />
+              <feMergeNode in="grain" />
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
+ 
       <div className="faq-wrapper">
         <Sticker theme={currentTheme} className="sticker-1" />
         <Sticker theme={currentTheme} className="sticker-2" />

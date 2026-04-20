@@ -80,54 +80,22 @@ export default function FAQ() {
         aria-hidden="true"
       >
         <defs>
-          <filter id="agenda-roughen">
+        <filter id="agenda-roughen">
+             {/* this is the texture for the lines  */}
             <feTurbulence
               type="fractalNoise"
-              baseFrequency="0.15"
-              numOctaves="4"
+              baseFrequency="0.10"
+              numOctaves="3"
               seed="4"
               result="noise"
             />
             <feDisplacementMap
               in="SourceGraphic"
               in2="noise"
-              scale="2"
+              scale="0.5"
             />
           </filter>
-          <filter id="agenda-roughen-soft">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.9"
-              numOctaves="2"
-              seed="7"
-              result="noise"
-            />
-            <feColorMatrix
-              in="noise"
-              type="matrix"
-              values="0 0 0 0 0
-                      0 0 0 0 0
-                      0 0 0 0 0
-                      0 0 0 0.35 0"
-              result="noiseAlpha"
-            />
-            <feComposite
-              in="noiseAlpha"
-              in2="SourceGraphic"
-              operator="in"
-              result="grain"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale="1.2"
-              result="roughEdges"
-            />
-            <feMerge>
-              <feMergeNode in="roughEdges" />
-              <feMergeNode in="grain" />
-            </feMerge>
-          </filter>
+          
         </defs>
       </svg>
  

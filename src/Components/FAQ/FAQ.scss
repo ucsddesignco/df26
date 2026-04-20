@@ -58,7 +58,7 @@
       inset: 0;
       border: 1.5px solid #000000;
       pointer-events: none;
-      filter: url(#agenda-roughen-soft);
+      filter: url(#agenda-roughen);
       z-index: 0;
     }
     &__item {
@@ -76,7 +76,7 @@
         bottom: 0;
         height: 1.5px;
         background: #000000;
-        filter: url(#agenda-roughen-soft);
+        filter: url(#agenda-roughen);
         pointer-events: none;
       }
     }

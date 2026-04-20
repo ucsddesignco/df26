@@ -40,8 +40,12 @@ const Button = ({
           className={classNames}
           disabled={disabled}
         >
-          <span>{text}</span>
-          {icon && icon}
+          <div className="content-container">
+            <div className='icon-container'>
+              {icon && icon}
+            </div>
+            <span>{text}</span>
+          </div>
         </button>
       )}
     </>

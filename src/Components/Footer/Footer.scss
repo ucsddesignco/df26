@@ -1,23 +1,10 @@
-@font-face {
-  font-family: "Neue Plak";
-  src: url("../../fonts/neue-plak/Neue\ Plak\ W05\ Extended\ Bold.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "NB International";
-  src: url("../../fonts/NB\ International\ Regular\ Webfont.woff2") format("woff2");  
-  font-weight: 400;
-  font-style: normal;
-}
-
 footer {
   all: initial;
   display: block;
   background: white;
   width: 100vw;
-  margin-left: calc(50% - 50vw);
+  padding-top: 72px;
+  // margin-left: calc(50% - 50vw);
 
   .banner {
     display: flex;
@@ -25,33 +12,69 @@ footer {
     align-items: center;
     /* span full viewport width */
     height: 390px;
-    background: linear-gradient(180deg, #ECECEC 0%, #C8C8C8 100%);
+    background: linear-gradient(180deg, #ececec 0%, #c8c8c8 100%);
 
     .container {
       width: 100%;
-      margin: 0px 120px;
+      // margin: 0px 120px;
       display: flex;
       flex-direction: column;
       align-items: center;
 
-      h1{
+      h1 {
         font-family: "Neue Plak";
         font-size: 48px;
         color: #191919;
         margin: 0 0 24px 0;
+        text-align: center;
       }
     }
-
   }
-  .footer-text{
-    display:flex;
+  .footer-text {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 64px 120px; 
+    padding: 64px 120px;
 
     font-family: "NB International";
     font-size: 18px;
     letter-spacing: 0.72px;
   }
-  
+}
+
+@media (max-width: 744px) {
+  footer {
+    .footer-text {
+      padding: 64px 80px;
+    }
+  }
+}
+
+
+@media (max-width: 390px) {
+  footer {
+    .banner {
+      .container {
+        h1 {
+          font-family: "Neue Plak";
+          font-size: 40px;
+          color: #191919;
+          margin: 0 0 24px 0;
+          text-align: center;
+        }
+      }
+    }
+    .footer-text {
+      padding: 64px 40px;
+      flex-direction: column;
+      display: flex;
+      p {
+        font-size: 12px;
+      }
+      p:first-of-type {
+        order: 2;
+        font-size: 16px;
+      }
+    }
+  }
 }

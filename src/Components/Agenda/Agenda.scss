@@ -1,7 +1,5 @@
-/* =========================
-   FONT FACES
-   ========================= */
 
+// font
    @font-face {
     font-family: "NB International";
     src: url("../../assets/agenda-assets/NB International Regular.otf")
@@ -11,26 +9,9 @@
     font-display: swap;
   }
   
-  /* If you have a Neue Plak file, uncomment and set the path.
-     Otherwise, it will fall back to a system serif-sans. */
-  /*
-  @font-face {
-    font-family: "Neue Plak";
-    src: url("../../assets/agenda-assets/NeuePlak-Regular.otf") format("opentype");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  */
-  
-  /* =========================
-     DESIGN TOKENS
-     — Every measurement from Figma lives here.
-     — Edit any of these to tune the layout.
-     ========================= */
-  
+
   .agenda-section {
-    /* COLORS */
+    /* colors */
     --agenda-bg: #ffffff;
     --agenda-text: #2b2b23;
     --agenda-text-inverse: #f5f5f5;
@@ -39,35 +20,28 @@
     --agenda-marker-fill: #ffffff;
     --agenda-marker-terminal-border: #2b2b23;
   
-    /* SPACING */
+    /* spacing */
     --agenda-section-padding-y: 40px;
     --agenda-section-padding-x: 120px;
     --agenda-title-to-grid-gap: 24px;
     --agenda-column-gap: 40px;
     --agenda-header-to-timeline-gap: 20px;
   
-    /* HEADER */
+    /* header */
     --agenda-header-height: 40px;
     --agenda-header-padding-x: 24px;
     --agenda-header-padding-y: 20px;
     --agenda-header-outline-width: 1px;
   
-    /* TIMELINE ROW */
+    /* timeline row */
     --agenda-row-padding: 24px;          /* all sides */
     --agenda-row-gap: 24px;              /* between marker and text */
   
-    /* MARKER */
+    /* amrker */
     --agenda-marker-size: 31.18px;
     --agenda-marker-border: 4px;
   
-    /* LINE
-       The line must start BEHIND the first marker and end BEHIND the last marker.
-       We inset top & bottom PAST the marker center so the roughen filter's
-       displacement can't push the line past the marker's outer edge.
-  
-       inset = row padding + full marker height - a few px of overlap
-       The -6px "overlap" is what tucks the line safely behind the marker body.
-    */
+    //line
     --agenda-line-width: 13px;
     --agenda-line-overlap: 6px;
     --agenda-line-inset: calc(
@@ -80,25 +54,25 @@
     --agenda-line-top: var(--agenda-line-inset);
     --agenda-line-bottom: var(--agenda-line-inset);
   
-    /* TYPOGRAPHY — TITLE */
+    //title
     --agenda-title-size: 32px;
     --agenda-title-line-height: 32.64px;
     --agenda-title-font: "Neue Plak", "NB International", system-ui, sans-serif;
   
-    /* TYPOGRAPHY — HEADER LABELS */
+    //header labels
     --agenda-header-day-size: 20px;
     --agenda-header-day-lh: 24px;
     --agenda-header-date-size: 16px;
     --agenda-header-date-lh: 19.2px;
   
-    /* TYPOGRAPHY — EVENT */
+    // events
     --agenda-time-size: 16px;
     --agenda-time-lh: 19.2px;
     --agenda-event-title-size: 24px;
     --agenda-event-title-lh: 28.8px;
     --agenda-time-to-title-gap: 8px;
   
-    /* BASE */
+    // base
     padding: var(--agenda-section-padding-y) var(--agenda-section-padding-x);
     background: var(--agenda-bg);
     font-family: "NB International", system-ui, -apple-system, sans-serif;
@@ -106,10 +80,7 @@
     font-weight: 400;
   }
   
-  /* =========================
-     SECTION TITLE
-     ========================= */
-  
+//section 
   .agenda-section-title {
     font-family: var(--agenda-title-font);
     font-size: var(--agenda-title-size);
@@ -119,15 +90,7 @@
     margin: 0 0 var(--agenda-title-to-grid-gap) 0;
   }
   
-  /* =========================
-     TABS (hidden on desktop, shown on tablet + mobile)
-     — Segmented control: two halves sharing a single hard border.
-     — Each tab stacks a day label on top of a date.
-     — Active tab is wider than inactive (roughly 60/40).
-     — Active tab uses the same grainy paper-print texture as the desktop
-       header bar.
-     ========================= */
-  
+//tabs
   .agenda-tabs {
     display: none;
     border: 1.5px solid var(--agenda-header-bg);
@@ -152,18 +115,18 @@
     transition: flex-grow 0.25s ease, color 0.15s ease;
   }
   
-  /* Active tab grows to take the larger share — ~60/40 split */
+  //tab logic, spilting like 60/40 
   .agenda-tab.is-active {
     flex-grow: 3;
     color: var(--agenda-text-inverse);
   }
   
-  /* Vertical divider between the two tabs */
+  //divider between tabs
   .agenda-tab + .agenda-tab {
     border-left: 1.5px solid var(--agenda-header-bg);
   }
   
-  /* Textured background on the active tab — same filter as desktop header */
+  //background for mobile/tablet header, texture
   .agenda-tab::before {
     content: "";
     position: absolute;
@@ -178,7 +141,7 @@
     filter: url(#agenda-roughen-soft);
   }
   
-  /* Keep tab text above the textured background */
+  //no textured text
   .agenda-tab__day,
   .agenda-tab__date {
     position: relative;
@@ -198,10 +161,7 @@
     letter-spacing: 0.02em;
   }
   
-  /* =========================
-     GRID
-     ========================= */
-  
+  //grid
   .agenda-grid {
     display: flex;
     justify-content: center;
@@ -215,20 +175,14 @@
     min-width: 0; /* allow flex children to shrink */
   }
   
-  /* =========================
-     COLUMN
-     ========================= */
-  
+  //column
   .agenda-column {
     display: flex;
     flex-direction: column;
     width: 100%;
   }
   
-  /* =========================
-     HEADER
-     ========================= */
-  
+ //header
   .agenda-header {
     position: relative;
     display: flex;
@@ -238,16 +192,16 @@
     padding: var(--agenda-header-padding-y) var(--agenda-header-padding-x);
     box-sizing: border-box;
     color: var(--agenda-text-inverse);
-    overflow: visible;               /* was: hidden — let texture bleed slightly */
+    overflow: visible;              
     margin-bottom: var(--agenda-header-to-timeline-gap);
-    background: transparent;          /* background moves to ::before */
+    background: transparent;        
   }
   
   /* The textured background layer — filter only applies here, not to text */
   .agenda-header::before {
     content: "";
     position: absolute;
-    inset: 0;                         /* fill the header exactly */
+    inset: 0;                     
     background: var(--agenda-header-bg);
     outline: var(--agenda-header-outline-width) solid var(--agenda-header-outline);
     outline-offset: -0.5px;
@@ -274,19 +228,13 @@
     font-weight: 400;
   }
   
-  /* =========================
-     TIMELINE
-     ========================= */
-  
+  //timeline
   .agenda-timeline-wrapper {
     position: relative;
     width: 100%;
   }
   
-  /* LINE — solid colored bar, absolutely positioned
-     Sits centered on the marker column, tucked BEHIND the first and last
-     markers so the roughen filter can't make it poke out past their edges.
-  */
+  //line
   .agenda-line {
     position: absolute;
     left: var(--agenda-line-left);
@@ -307,10 +255,7 @@
     z-index: 1;
   }
   
-  /* =========================
-     ROW
-     ========================= */
-  
+  //row
   .agenda-row {
     display: flex;
     align-items: center;
@@ -319,10 +264,7 @@
     overflow: hidden;
   }
   
-  /* =========================
-     MARKER
-     ========================= */
-  
+  //marker
   .agenda-marker-wrapper {
     flex-shrink: 0;
     position: relative;
@@ -340,10 +282,7 @@
     filter: url(#agenda-roughen);
   }
   
-  /* =========================
-     TEXT
-     ========================= */
-  
+ //text
   .agenda-item {
     flex: 1 1 0;
     display: flex;
@@ -370,12 +309,7 @@
     margin: 0;
   }
   
-  /* =========================
-     DECORATION IMAGE
-     — Figma shows it rotated 3° with paddingTop 52
-     — Centered horizontally within the column
-     ========================= */
-  
+//inmage
   .agenda-decoration {
     display: block;
     width: 100%;
@@ -385,13 +319,9 @@
     transform-origin: center center;
   }
   
-  /* =========================
-     BREAKPOINTS
-     ========================= */
+  //breakpoints
   
-  /* TABLET + MOBILE — 1024px and down:
-     Switch to the tabbed single-column layout.
-     (Previously this kicked in at 768px; now tablet gets the same treatment.) */
+  /* tab + mobile*/
   @media (max-width: 1024px) {
     .agenda-section {
       --agenda-section-padding-y: 32px;
@@ -405,17 +335,14 @@
       --agenda-marker-border: 3px;
     }
   
-    /* Show the tabs */
     .agenda-tabs {
       display: flex;
     }
   
-    /* The date now lives inside the tab — hide the standalone dark banner */
     .agenda-header {
       display: none;
     }
   
-    /* Collapse grid to one column, only show active panel */
     .agenda-grid {
       flex-direction: column;
       gap: 0;
@@ -438,7 +365,7 @@
     }
   }
   
-  /* MOBILE — 768px and down: tighten spacing further */
+  /* mobile */
   @media (max-width: 768px) {
     .agenda-section {
       --agenda-section-padding-x: 20px;
@@ -455,7 +382,7 @@
     }
   }
   
-  /* SMALL MOBILE — 480px and down: tighten spacing more */
+  /* small mobie */
   @media (max-width: 480px) {
     .agenda-section {
       --agenda-section-padding-x: 16px;

@@ -1,19 +1,13 @@
 import { useEffect, useState, type ReactNode } from "react";
 import "./Agenda.scss";
 
-/* =========================
-   IMPORT YOUR ASSETS
-   ========================= */
 
-// Decoration images
+// Decoration images — one per time-of-day theme
 import morningImg from "../../assets/agenda-assets/Sunrise-ticket-train.png";
 import afternoonImg from "../../assets/agenda-assets/day-image.png";
 import nightImg from "../../assets/agenda-assets/sunset-image.png";
 
-/* =========================
-   THEME LOGIC
-   ========================= */
-
+// theme change - depending on the time of day
 type Theme = "morning" | "afternoon" | "night";
 
 function getThemeByTime(): Theme {
@@ -29,7 +23,7 @@ type ThemeStyle = {
   image: string;
 };
 
-/* Colors pulled directly from Figma Dev Mode */
+//color changes for the lines depending on the time of day
 const themeStyles: Record<Theme, ThemeStyle> = {
   morning: {
     day1Color: "#ED9699", // pink
@@ -37,13 +31,13 @@ const themeStyles: Record<Theme, ThemeStyle> = {
     image: morningImg,
   },
   afternoon: {
-    day1Color: "#AEB032", //light green
-    day2Color: "#F27E08", //orange
+    day1Color: "#AEB032", // light green
+    day2Color: "#F27E08", // orange
     image: afternoonImg,
   },
   night: {
-    day1Color: "#E8CE8A", //yellow
-    day2Color: "#5A8CD3", //blue
+    day1Color: "#E8CE8A", // yellow
+    day2Color: "#5A8CD3", // blue
     image: nightImg,
   },
 };
@@ -61,10 +55,7 @@ function useTimeTheme() {
   return themeStyles[theme];
 }
 
-/* =========================
-   DATA
-   ========================= */
-
+// actual schedule for DF, can be added on to
 type AgendaItem = {
   time: string;
   title: string;
@@ -84,10 +75,7 @@ const dayTwo: AgendaItem[] = [
   { time: "3:30 PM PT", title: "Closing Ceremony" },
 ];
 
-/* =========================
-   COLUMN COMPONENT
-   ========================= */
-
+// columns yay
 type AgendaColumnProps = {
   dayLabel: string;
   dateLabel: string;
@@ -113,7 +101,7 @@ function AgendaColumn({
       </div>
 
       <div className="agenda-timeline-wrapper">
-        {/* Solid colored line behind the markers */}
+        {/* color of the actual lines */}
         <span
           className="agenda-line"
           style={{ background: lineColor }}
@@ -149,75 +137,15 @@ function AgendaColumn({
   );
 }
 
-/* =========================
-   MAIN COMPONENT
-   ========================= */
-
+//main component 
 type MobileTab = "day1" | "day2";
 
-/* =========================
-   🧪 DEV MODE THEME SWITCHER
-   Set to false to use real time-of-day detection.
-   Set to true to show the theme toggle buttons for testing.
-   ========================= */
-const DEV_THEME_SWITCHER = true;
-
 export default function Agenda() {
-  const autoTheme = getThemeByTime();
-  const [overrideTheme, setOverrideTheme] = useState<Theme | "auto">("auto");
-  const activeTheme: Theme = overrideTheme === "auto" ? autoTheme : overrideTheme;
-  const theme = themeStyles[activeTheme];
-
+  const theme = useTimeTheme();
   const [activeTab, setActiveTab] = useState<MobileTab>("day1");
 
   return (
     <section className="agenda-section">
-      {/* 🧪 DEV MODE: theme switcher — delete this block when you're done testing */}
-      {DEV_THEME_SWITCHER && (
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            marginBottom: "16px",
-            padding: "8px 12px",
-            background: "#fff3cd",
-            border: "1px dashed #856404",
-            borderRadius: "4px",
-            fontSize: "13px",
-            fontFamily: "system-ui, sans-serif",
-            alignItems: "center",
-          }}
-        >
-          <strong style={{ marginRight: "8px" }}>🧪 Theme:</strong>
-          {(["auto", "morning", "afternoon", "night"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setOverrideTheme(t)}
-              style={{
-                padding: "4px 10px",
-                border: "1px solid #856404",
-                background:
-                  overrideTheme === t ? "#856404" : "transparent",
-                color: overrideTheme === t ? "white" : "#856404",
-                borderRadius: "3px",
-                cursor: "pointer",
-                fontSize: "12px",
-                textTransform: "capitalize",
-              }}
-            >
-              {t}
-            </button>
-          ))}
-          <span style={{ marginLeft: "auto", color: "#856404" }}>
-            Auto detects: <strong>{autoTheme}</strong> (current hour:{" "}
-            {new Date().getHours()})
-          </span>
-        </div>
-      )}
-
-      {/* SVG filter for rough/hand-drawn edges.
-          Applied to the line and markers via CSS: filter: url(#agenda-roughen).
-          Hidden visually but available to reference. */}
       <svg
         width="0"
         height="0"
@@ -226,6 +154,7 @@ export default function Agenda() {
       >
         <defs>
           <filter id="agenda-roughen">
+             {/* this is the texture for the lines  */}
             <feTurbulence
               type="fractalNoise"
               baseFrequency="0.15"
@@ -239,7 +168,7 @@ export default function Agenda() {
               scale="2"
             />
           </filter>
-          {/* Grainy paper-print texture for the header bar */}
+          {/* Grainy texture for the header - softer than the lines one*/}
           <filter id="agenda-roughen-soft">
             <feTurbulence
               type="fractalNoise"
@@ -257,7 +186,12 @@ export default function Agenda() {
                       0 0 0 0.35 0"
               result="noiseAlpha"
             />
-            <feComposite in="noiseAlpha" in2="SourceGraphic" operator="in" result="grain" />
+            <feComposite
+              in="noiseAlpha"
+              in2="SourceGraphic"
+              operator="in"
+              result="grain"
+            />
             <feDisplacementMap
               in="SourceGraphic"
               in2="noise"
@@ -274,8 +208,7 @@ export default function Agenda() {
 
       <h2 className="agenda-section-title">Agenda</h2>
 
-      {/* Mobile tabs — hidden on desktop via CSS.
-          Each tab contains the day label AND the date, stacked. */}
+      {/* tab logic for the mobile and tablet view*/}
       <div className="agenda-tabs" role="tablist" aria-label="Agenda days">
         <button
           role="tab"
@@ -309,6 +242,7 @@ export default function Agenda() {
             items={dayOne}
             lineColor={theme.day1Color}
           >
+            {/* image for mobile/tablet view*/}
             <img className="agenda-decoration" src={theme.image} alt="" />
           </AgendaColumn>
         </div>

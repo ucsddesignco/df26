@@ -1,0 +1,16 @@
+.footer-register-link * {
+  pointer-events: none;
+}
+
+.footer-register-link .footer-register-button {
+  pointer-events: all;
+  background-color: #eef0f1;
+  fill: #eef0f1;
+  transition: 0.3s;
+}
+
+.footer-register-link .footer-register-button:hover {
+  background-color: #dadada;
+  fill: #dadada;
+}
+

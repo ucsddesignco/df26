@@ -2,12 +2,21 @@ import './HeroBoard.scss'
 import OpenInNew from '../../SVGS/OpenInNew';
 import Station26Icon from '../../SVGS/Station26Icon';
 import Button from '../Button/Button';
-
+import { motion } from 'framer-motion';
 
 export default function HeroBoard() {
   return (
     <>
-      <div className='hero-board'>
+      <motion.div className='hero-board'
+        initial={{ y: "-120%" }}
+        animate={{ y: 0 }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 150, 
+          damping: 20, 
+          mass: 1.0,
+          delay: 0.2
+        }}>
         <div className='board-legs'>
           <div className='left-leg'/>
           <div className='right-leg'/>
@@ -80,7 +89,7 @@ export default function HeroBoard() {
             <Button text='Register Now' icon={<OpenInNew/>} className='register-button'></Button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

@@ -3,7 +3,7 @@ import './CloudGenerator.scss'
 export default function CloudGenerator() {
   return (
     <div className='cloud-container'>
-      <svg className='sky' xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none">
+      <svg style={{ width: 0, height: 0, position: 'absolute' }} aria-hidden="true">
         <defs>
           <filter id="a" width="531.9" height="164.6" x="0" y="0" colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse">
             <feFlood floodOpacity="0" result="BackgroundImageFix" />
@@ -27,40 +27,46 @@ export default function CloudGenerator() {
             </feMerge>
           </filter>
         </defs>
+      </svg>
 
-        {/* Cloud 1 */}
-        <g
-          className='cloud'
-          style={
-            {
-              '--start-delay': '-9s', 
-              '--duration': '40s', 
-              '--cloud-top': '22.5%',
-            } as React.CSSProperties
-          }
-        >
+      {/* Cloud 1 */}
+      <div
+        className='cloud'
+        style={
+          {
+            '--start-delay': '-9s', 
+            '--duration': '40s', 
+            '--cloud-top-desktop': '165px',
+            '--cloud-top-mobile': '300px',
+          } as React.CSSProperties
+        }
+      >
+        <svg width="532" height="165" viewBox="0 0 532 165" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g filter="url(#a)">
             <path fill="#fff" d="M367 2a24 24 0 0 1 22 37h116a24 24 0 1 1 0 49H289a24 24 0 0 1 0 25h121a24 24 0 0 1 0 49H81a24 24 0 0 1-21-37H27a24 24 0 0 1 0-49h77a24 24 0 0 1 0-25H73a24 24 0 0 1 0-49z" />
           </g>
-        </g>
+        </svg>
 
-        {/* Cloud 2 */}
-        <g
-          className='cloud'
-          style={
-            {
-              '--start-delay': '-27s', 
-              '--duration': '40s', 
-              '--cloud-top': '12%',
-            } as React.CSSProperties
-          }
-        >
+      </div>
+
+      {/* Cloud 2 */}
+      <div
+        className='cloud'
+        style={
+          {
+            '--start-delay': '-27s', 
+            '--duration': '40s', 
+            '--cloud-top-desktop': '75px',
+            '--cloud-top-mobile': '440px',
+          } as React.CSSProperties
+        }
+      >
+        <svg width="532" height="165" viewBox="0 0 532 165" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g filter="url(#a)">
             <path fill="#fff" d="M320 2a24 24 0 0 1 21 37h135a24 24 0 0 1 0 49h-64q4 6 4 13c0 13-11 24-25 24H27a24 24 0 0 1 0-49h64a24 24 0 0 1 0-25H74a24 24 0 0 1 0-49z"/>
           </g>
-        </g>
-
-      </svg>
+        </svg>
+      </div>
     </div>
   );
 }

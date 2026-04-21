@@ -1,5 +1,4 @@
 .cloud-container {
-
   position: absolute;
   top: 0;
   left: 0;
@@ -7,7 +6,6 @@
   height: 100%;
   overflow: hidden;
   pointer-events: none; 
-  
   z-index: 0; 
 
   --opacity: 0.9;
@@ -17,12 +15,19 @@
   .cloud {
     position: absolute;
     left: 0;
+    top: 0;
     will-change: transform;
+
+    --cloud-top: var(--cloud-top-desktop);
+
+    /* For Mobile Screen Sizes */
+    @media (max-width: 743px) {
+      --cloud-top: var(--cloud-top-mobile);
+    }
 
     /* Infinite loop with negative delay to fast forward animation start points */
     animation: MoveCloud var(--duration) linear 0s infinite;
     animation-delay: var(--start-delay, 0s);
-
   }
 }
 

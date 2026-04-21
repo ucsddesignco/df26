@@ -7,37 +7,77 @@
   position: relative;
   z-index: 1;
 
-  .sticker-1, .sticker-2, .sticker-3, .sticker-4 {
+  .faq-sticker {
     z-index: 999;
   }
 
-  .sticker-1 {
+  .faq-sticker--bottom-left {
     position: absolute;
-    left: -45px;
-    top: 343.932px;
     transform-origin: center;
-    transform: scale(0.8) rotate(136.629deg);
+
+    &.faq-sticker--bottom-left--sunrise-sunset {
+      left: -45px;
+      top: 373.932px;
+      transform: scale(1.2) rotate(0deg);
+    }
+
+    &.faq-sticker--bottom-left--afternoon {
+      left: -80px;
+      top: 343.932px;
+      transform: scale(1.2) rotate(2deg);
+    }
+
+    &.faq-sticker--bottom-left--night {
+      left: -120px;
+      top: 260px;
+      transform: scale(1) rotate(0deg);
+    }
   }
-  .sticker-2 {
+
+  .faq-sticker--top-right {
     position: absolute;
-    left: -90px;
-    top: 410.932px;
     transform-origin: center;
-    transform: scale(0.6) rotate(120.24deg);
+
+    &.faq-sticker--top-right--sunrise-sunset {
+      right: 80px;
+      top: 0.932px;
+      transform: scale(1.1) rotate(0deg);
+    }
+
+    &.faq-sticker--top-right--afternoon {
+      right: 90px;
+      top: 0.932px;
+      transform: scale(1.1) rotate(0deg);
+    }
+
+    &.faq-sticker--top-right--night {
+      right: 140px;
+      top: -20px;
+      transform: scale(1.1) rotate(0deg);
+    }
   }
-  .sticker-3 {
+
+  .faq-sticker--bottom-right {
     position: absolute;
-    right: 50px;
-    top: 0.932px;
     transform-origin: center;
-    transform: scale(1.1) rotate(62.656deg);
-  }
-  .sticker-4 {
-    position: absolute;
-    right: -50px;
-    top: 194.469px;
-    transform-origin: center;
-    transform: scale(0.7) rotate(165.964deg);
+
+    &.faq-sticker--bottom-right--sunrise-sunset {
+      right: -30px;
+      top: 230px;
+      transform: scale(1) rotate(0deg);
+    }
+
+    &.faq-sticker--bottom-right--afternoon {
+      right: -20px;
+      top: 250px;
+      transform: scale(1.2) rotate(0deg);
+    }
+
+    &.faq-sticker--bottom-right--night {
+      right: 340px;
+      top: 440px;
+      transform: scale(1.2) rotate(0);
+    }
   }
 
   .title {
@@ -51,7 +91,7 @@
     width: 100%;
     z-index: 2;
     border: none;
-  
+
     &::before {
       content: "";
       position: absolute;
@@ -67,7 +107,7 @@
       padding: 32px 40px;
       display: flex;
       flex-direction: column;
-    
+
       &:not(:last-child)::after {
         content: "";
         position: absolute;
@@ -134,17 +174,59 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .faq-wrapper {
+    .faq-sticker--bottom-right {
+      &.faq-sticker--bottom-right--night {
+        right: 100px;
+      }
+    }
+    .faq-sticker--top-right {
+      &.faq-sticker--top-right--night {
+        right: 100px;
+      }
+    }
+  }
+}
+
 @media (max-width: 744px) {
   .container {
     padding: 72px 80px;
   }
 }
 
+@media (max-width: 650px) {
+  .faq-wrapper {
+    .faq-sticker--bottom-right {
+      &.faq-sticker--bottom-right--night {
+        right: -20px;
+        top: 325px;
+      }
+    }
+
+    .faq-sticker--top-right {
+      &.faq-sticker--top-right--night {
+        right: -50px;
+        top: 0px;
+      }
+    }
+
+    .faq-sticker--bottom-left {
+      &.faq-sticker--bottom-left--night {
+        left: -90px;
+        top: 320px;
+      }
+    }
+
+    .faq-sticker > * {
+      transform: scale(0.7);
+      transform-origin: center;
+    }
+  }
+}
+
 @media (max-width: 390px) {
   .container {
     padding: 72px 40px;
-  }
-  .sticker-1, .sticker-2, .sticker-3, .sticker-4 {
-    transform: scale(0.3);
   }
 }

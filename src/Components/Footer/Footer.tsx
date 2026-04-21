@@ -207,7 +207,7 @@ export default function Footer() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsOpen(entry.isIntersecting);
+        setIsOpen((prev) => (prev === entry.isIntersecting ? prev : entry.isIntersecting));
       },
       {
         threshold: 0.2,
@@ -240,7 +240,7 @@ export default function Footer() {
         <div
           ref={bannerRef}
           className={`banner banner--${breakpoint}`}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen((prev) => !prev)}
         >
           <ResponsiveTrainWall
             side="left"

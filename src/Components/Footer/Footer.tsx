@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import "./Footer.scss";
 // import Button from "../Button/Button";
@@ -61,6 +61,65 @@ export default function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentTheme] = useState<ThemeType>("night");
   const [breakpoint, setBreakpoint] = useState<FooterBreakpoint>("desktop");
+  const bannerRef = useRef<HTMLDivElement>(null);
+  /** Pixel `x` for Framer (closed matches prior ~0.5% of door width; open = peek past wall inner edges). */
+  const [doorMotionPx, setDoorMotionPx] = useState({
+    leftClosed: 0,
+    leftOpen: 0,
+    rightClosed: 0,
+    rightOpen: 0,
+  });
+
+  const updateDoorMotionPx = useCallback(() => {
+    const banner = bannerRef.current;
+    if (!banner) return;
+    const container = banner.querySelector(".container") as HTMLElement | null;
+    const leftWall = banner.querySelector(".wall--left") as HTMLElement | null;
+    const rightWall = banner.querySelector(".wall--right") as HTMLElement | null;
+    const leftDoor = banner.querySelector(".door-wrapper.left") as HTMLElement | null;
+    const rightDoor = banner.querySelector(".door-wrapper.right") as HTMLElement | null;
+    if (!container || !leftWall || !rightWall || !leftDoor || !rightDoor) return;
+
+    const cr = container.getBoundingClientRect();
+    const centerX = cr.width / 2;
+    const leftWallInnerRight = leftWall.getBoundingClientRect().right - cr.left;
+    const rightWallInnerLeft = rightWall.getBoundingClientRect().left - cr.left;
+
+    const peekPx = Math.min(52, Math.max(12, cr.width * 0.02));
+
+    const leftW = leftDoor.offsetWidth;
+    const rightW = rightDoor.offsetWidth;
+    const leftClosed = leftW * 0.005;
+    const rightClosed = -rightW * 0.005;
+
+    const leftOpen = leftWallInnerRight + peekPx - centerX;
+    const rightOpen = rightWallInnerLeft - peekPx - centerX;
+
+    setDoorMotionPx((prev) => {
+      if (
+        prev.leftClosed === leftClosed &&
+        prev.leftOpen === leftOpen &&
+        prev.rightClosed === rightClosed &&
+        prev.rightOpen === rightOpen
+      ) {
+        return prev;
+      }
+      return { leftClosed, leftOpen, rightClosed, rightOpen };
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    updateDoorMotionPx();
+    const banner = bannerRef.current;
+    if (!banner) return;
+    const ro = new ResizeObserver(() => updateDoorMotionPx());
+    ro.observe(banner);
+    window.addEventListener("resize", updateDoorMotionPx);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", updateDoorMotionPx);
+    };
+  }, [updateDoorMotionPx, breakpoint]);
 
   useEffect(() => {
     const updateBreakpoint = () => {
@@ -79,13 +138,6 @@ export default function Footer() {
     window.addEventListener("resize", updateBreakpoint);
     return () => window.removeEventListener("resize", updateBreakpoint);
   }, []);
-
-  const doorOpenByBreakpoint: Record<FooterBreakpoint, string> = {
-    desktop: "70%",
-    tablet: "66%",
-    mobile: "82%",
-  };
-  const openDistance = doorOpenByBreakpoint[breakpoint];
 
   const layoutByBreakpoint: Partial<Record<FooterBreakpoint, LayoutPreset>> = {
     tablet: {
@@ -136,7 +188,11 @@ export default function Footer() {
   return (
     <footer>
       <div className="banner-wrapper">
-        <div className={`banner banner--${breakpoint}`} onClick={() => setIsOpen(!isOpen)}>
+        <div
+          ref={bannerRef}
+          className={`banner banner--${breakpoint}`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <ResponsiveTrainWall
             side="left"
             theme={currentTheme}
@@ -155,7 +211,10 @@ export default function Footer() {
               className="door-wrapper left"
               initial={false}
               style={doorStyle}
-              animate={{ x: isOpen ? `-${openDistance}` : "0.5%", scale: doorScale }}
+              animate={{
+                x: isOpen ? doorMotionPx.leftOpen : doorMotionPx.leftClosed,
+                scale: doorScale,
+              }}
               transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
             >
               <ResponsiveLeftDoor theme={currentTheme} breakpoint={breakpoint} />
@@ -166,7 +225,10 @@ export default function Footer() {
               className="door-wrapper right"
               initial={false}
               style={doorStyle}
-              animate={{ x: isOpen ? openDistance : "-0.5%", scale: doorScale }}
+              animate={{
+                x: isOpen ? doorMotionPx.rightOpen : doorMotionPx.rightClosed,
+                scale: doorScale,
+              }}
               transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
             >
               <ResponsiveRightDoor theme={currentTheme} breakpoint={breakpoint} />

@@ -7,9 +7,9 @@ import BigTrainSVG from "../../SVGS/Train/BigTrainSVG";
 import MedTrainSVG from "../../SVGS/Train/MedTrainSVG";
 import SmallTrainSVG from "../../SVGS/Train/SmallTrainSVG";
 import DepartOnScroll from "../DepartOnScroll/DepartOnScroll";
-import BigFlower from "../../SVGS/Flower/BigFlower";
-import MedFlower from "../../SVGS/Flower/MedFlower";
-import SmallFlower from "../../SVGS/Flower/SmallFlower";
+// import BigFlower from "../../SVGS/Flower/BigFlower";
+// import MedFlower from "../../SVGS/Flower/MedFlower";
+// import SmallFlower from "../../SVGS/Flower/SmallFlower";
 
 export default function Hero() {
   return (

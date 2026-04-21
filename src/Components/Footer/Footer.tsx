@@ -1,4 +1,12 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import "./Footer.scss";
 import type { ThemeType } from "../../types/theme";
@@ -11,30 +19,16 @@ import {
   type FooterBreakpoint,
 } from "./assets/FooterResponsiveAssets";
 
-const footerButtonVariants: Variants = {
-  hidden: { opacity: 0, x: "-50%", y: "-50%", scale: 0.97 },
-  visible: {
-    opacity: 1,
-    x: "-50%",
-    y: "-50%",
-    scale: 1,
-    transition: { duration: 0.28, delay: 0.2, ease: [0.65, 0, 0.35, 1] },
-  },
-  exit: {
-    opacity: 0,
-    x: "-50%",
-    y: "-50%",
-    scale: 0.985,
-    transition: { duration: 0.3, ease: [0.65, 0, 1, 1] },
-  },
-};
+const FOOTER_BUTTON_ENTER_DELAY_S = 0.24;
 
 const MOBILE_BREAKPOINT = 440;
 const TABLET_CUSTOM_BREAKPOINT = 712;
 const TABLET_BREAKPOINT = 744;
 const DESKTOP_EDGE_BREAKPOINT = 1280;
 const DOOR_MOTION_EASE: [number, number, number, number] = [0.45, 0, 0.35, 1];
-const DOOR_MOTION_TRANSITION = { duration: 0.8, ease: DOOR_MOTION_EASE };
+const DOOR_MOTION_TRANSITION = { duration: 0.95, ease: DOOR_MOTION_EASE };
+/** Delay door open only when opened by scrolling into view; click-to-open stays immediate. */
+const DOOR_VIEWPORT_OPEN_DELAY_S = 0.42;
 
 type LayoutPreset = {
   doors: {
@@ -75,6 +69,13 @@ function withOpenBounce(fromX: number, targetX: number): number[] {
   return [fromX, targetX + direction * overshoot, targetX];
 }
 
+/** True Safari (not Chrome/Edge on macOS): multi-keyframe `x` + heavy SVG filters often glitch on WebKit. */
+function isLikelyAppleSafari(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent;
+  return /AppleWebKit/i.test(ua) && !/(Chrome|Chromium|CriOS|Edg)/i.test(ua);
+}
+
 const layoutByBreakpoint: Partial<Record<FooterBreakpoint, LayoutPreset>> = {
   tablet: {
     doors: { width: 321, height: 715, top: -130, scale: 1 },
@@ -112,9 +113,13 @@ function toWallStyle(side: "left" | "right", wall: WallLayout): CSSProperties {
 
 export default function Footer() {
   const [isOpen, setIsOpen] = useState(false);
+  /** When true, the door reached open state via IntersectionObserver (not banner click). */
+  const [doorOpenViaViewport, setDoorOpenViaViewport] = useState(false);
   const [currentTheme] = useState<ThemeType>("sunrise-sunset");
   const [breakpoint, setBreakpoint] = useState<FooterBreakpoint>("desktop");
   const bannerRef = useRef<HTMLDivElement>(null);
+  /** Tracks last observed intersection so we only react to enter/leave, not spurious IO callbacks (common on Safari). */
+  const wasIntersectingRef = useRef(false);
   /** Pixel `x` for Framer (closed matches prior ~0.5% of door width; open = peek past wall inner edges). */
   const [doorMotionPx, setDoorMotionPx] = useState<DoorMotionPx>({
     leftClosed: 0,
@@ -122,10 +127,16 @@ export default function Footer() {
     rightClosed: 0,
     rightOpen: 0,
   });
+  const isOpenRef = useRef(isOpen);
+  /** After at least one good layout measure; avoids locking motion at 0 if Safari opens before first measure. */
+  const doorMotionTrustRef = useRef(false);
+  const useSimpleDoorOpenMotion = isLikelyAppleSafari();
 
   const updateDoorMotionPx = useCallback(() => {
     const banner = bannerRef.current;
     if (!banner) return;
+    // Re-measuring while open retargets Framer mid-animation — skip only once layout is trusted.
+    if (isOpenRef.current && doorMotionTrustRef.current) return;
     const container = banner.querySelector(".container") as HTMLElement | null;
     const leftWall = banner.querySelector(".wall--left") as HTMLElement | null;
     const rightWall = banner.querySelector(".wall--right") as HTMLElement | null;
@@ -142,11 +153,15 @@ export default function Footer() {
 
     const leftW = leftDoor.offsetWidth;
     const rightW = rightDoor.offsetWidth;
+    if (leftW < 2 || rightW < 2 || cr.width < 2) return;
+
     const leftClosed = leftW * 0.005;
     const rightClosed = -rightW * 0.005;
 
     const leftOpen = leftWallInnerRight + peekPx - centerX;
     const rightOpen = rightWallInnerLeft - peekPx - centerX;
+
+    doorMotionTrustRef.current = true;
 
     setDoorMotionPx((prev) => {
       if (
@@ -161,18 +176,44 @@ export default function Footer() {
     });
   }, []);
 
-  useLayoutEffect(() => {
+  const scheduleRemeasureDoorMotion = useCallback(() => {
     updateDoorMotionPx();
+    requestAnimationFrame(() => {
+      updateDoorMotionPx();
+      requestAnimationFrame(updateDoorMotionPx);
+    });
+  }, [updateDoorMotionPx]);
+
+  useLayoutEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
+
+  useLayoutEffect(() => {
+    if (!isOpen) {
+      scheduleRemeasureDoorMotion();
+    }
+  }, [isOpen, scheduleRemeasureDoorMotion]);
+
+  useLayoutEffect(() => {
+    doorMotionTrustRef.current = false;
+    scheduleRemeasureDoorMotion();
     const banner = bannerRef.current;
     if (!banner) return;
-    const ro = new ResizeObserver(() => updateDoorMotionPx());
+    const ro = new ResizeObserver(() => scheduleRemeasureDoorMotion());
     ro.observe(banner);
-    window.addEventListener("resize", updateDoorMotionPx);
+    window.addEventListener("resize", scheduleRemeasureDoorMotion);
     return () => {
       ro.disconnect();
-      window.removeEventListener("resize", updateDoorMotionPx);
+      window.removeEventListener("resize", scheduleRemeasureDoorMotion);
     };
-  }, [updateDoorMotionPx, breakpoint]);
+  }, [scheduleRemeasureDoorMotion, breakpoint]);
+
+  useEffect(() => {
+    const onLoad = () => scheduleRemeasureDoorMotion();
+    window.addEventListener("load", onLoad);
+    if (document.readyState === "complete") onLoad();
+    return () => window.removeEventListener("load", onLoad);
+  }, [scheduleRemeasureDoorMotion]);
 
   useEffect(() => {
     const updateBreakpoint = () => {
@@ -207,7 +248,17 @@ export default function Footer() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsOpen((prev) => (prev === entry.isIntersecting ? prev : entry.isIntersecting));
+        const intersecting = entry.isIntersecting;
+        const wasIntersecting = wasIntersectingRef.current;
+        wasIntersectingRef.current = intersecting;
+
+        if (intersecting && !wasIntersecting) {
+          setDoorOpenViaViewport(true);
+          setIsOpen(true);
+        } else if (!intersecting && wasIntersecting) {
+          setDoorOpenViaViewport(false);
+          setIsOpen(false);
+        }
       },
       {
         threshold: 0.2,
@@ -234,13 +285,48 @@ export default function Footer() {
     right: activeLayout ? toWallStyle("right", activeLayout.walls.right) : undefined,
   };
 
+  const doorTransition = {
+    ...DOOR_MOTION_TRANSITION,
+    delay: isOpen && doorOpenViaViewport ? DOOR_VIEWPORT_OPEN_DELAY_S : 0,
+  };
+
+  const footerButtonVariants = useMemo(
+    (): Variants => ({
+      hidden: { opacity: 0, x: "-50%", y: "-50%", scale: 0.97 },
+      visible: {
+        opacity: 1,
+        x: "-50%",
+        y: "-50%",
+        scale: 1,
+        transition: {
+          duration: 0.34,
+          delay:
+            FOOTER_BUTTON_ENTER_DELAY_S +
+            (doorOpenViaViewport ? DOOR_VIEWPORT_OPEN_DELAY_S : 0),
+          ease: [0.65, 0, 0.35, 1],
+        },
+      },
+      exit: {
+        opacity: 0,
+        x: "-50%",
+        y: "-50%",
+        scale: 0.985,
+        transition: { duration: 0.36, ease: [0.65, 0, 1, 1] },
+      },
+    }),
+    [doorOpenViaViewport],
+  );
+
   return (
     <footer>
       <div className="banner-wrapper">
         <div
           ref={bannerRef}
           className={`banner banner--${breakpoint}`}
-          onClick={() => setIsOpen((prev) => !prev)}
+          onClick={() => {
+            setDoorOpenViaViewport(false);
+            setIsOpen((prev) => !prev);
+          }}
         >
           <ResponsiveTrainWall
             side="left"
@@ -262,11 +348,13 @@ export default function Footer() {
               style={doorStyle}
               animate={{
                 x: isOpen
-                  ? withOpenBounce(doorMotionPx.leftClosed, doorMotionPx.leftOpen)
+                  ? useSimpleDoorOpenMotion
+                    ? doorMotionPx.leftOpen
+                    : withOpenBounce(doorMotionPx.leftClosed, doorMotionPx.leftOpen)
                   : doorMotionPx.leftClosed,
                 scale: doorScale,
               }}
-              transition={DOOR_MOTION_TRANSITION}
+              transition={doorTransition}
             >
               <ResponsiveLeftDoor theme={currentTheme} breakpoint={breakpoint} />
             </motion.div>
@@ -278,11 +366,13 @@ export default function Footer() {
               style={doorStyle}
               animate={{
                 x: isOpen
-                  ? withOpenBounce(doorMotionPx.rightClosed, doorMotionPx.rightOpen)
+                  ? useSimpleDoorOpenMotion
+                    ? doorMotionPx.rightOpen
+                    : withOpenBounce(doorMotionPx.rightClosed, doorMotionPx.rightOpen)
                   : doorMotionPx.rightClosed,
                 scale: doorScale,
               }}
-              transition={DOOR_MOTION_TRANSITION}
+              transition={doorTransition}
             >
               <ResponsiveRightDoor theme={currentTheme} breakpoint={breakpoint} />
             </motion.div>

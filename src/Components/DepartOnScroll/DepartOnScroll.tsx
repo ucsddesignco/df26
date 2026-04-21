@@ -103,9 +103,9 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
     offscreen: (width: number) => ({
       x: getResponsivePositions(width).offscreenPosition,
     }),
-    entering: (width: number) => ({
+    entering: (width: number) => ({ // On webpage reload
       x: getResponsivePositions(width).parkedPosition,
-      transition: { type:"spring", delay: 1, stiffness: 75, damping: 12, mass: 1.0 },  
+      transition: { type:"spring", delay: 1, stiffness: 75, damping: 13, mass: 1.0, velocity: 0},  
     }),
     parked: (width: number) => ({
       x: getResponsivePositions(width).parkedPosition,
@@ -118,9 +118,9 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
       x: getResponsivePositions(width).offscreenPosition,
       transition: { duration: 0 },
     }),
-    arriving: (width: number) => ({
+    arriving: (width: number) => ({ // On scroll backup
       x: getResponsivePositions(width).parkedPosition,
-      transition: { type:"spring", delay: 1, stiffness: 75, damping: 12, mass: 1.0, velocity: 0},  
+      transition: { type:"spring", delay: 1, stiffness: 75, damping: 13, mass: 1.0, velocity: 0},  
     }),
   };
 

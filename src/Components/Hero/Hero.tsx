@@ -17,7 +17,6 @@ export default function Hero() {
   return (
     <section id="hero">
       <div className="hero-section">
-        <CloudGenerator />
         {/*
           Flowers are not yet styled or positioned
         <div className="left-flowers">
@@ -33,6 +32,7 @@ export default function Hero() {
           <SmallFlower className="right4"/>
         </div>
         */}
+        <CloudGenerator />
         <div className="hero-board">
           <HeroBoard/>
         </div>

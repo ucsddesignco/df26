@@ -1,21 +1,5 @@
-@keyframes MoveCloud {
-  0% {
-    transform: translateX(calc(-1 * var(--start-pos) - var(--beginningPosOffset))) translateY(var(--cloud-top, 0));
-    opacity: 0;
-  }
-  10% {
-    opacity: var(--opacity);
-  }
-  90% {
-    opacity: var(--opacity);
-  }
-  100% {
-    transform: translateX(calc(var(--endingPos) - var(--start-pos))) translateY(var(--cloud-top, 0));
-    opacity: 0;
-  }
-}
-
 .cloud-container {
+
   position: absolute;
   top: 0;
   left: 0;
@@ -27,15 +11,43 @@
   z-index: 0; 
 
   --opacity: 0.9;
-  --endingPos: 110%;
-  --beginningPosOffset: 20%;
+
+  animation: SkyFadeIn 2s ease-in-out forwards;
 
   .cloud {
     position: absolute;
     left: 0;
-
-    animation: MoveCloud var(--duration) linear 0s infinite;
-
     will-change: transform;
+
+    /* Infinite loop with negative delay to fast forward animation start points */
+    animation: MoveCloud var(--duration) linear 0s infinite;
+    animation-delay: var(--start-delay, 0s);
+
+  }
+}
+
+@keyframes MoveCloud {
+  0% {
+    transform: translateX(-600px) translateY(var(--cloud-top, 0));
+    opacity: 0;
+  }
+  20% {
+    opacity: var(--opacity);
+  }
+  80% {
+    opacity: var(--opacity);
+  }
+  100% {
+    transform: translateX(110vw) translateY(var(--cloud-top, 0));
+    opacity: 0;
+  }
+}
+
+@keyframes SkyFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

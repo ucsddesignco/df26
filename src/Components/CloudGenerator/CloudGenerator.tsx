@@ -33,8 +33,8 @@ export default function CloudGenerator() {
           className='cloud'
           style={
             {
-              '--start-pos': '0%', 
-              '--duration': '25s', 
+              '--start-delay': '-9s', 
+              '--duration': '40s', 
               '--cloud-top': '22.5%',
             } as React.CSSProperties
           }
@@ -49,8 +49,8 @@ export default function CloudGenerator() {
           className='cloud'
           style={
             {
-              '--start-pos': '-80%', 
-              '--duration': '25s', 
+              '--start-delay': '-27s', 
+              '--duration': '40s', 
               '--cloud-top': '12%',
             } as React.CSSProperties
           }

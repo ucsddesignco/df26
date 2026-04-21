@@ -32,7 +32,7 @@ import mobileBackdropNight from "../mobile-backdrop-night.svg";
 import type { CSSProperties } from "react";
 import type { ThemeType } from "../../../types/theme";
 
-export type FooterBreakpoint = "desktop" | "tablet" | "mobile";
+export type FooterBreakpoint = "desktop" | "desktop-edge" | "tablet" | "tablet-custom" | "mobile";
 
 interface ResponsiveAssetProps {
   breakpoint: FooterBreakpoint;
@@ -85,11 +85,11 @@ const mobileDoorByTheme: Record<ThemeType, Record<"left" | "right", string>> = {
 };
 
 export function ResponsiveTrainWall({ side, breakpoint, theme, style }: ResponsiveTrainWallProps) {
-  if (breakpoint === "desktop") {
+  if (breakpoint === "desktop" || breakpoint === "desktop-edge") {
     return <TrainWall side={side} theme={theme} />;
   }
 
-  if (breakpoint === "tablet") {
+  if (breakpoint === "tablet" || breakpoint === "tablet-custom") {
     return (
       <div className={`wall wall--${side} wall--tablet`} style={style}>
         <img src={tabletTrainwallByTheme[theme][side]} alt={`Tablet train wall ${side}`} />
@@ -105,11 +105,11 @@ export function ResponsiveTrainWall({ side, breakpoint, theme, style }: Responsi
 }
 
 export function ResponsiveLeftDoor({ breakpoint, theme, className }: ResponsiveDoorProps) {
-  if (breakpoint === "desktop") {
+  if (breakpoint === "desktop" || breakpoint === "desktop-edge") {
     return <LeftDoor theme={theme} className={className} />;
   }
 
-  if (breakpoint === "tablet") {
+  if (breakpoint === "tablet" || breakpoint === "tablet-custom") {
     return (
       <div className={className}>
         <svg width="321" height="715" viewBox="0 0 321 715" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -221,11 +221,11 @@ export function ResponsiveLeftDoor({ breakpoint, theme, className }: ResponsiveD
 }
 
 export function ResponsiveRightDoor({ breakpoint, theme, className }: ResponsiveDoorProps) {
-  if (breakpoint === "desktop") {
+  if (breakpoint === "desktop" || breakpoint === "desktop-edge") {
     return <RightDoor theme={theme} className={className} />;
   }
 
-  if (breakpoint === "tablet") {
+  if (breakpoint === "tablet" || breakpoint === "tablet-custom") {
     return (
       <div className={className}>
         <svg width="321" height="715" viewBox="0 0 321 715" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -246,7 +246,7 @@ export function ResponsiveRightDoor({ breakpoint, theme, className }: Responsive
                 stroke={windowStrokeColors[theme]}
                 strokeWidth="8.1376"
               />
-              <g clipPath="url(#clip0_2343_9434_right)">
+              {/* <g clipPath="url(#clip0_2343_9434_right)">
                 <rect x="247.171" y="308.785" width="21.9857" height="86.477" fill="#FFFCF3" />
                 <rect x="241.991" y="304.715" width="33.7129" height="18.6002" fill="#FFA141" />
                 <path
@@ -269,7 +269,7 @@ export function ResponsiveRightDoor({ breakpoint, theme, className }: Responsive
                   stroke="#FD4C4C"
                   strokeWidth="2.34514"
                 />
-              </g>
+              </g> */}
             </g>
           </g>
           <defs>
@@ -339,11 +339,11 @@ export function ResponsiveRightDoor({ breakpoint, theme, className }: Responsive
 }
 
 export function ResponsiveBackdrop({ breakpoint, theme }: ResponsiveAssetProps) {
-  if (breakpoint === "desktop") {
+  if (breakpoint === "desktop" || breakpoint === "desktop-edge") {
     return <Backdrop theme={theme} />;
   }
 
-  if (breakpoint === "tablet") {
+  if (breakpoint === "tablet" || breakpoint === "tablet-custom") {
     return (
       <div className="backdrop-svg-wrapper">
         <img src={tabletBackdropByTheme[theme]} alt="Tablet backdrop" />
@@ -359,11 +359,11 @@ export function ResponsiveBackdrop({ breakpoint, theme }: ResponsiveAssetProps) 
 }
 
 export function ResponsiveFooterButton({ breakpoint }: { breakpoint: FooterBreakpoint }) {
-  if (breakpoint === "desktop") {
+  if (breakpoint === "desktop" || breakpoint === "desktop-edge") {
     return <FooterButton />;
   }
 
-  if (breakpoint === "tablet") {
+  if (breakpoint === "tablet" || breakpoint === "tablet-custom") {
     return (
       <div className="footer-button-svg-wrapper">
         <img src={tabletFooterButton} alt="Register button" />

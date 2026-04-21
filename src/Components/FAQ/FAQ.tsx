@@ -5,8 +5,8 @@ import MuiAccordionSummary, {
   type AccordionSummaryProps,
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import Sticker from "../Sticker/Sticker";
 import type { ThemeType } from "../../types/theme";
+import { faqStickers } from "./assets/FaqStickers";
 import "./FAQ.scss";
 
 const faqData = [
@@ -61,16 +61,17 @@ const AccordionDetails = styled(MuiAccordionDetails)(() => ({
   padding: 0,
 }));
 
-export default function FAQ() {
+interface FAQProps {
+  theme?: ThemeType;
+}
+
+export default function FAQ({ theme = "night" }: FAQProps) {
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =
     (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
-  // hard coded theme FOR NOW - will update with shamita's implementation
-  const [currentTheme] = useState<ThemeType>("sunrise-sunset");
-
   return (
     <div className="container">
        <svg
@@ -100,10 +101,14 @@ export default function FAQ() {
       </svg>
  
       <div className="faq-wrapper">
-        <Sticker theme={currentTheme} className="sticker-1" />
-        <Sticker theme={currentTheme} className="sticker-2" />
-        <Sticker theme={currentTheme} className="sticker-3" />
-        <Sticker theme={currentTheme} className="sticker-4" />
+        {faqStickers.map((sticker) => (
+          <div
+            key={sticker.id}
+            className={`${sticker.className} ${sticker.className}--${theme}`}
+          >
+            {sticker.contentByTheme[theme]}
+          </div>
+        ))}
         <p className="title">FAQ</p>
         <div className="faq">
           {faqData.map((item) => (

@@ -9,6 +9,7 @@
 
   .faq-sticker {
     z-index: 999;
+    pointer-events: none;
   }
 
   .faq-sticker--bottom-left {

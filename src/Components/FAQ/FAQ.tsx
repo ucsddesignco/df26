@@ -65,7 +65,7 @@ interface FAQProps {
   theme?: ThemeType;
 }
 
-export default function FAQ({ theme = "night" }: FAQProps) {
+export default function FAQ({ theme = "sunrise-sunset" }: FAQProps) {
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =

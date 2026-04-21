@@ -73,6 +73,32 @@ export default function FAQ() {
 
   return (
     <div className="container">
+       <svg
+        width="0"
+        height="0"
+        style={{ position: "absolute" }}
+        aria-hidden="true"
+      >
+        <defs>
+        <filter id="agenda-roughen">
+             {/* this is the texture for the lines  */}
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.10"
+              numOctaves="3"
+              seed="4"
+              result="noise"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="0.5"
+            />
+          </filter>
+          
+        </defs>
+      </svg>
+ 
       <div className="faq-wrapper">
         <Sticker theme={currentTheme} className="sticker-1" />
         <Sticker theme={currentTheme} className="sticker-2" />

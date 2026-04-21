@@ -16,7 +16,7 @@
     transform-origin: center;
 
     &.faq-sticker--bottom-left--sunrise-sunset {
-      left: -45px;
+      left: -60px;
       top: 373.932px;
       transform: scale(1.2) rotate(0deg);
     }
@@ -74,7 +74,7 @@
     }
 
     &.faq-sticker--bottom-right--night {
-      right: 340px;
+      right: -20px;
       top: 440px;
       transform: scale(1.2) rotate(0);
     }
@@ -176,11 +176,6 @@
 
 @media (max-width: 1024px) {
   .faq-wrapper {
-    .faq-sticker--bottom-right {
-      &.faq-sticker--bottom-right--night {
-        right: 100px;
-      }
-    }
     .faq-sticker--top-right {
       &.faq-sticker--top-right--night {
         right: 100px;
@@ -213,8 +208,14 @@
 
     .faq-sticker--bottom-left {
       &.faq-sticker--bottom-left--night {
-        left: -90px;
+        left: -105px;
         top: 320px;
+      }
+
+      &.faq-sticker--bottom-left--sunrise-sunset {
+        left: -45px;
+        top: 373.932px;
+        transform: scale(1.2) rotate(0deg);
       }
     }
 

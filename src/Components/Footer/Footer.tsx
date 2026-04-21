@@ -312,7 +312,7 @@ export default function Footer() {
       </div>
       <div className="footer-text">
         <p>Made with &lt;3 by Design Co</p>
-        <p>Winter 2026</p>
+        <p>Spring 2026</p>
       </div>
     </footer>
   );

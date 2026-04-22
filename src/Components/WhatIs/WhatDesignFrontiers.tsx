@@ -1,14 +1,42 @@
 import './WhatDesignFrontiers.scss'
-import { useEffect, useState, type KeyboardEvent } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type TransitionEvent,
+} from 'react'
 import CalendarIcon from '../../SVGS/CalendarIcon'
-import DCoArrow from '../../SVGS/DCoArrow'
-import flowersUrl from './flowers.svg?url'
+import RegisterNow from './registerNow'
+import { WhatIsFlowers } from './flowers'
+import { WhatIsLeaves } from './leaves'
+import { WhatIsStars } from './stars'
 import slide1 from './wdf-carousel/slide-1.png'
 import slide2 from './wdf-carousel/slide-2.png'
 import slide3 from './wdf-carousel/slide-3.png'
 import slide4 from './wdf-carousel/slide-4.png'
 
-const AUTO_ADVANCE_MS = 2000
+const AUTO_ADVANCE_MS = 6000
+
+type TimeTheme = 'morning' | 'afternoon' | 'night'
+
+function getTimeTheme(): TimeTheme {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'morning'
+  if (hour < 18) return 'afternoon'
+  return 'night'
+}
+
+function useTimeThemeKey() {
+  const [theme, setTheme] = useState<TimeTheme>(() => getTimeTheme())
+
+  useEffect(() => {
+    const id = window.setInterval(() => setTheme(getTimeTheme()), 60_000)
+    return () => window.clearInterval(id)
+  }, [])
+
+  return theme
+}
 
 const slides = [
   {
@@ -30,38 +58,125 @@ const slides = [
 ] as const
 
 export default function WhatDesignFrontiers() {
-  const [active, setActive] = useState(0)
+ 
+  const [index, setIndex] = useState(0)
+  const [noTransition, setNoTransition] = useState(false)
+  const indexRef = useRef(0)
+  const timeTheme = useTimeThemeKey()
 
   const nSlides = slides.length
+  const lastReal = nSlides - 1
+  const activeUi = index === nSlides ? 0 : index
+
+  indexRef.current = index
 
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     if (reduceMotion.matches) return
 
     const id = window.setInterval(() => {
-      setActive((i) => (i + 1) % nSlides)
+      setIndex((i) => {
+        if (i === nSlides) return i
+        if (i === lastReal) return nSlides
+        return i + 1
+      })
     }, AUTO_ADVANCE_MS)
 
     return () => window.clearInterval(id)
-  }, [nSlides])
+  }, [nSlides, lastReal])
 
-  const go = (next: number) => {
-    setActive(((next % nSlides) + nSlides) % nSlides)
+  
+  useEffect(() => {
+    if (index !== nSlides) return
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (!mq.matches) return
+    setNoTransition(true)
+    setIndex(0)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setNoTransition(false))
+    })
+  }, [index, nSlides])
+
+  const snapCloneToStart = () => {
+    setNoTransition(true)
+    setIndex(0)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setNoTransition(false))
+    })
+  }
+
+  const onTrackTransitionEnd = (e: TransitionEvent<HTMLDivElement>) => {
+    if (e.propertyName !== 'transform') return
+    if (indexRef.current !== nSlides) return
+    snapCloneToStart()
+  }
+
+  const goToSlide = (targetUi: number) => {
+    const t = ((targetUi % nSlides) + nSlides) % nSlides
+    if (index === nSlides) {
+      setNoTransition(true)
+      setIndex(t)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setNoTransition(false))
+      })
+      return
+    }
+    if (t === 0 && index === lastReal) {
+      setIndex(nSlides)
+      return
+    }
+    if (t === lastReal && index === 0) {
+      setNoTransition(true)
+      setIndex(lastReal)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setNoTransition(false))
+      })
+      return
+    }
+    setIndex(t)
+  }
+
+  const goNext = () => {
+    if (index === nSlides) {
+      snapCloneToStart()
+      return
+    }
+    if (index === lastReal) {
+      setIndex(nSlides)
+      return
+    }
+    setIndex((i) => i + 1)
+  }
+
+  const goPrev = () => {
+    if (index === nSlides) {
+      setIndex(lastReal)
+      return
+    }
+    if (index === 0) {
+      setNoTransition(true)
+      setIndex(lastReal)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setNoTransition(false))
+      })
+      return
+    }
+    setIndex((i) => i - 1)
   }
 
   const onCarouselKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'ArrowLeft') {
       e.preventDefault()
-      go(active - 1)
+      goPrev()
     } else if (e.key === 'ArrowRight') {
       e.preventDefault()
-      go(active + 1)
+      goNext()
     } else if (e.key === 'Home') {
       e.preventDefault()
-      go(0)
+      goToSlide(0)
     } else if (e.key === 'End') {
       e.preventDefault()
-      go(nSlides - 1)
+      goToSlide(lastReal)
     }
   }
 
@@ -75,7 +190,7 @@ export default function WhatDesignFrontiers() {
         <div className='wdf__meta'>
           <p className='wdf__meta-line'>
             <a
-              href='FILL'
+              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%201&dates=20260509T140000/20260509T170000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=Design%20and%20Innovation%20Building%2C%209510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
               className='wdf__meta-link'
               target='_blank'
               rel='noreferrer'
@@ -88,7 +203,7 @@ export default function WhatDesignFrontiers() {
           </p>
           <p className='wdf__meta-line'>
             <a
-              href='FILL'
+              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%202&dates=20260510T100000/20260510T150000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=9510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
               className='wdf__meta-link'
               target='_blank'
               rel='noreferrer'
@@ -108,11 +223,16 @@ export default function WhatDesignFrontiers() {
           offer feedback and select standout work.
         </p>
 
-        <a href='FILL' className='wdf__button' target='_blank' rel='noreferrer'>
+        <a
+          href='https://forms.gle/fxEregeHAABCUy6x8'
+          className='wdf__button'
+          target='_blank'
+          rel='noreferrer'
+        >
           <span className='wdf__button-icon' aria-hidden>
-            <DCoArrow />
+            <RegisterNow />
           </span>
-          Register Now
+          <span className='wdf__button-label'>Register Now</span>
         </a>
       </div>
 
@@ -126,14 +246,19 @@ export default function WhatDesignFrontiers() {
           onKeyDown={onCarouselKeyDown}
         >
           <div
-            className='wdf__carousel-track'
-            style={{ transform: `translateX(-${active * 100}%)` }}
+            className={
+              noTransition
+                ? 'wdf__carousel-track wdf__carousel-track--no-transition'
+                : 'wdf__carousel-track'
+            }
+            style={{ transform: `translateX(-${index * 100}%)` }}
+            onTransitionEnd={onTrackTransitionEnd}
           >
             {slides.map((slide, i) => (
               <div
                 key={slide.src}
                 className='wdf__carousel-slide'
-                aria-hidden={i !== active}
+                aria-hidden={activeUi !== i}
               >
                 <img
                   className='wdf__carousel-slide-img'
@@ -143,6 +268,18 @@ export default function WhatDesignFrontiers() {
                 />
               </div>
             ))}
+            <div
+              key='wdf-carousel-clone'
+              className='wdf__carousel-slide'
+              aria-hidden={index !== nSlides}
+            >
+              <img
+                className='wdf__carousel-slide-img'
+                src={slides[0].src}
+                alt={slides[0].alt}
+                draggable={false}
+              />
+            </div>
           </div>
         </div>
         <div className='wdf__dots' role='group' aria-label='Carousel slide indicators'>
@@ -151,25 +288,25 @@ export default function WhatDesignFrontiers() {
               key={i}
               type='button'
               className={
-                i === active ? 'wdf__dot wdf__dot--active' : 'wdf__dot'
+                i === activeUi ? 'wdf__dot wdf__dot--active' : 'wdf__dot'
               }
               aria-label={`Show slide ${i + 1} of ${nSlides}`}
-              aria-pressed={i === active}
-              onClick={() => setActive(i)}
+              aria-pressed={i === activeUi}
+              onClick={() => goToSlide(i)}
             />
           ))}
         </div>
       </div>
 
-      <img
-        className='wdf__flowers'
-        src={flowersUrl}
-        alt=''
-        width={395}
-        height={167}
-        draggable={false}
-        aria-hidden
-      />
+      {timeTheme === 'morning' && (
+        <WhatIsFlowers className='wdf__flowers' aria-hidden />
+      )}
+      {timeTheme === 'afternoon' && (
+        <WhatIsLeaves className='wdf__flowers' aria-hidden />
+      )}
+      {timeTheme === 'night' && (
+        <WhatIsStars className='wdf__flowers' aria-hidden />
+      )}
     </section>
   )
 }

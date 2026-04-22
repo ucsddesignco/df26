@@ -1,13 +1,15 @@
+$wdf-stack: 1120px;
+
 .wdf {
   display: grid;
   align-items: start;
   column-gap: 64px;
-  row-gap: 0;
-  padding: 120px 120px 144px;
+  row-gap: 20px;
+  padding: 120px 120px 8px;
   background: #ffffff;
   color: #111111;
-  
-  grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
+
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-areas:
     'media copyTop'
     'media copyBody'
@@ -16,6 +18,7 @@
   &__media {
     grid-area: media;
     grid-row: 1 / -1;
+    align-self: start;
     width: 100%;
     max-width: 100%;
     display: flex;
@@ -45,6 +48,10 @@
     @media (prefers-reduced-motion: reduce) {
       transition: none;
     }
+
+    &--no-transition {
+      transition: none;
+    }
   }
 
   &__carousel-slide {
@@ -69,7 +76,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
   }
 
   &__dot {
@@ -103,23 +110,26 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 20.5px;
+    gap: 0;
     z-index: 2;
   }
 
   &__title {
-    font-size: 3.25rem;
-    line-height: 1.1;
+    font-size: 32px;
+    line-height: 1.2;
     margin: 0;
     max-width: 100%;
-    overflow-wrap: break-word;
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: manual;
+    text-wrap: balance;
     white-space: normal;
   }
 
   &__meta {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
     color: #111111;
   }
 
@@ -129,10 +139,27 @@
 
   &__meta-link {
     display: inline-flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     color: inherit;
     text-decoration: none;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: #000000;
+
+      u {
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid #111111;
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
   }
 
   &__meta-icon {
@@ -140,7 +167,9 @@
   }
 
   &__body {
-    margin: 0;
+    margin: 20.5px 0 40px;
+    font-size: 16px;
+    line-height: 24px;
     color: #333333;
   }
 
@@ -149,12 +178,14 @@
     justify-self: end;
     align-self: end;
     width: min(395px, 100%);
+    max-width: 100%;
     height: auto;
     display: block;
     user-select: none;
     pointer-events: none;
     z-index: 1;
     margin-top: 8px;
+    margin-bottom: 0;
   }
 
   &__button {
@@ -172,13 +203,34 @@
     color: #ffffff;
     font-family: 'Neue Plak', sans-serif;
     font-size: 1rem;
-    line-height: 1.2;
+    line-height: 1;
     text-decoration: none;
     white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.18s ease,
+      color 0.18s ease,
+      box-shadow 0.18s ease;
+
+    &:hover {
+      background-color: #333333;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    &:active {
+      background-color: #0d0d0d;
+      box-shadow: none;
+    }
 
     &:focus-visible {
       outline: 2px solid #111111;
       outline-offset: 4px;
+    }
+
+    @media (max-width: 380px) {
+      white-space: normal;
+      text-align: center;
+      justify-content: center;
     }
   }
 
@@ -186,12 +238,27 @@
     display: inline-flex;
     flex-shrink: 0;
     line-height: 0;
+    color: inherit;
+    transform: translateY(1px);
+
+    svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+  }
+
+  &__button-label {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
   }
 
   
-  @media (max-width: 900px) {
+  @media (max-width: $wdf-stack) {
     column-gap: 0;
-    row-gap: 24px;
+
+    row-gap: 20px;
     grid-template-columns: 1fr;
     grid-template-areas:
       'copyTop'
@@ -199,8 +266,12 @@
       'media'
       'flowers';
 
+    &__copyTop {
+      align-self: stretch;
+    }
+
     &__title {
-      font-size: clamp(1.875rem, 4.2vw + 1rem, 2.5rem);
+      max-width: 42rem;
     }
 
     &__media {
@@ -211,64 +282,108 @@
     }
 
     &__copyBody {
-      gap: 18px;
+      align-self: stretch;
+      align-items: flex-start;
+      gap: 0;
+      max-width: 42rem;
+    }
+
+    &__body {
+      margin: 20px 0 40px;
     }
   }
 
-  @media (max-width: 900px) and (min-width: 601px) {
-    padding: 80px 48px 120px;
+  @media (max-width: $wdf-stack) and (min-width: 601px) {
+    padding: 80px 48px 8px;
+
+    &__copyTop,
+    &__copyBody {
+      max-width: 584px;
+      width: 100%;
+      margin-inline: auto;
+    }
+
+    &__title {
+      max-width: 100%;
+    }
+
+    &__media {
+      max-width: min(720px, 100%);
+      width: 100%;
+      margin-inline: auto;
+      margin-top: 48px;
+    }
 
     &__carousel {
       aspect-ratio: 16 / 9;
     }
 
     &__flowers {
-      z-index: 0;
+      z-index: 3;
       justify-self: end;
       align-self: end;
-      margin-top: -12px;
-      margin-right: -12px;
-      transform: translate(4px, 6px);
+      width: min(395px, 92%);
+      max-width: 100%;
+      height: auto;
+      margin-top: -36px;
+      margin-right: max(0px, calc((100% - min(720px, 100%)) / 2));
+      margin-bottom: 0;
+      transform: none;
+      pointer-events: none;
     }
   }
 
   @media (max-width: 600px) {
-    padding: 56px 24px 96px;
+    padding: 80px 40px 8px;
     row-gap: 20px;
 
-    &__carousel {
-      aspect-ratio: 4 / 3;
+    &__copyTop {
+      width: 100%;
+      max-width: none;
+      margin-inline: 0;
     }
 
     &__copyBody {
-      gap: 16px;
+      gap: 0;
+      width: 100%;
+      max-width: none;
+      margin-inline: 0;
     }
 
     &__title {
-      font-size: clamp(1.75rem, 5vw + 0.75rem, 2.25rem);
+      max-width: 100%;
+    }
+
+    &__media {
+      align-items: stretch;
+    }
+
+    &__carousel {
+      aspect-ratio: 4 / 3;
+      width: 100%;
+      max-width: 100%;
+      margin-inline: 0;
     }
 
     &__flowers {
-      justify-self: center;
-      align-self: center;
-      z-index: 0;
-      width: min(320px, 88vw);
-      margin-top: -28px;
-      margin-bottom: -20px;
+      justify-self: end;
+      align-self: end;
+      z-index: 3;
+      width: 268px;
+      max-width: min(268px, calc(100% - 80px));
+      height: auto;
+      margin: 0;
+      margin-top: 8px;
       transform: none;
+      pointer-events: none;
     }
   }
 
   @media (max-width: 480px) {
-    padding: 48px 20px 80px;
-
-    &__title {
-      font-size: 1.875rem;
-    }
+    padding: 80px 40px 8px;
 
     &__flowers {
-      margin-top: -24px;
-      margin-bottom: -16px;
+      max-width: min(268px, calc(100% - 80px));
     }
   }
 }

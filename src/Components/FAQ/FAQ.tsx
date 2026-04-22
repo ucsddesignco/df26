@@ -32,7 +32,7 @@ const faqData = [
     id: "4",
     question: "When is the deadline to register?",
     answer:
-      "May _day_ at 11:59 PM. Space is limited to 80 participants, so we recommend signing up early. Waitlisted students are not guaranteed a spot, but we will keep you updated if there are any openings!",
+      "April 29th at 11:59 PM. Space is limited to 80 participants, so we recommend signing up early. Waitlisted students are not guaranteed a spot, but we will keep you updated if there are any openings!",
   },
 ];
 

@@ -16,8 +16,10 @@ import slide2 from './wdf-carousel/slide-2.png'
 import slide3 from './wdf-carousel/slide-3.png'
 import slide4 from './wdf-carousel/slide-4.png'
 
+//Carousel timing
 const AUTO_ADVANCE_MS = 6000
 
+//Time-of-day
 type TimeTheme = 'morning' | 'afternoon' | 'night'
 
 function getTimeTheme(): TimeTheme {
@@ -38,6 +40,7 @@ function useTimeThemeKey() {
   return theme
 }
 
+//Static slide list (order = carousel order)
 const slides = [
   {
     src: slide1,
@@ -58,7 +61,6 @@ const slides = [
 ] as const
 
 export default function WhatDesignFrontiers() {
- 
   const [index, setIndex] = useState(0)
   const [noTransition, setNoTransition] = useState(false)
   const indexRef = useRef(0)
@@ -70,6 +72,7 @@ export default function WhatDesignFrontiers() {
 
   indexRef.current = index
 
+  //Autoplay
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     if (reduceMotion.matches) return
@@ -85,7 +88,7 @@ export default function WhatDesignFrontiers() {
     return () => window.clearInterval(id)
   }, [nSlides, lastReal])
 
-  
+  //Reduced motion
   useEffect(() => {
     if (index !== nSlides) return
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -97,6 +100,7 @@ export default function WhatDesignFrontiers() {
     })
   }, [index, nSlides])
 
+  // fixed carousel sliding (slide 4 to 1)
   const snapCloneToStart = () => {
     setNoTransition(true)
     setIndex(0)
@@ -111,6 +115,7 @@ export default function WhatDesignFrontiers() {
     snapCloneToStart()
   }
 
+  //dots
   const goToSlide = (targetUi: number) => {
     const t = ((targetUi % nSlides) + nSlides) % nSlides
     if (index === nSlides) {
@@ -182,10 +187,12 @@ export default function WhatDesignFrontiers() {
 
   return (
     <section className='wdf'>
+      {/* --- Heading */}
       <div className='wdf__copyTop'>
         <h1 className='wdf__title'>What is Design Frontiers?</h1>
       </div>
 
+      {/* --- Meta, blurb, register */}
       <div className='wdf__copyBody'>
         <div className='wdf__meta'>
           <p className='wdf__meta-line'>
@@ -236,6 +243,7 @@ export default function WhatDesignFrontiers() {
         </a>
       </div>
 
+      {/* --- Carousel + dots */}
       <div className='wdf__media'>
         <div
           className='wdf__carousel'
@@ -298,6 +306,7 @@ export default function WhatDesignFrontiers() {
         </div>
       </div>
 
+      {/* --- Background SVG by time of day */}
       {timeTheme === 'morning' && (
         <WhatIsFlowers className='wdf__flowers' aria-hidden />
       )}

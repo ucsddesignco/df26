@@ -308,13 +308,13 @@ export default function WhatDesignFrontiers() {
 
       {/* --- Background SVG by time of day */}
       {timeTheme === 'morning' && (
-        <WhatIsFlowers className='wdf__flowers' aria-hidden />
+        <WhatIsFlowers className='wdf__timeTheme' aria-hidden />
       )}
       {timeTheme === 'afternoon' && (
-        <WhatIsLeaves className='wdf__flowers' aria-hidden />
+        <WhatIsLeaves className='wdf__timeTheme' aria-hidden />
       )}
       {timeTheme === 'night' && (
-        <WhatIsStars className='wdf__flowers' aria-hidden />
+        <WhatIsStars className='wdf__timeTheme' aria-hidden />
       )}
     </section>
   )

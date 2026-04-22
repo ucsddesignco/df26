@@ -7,7 +7,8 @@ $wdf-stack: 1120px;
   align-items: start;
   column-gap: 64px;
   row-gap: 20px;
-  padding: 120px 120px 8px;
+  padding: 120px 120px 0;
+  margin-bottom: -64px;
   background: #ffffff;
   color: #111111;
 
@@ -125,11 +126,8 @@ $wdf-stack: 1120px;
     line-height: 1.2;
     margin: 0;
     max-width: 100%;
-    word-break: normal;
-    overflow-wrap: normal;
     hyphens: manual;
     text-wrap: balance;
-    white-space: normal;
   }
 
   //Calendar lines + icons
@@ -181,11 +179,11 @@ $wdf-stack: 1120px;
   }
 
   //Flowers \ leaves \ stars SVG (time-of-day)
-  &__flowers {
+  &__timeTheme {
     grid-area: flowers;
     justify-self: end;
     align-self: end;
-    width: min(395px, 100%);
+    width: min(500px, 100%);
     max-width: 100%;
     height: auto;
     display: block;
@@ -193,7 +191,7 @@ $wdf-stack: 1120px;
     pointer-events: none;
     z-index: 1;
     margin-top: 8px;
-    margin-bottom: 0;
+    margin-bottom: -28px;
   }
 
   //Register
@@ -205,7 +203,7 @@ $wdf-stack: 1120px;
     gap: 0.5rem;
     width: fit-content;
     max-width: 100%;
-    padding: 10px 18px;
+    padding: 10px 18px 12px;
     border: none;
     border-radius: 0;
     background-color: #191919;
@@ -218,7 +216,6 @@ $wdf-stack: 1120px;
     cursor: pointer;
     transition:
       background-color 0.18s ease,
-      color 0.18s ease,
       box-shadow 0.18s ease;
 
     &:hover {
@@ -245,10 +242,11 @@ $wdf-stack: 1120px;
 
   &__button-icon {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
     line-height: 0;
     color: inherit;
-    transform: translateY(1px);
 
     svg {
       width: 14px;
@@ -261,6 +259,7 @@ $wdf-stack: 1120px;
     display: inline-flex;
     align-items: center;
     line-height: 1;
+    transform: translateY(-2px);
   }
 
   //≤1120px
@@ -303,14 +302,14 @@ $wdf-stack: 1120px;
   }
 
   //Tablet
-  @media (max-width: $wdf-stack) and (min-width: 601px) {
-    padding: 80px 48px 8px;
+  @media (max-width: 1024px) and (min-width: 601px) {
+    padding: 80px 80px 0;
 
     &__copyTop,
     &__copyBody {
-      max-width: 584px;
+      max-width: none;
       width: 100%;
-      margin-inline: auto;
+      margin-inline: 0;
     }
 
     &__title {
@@ -318,9 +317,9 @@ $wdf-stack: 1120px;
     }
 
     &__media {
-      max-width: min(720px, 100%);
+      max-width: 100%;
       width: 100%;
-      margin-inline: auto;
+      margin-inline: 0;
       margin-top: 48px;
     }
 
@@ -328,24 +327,19 @@ $wdf-stack: 1120px;
       aspect-ratio: 16 / 9;
     }
 
-    &__flowers {
+    &__timeTheme {
       z-index: 3;
-      justify-self: end;
-      align-self: end;
-      width: min(395px, 92%);
-      max-width: 100%;
-      height: auto;
+      width: min(340px, 100%);
       margin-top: -36px;
-      margin-right: max(0px, calc((100% - min(720px, 100%)) / 2));
-      margin-bottom: 0;
-      transform: none;
-      pointer-events: none;
+      margin-right: 0;
+      margin-bottom: -30px;
     }
   }
 
   //Phone
   @media (max-width: 600px) {
-    padding: 80px 40px 8px;
+    padding: 80px 40px 0;
+    margin-bottom: -20px;
     row-gap: 20px;
 
     &__copyTop {
@@ -376,26 +370,21 @@ $wdf-stack: 1120px;
       margin-inline: 0;
     }
 
-    &__flowers {
-      justify-self: end;
-      align-self: end;
+    &__timeTheme {
       z-index: 3;
       width: 268px;
       max-width: min(268px, calc(100% - 80px));
-      height: auto;
       margin: 0;
       margin-top: 8px;
-      transform: none;
-      pointer-events: none;
     }
   }
 
   //most narrow
   @media (max-width: 480px) {
-    padding: 80px 40px 8px;
+    padding: 80px 40px 0;
 
   
-    &__flowers {
+    &__timeTheme {
       max-width: min(268px, calc(100% - 80px));
     }
   }

@@ -17,9 +17,9 @@ function mapRange(value: number, inMin: number, inMax: number, outMin: number, o
 
 /** Helper function that calculates a single trigger threshold across the component */
 const getResponsiveTriggerPercentage = (width: number) => {
-  if (width <= 743) return 0.40;  // Mobile
-  if (width <= 1279) return 0.20; // Tablet
-  return 0.386;                   // Desktop Default
+  if (width <= 743) return 0.38;  // Mobile
+  if (width <= 1279) return 0.38; // Tablet
+  return 0.38;                   // Desktop Default
 };
 
 export default function DepartOnScroll({ children }: DepartOnScrollProps) {

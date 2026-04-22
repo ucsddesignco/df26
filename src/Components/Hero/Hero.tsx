@@ -8,17 +8,15 @@ import MedTrainSVG from "../../SVGS/Train/MedTrainSVG";
 import SmallTrainSVG from "../../SVGS/Train/SmallTrainSVG";
 import DepartOnScroll from "../DepartOnScroll/DepartOnScroll";
 import CloudGenerator from "../CloudGenerator/CloudGenerator";
-//import BigFlower from "../../SVGS/Flower/BigFlower";
-//import MedFlower from "../../SVGS/Flower/MedFlower";
-//import SmallFlower from "../../SVGS/Flower/SmallFlower";
+import BigFlower from "../../SVGS/Flower/BigFlower";
+import MedFlower from "../../SVGS/Flower/MedFlower";
+import SmallFlower from "../../SVGS/Flower/SmallFlower";
 
 
 export default function Hero() {
   return (
     <section id="hero">
       <div className="hero-section">
-        {/*
-          Flowers are not yet styled or positioned
         <div className="left-flowers">
           <BigFlower className="left1"/>
           <MedFlower className="left2"/>
@@ -31,7 +29,6 @@ export default function Hero() {
           <SmallFlower className="right3"/>
           <SmallFlower className="right4"/>
         </div>
-        */}
         <CloudGenerator />
         <div className="hero-board">
           <HeroBoard/>

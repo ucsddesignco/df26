@@ -1,6 +1,6 @@
 import './DepartOnScroll.scss'
 import { useState, useRef, useEffect } from "react";
-import { motion, useScroll, useMotionValueEvent, useTransform, type Variants } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 
 interface DepartOnScrollProps {
   children: React.ReactNode;
@@ -15,18 +15,17 @@ function mapRange(value: number, inMin: number, inMax: number, outMin: number, o
   return ((clampedValue - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
 
-/** Helper function that sets the trigger point at different breakpoints */
-const getResponsiveTriggerPoint = (width: number, height: number) => {
-  if (width <= 743) {
-    return height * 0.4; // Mobile Trigger point
-  } else if (width <= 1279) {
-    return height * 0.2; // Tablet Trigger point
-  }
-  return height * 0.386; // Desktop Trigger point
+/** Helper function that calculates a single trigger threshold across the component */
+const getResponsiveTriggerPercentage = (width: number) => {
+  if (width <= 743) return 0.40;  // Mobile
+  if (width <= 1279) return 0.20; // Tablet
+  return 0.386;                   // Desktop Default
 };
 
 export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isIntersectingRef = useRef(true);
+
   const [trainState, setTrainState] = useState<TrainState>("entering");
 
   const isBrowser = typeof window !== "undefined";
@@ -35,6 +34,9 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
     height: isBrowser ? window.innerHeight : 800,
   });
 
+  const [exactTriggerPoint, setExactTriggerPoint] = useState(
+    isBrowser ? window.innerHeight * 0.386 : 300
+  );
 
   // Handles updating the window width state when the screen size changes
   useEffect(() => {
@@ -52,30 +54,69 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   }, [isBrowser]);
 
 
-  const currentTriggerPoint = getResponsiveTriggerPoint(windowSize.width, windowSize.height);
+  const marginPercentage = getResponsiveTriggerPercentage(windowSize.width);
   const parallaxAmount = isBrowser ? windowSize.width * 0.2 : 50;
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const absoluteTop = rect.top + window.scrollY;
+    const absoluteBottom = absoluteTop + rect.height;
+
+    const triggerLineY = windowSize.height * marginPercentage; // Distance to trigger line
+    const scrollDistanceToTrigger = absoluteBottom - triggerLineY; 
+
+    // Prevent negative ranges which break Framer Motion
+    if (scrollDistanceToTrigger > 0) {
+      setExactTriggerPoint(scrollDistanceToTrigger);
+    }
+  }, [windowSize.width, windowSize.height, marginPercentage]);
+
+
   const { scrollY } = useScroll(); // Scroll sensor
-  const parallaxX = useTransform(scrollY, [0, currentTriggerPoint], [0, parallaxAmount]); // parallax-scroll
+  const parallaxX = useTransform(scrollY, [0, exactTriggerPoint], [0, parallaxAmount]); // Scroll Parallax
 
-  useMotionValueEvent(scrollY, "change", (latestScroll) => {
-    const activeTrigger = getResponsiveTriggerPoint(window.innerWidth, window.innerHeight);
+  useEffect(() => {
+    if (!containerRef.current) return;
 
-    const previousScroll = scrollY.getPrevious() || 0;
-    const isScrollingDown = latestScroll > previousScroll;
+    // Define trigger point
+    const topMarginOffset = `-${marginPercentage * 100}%`;
 
-    if (isScrollingDown && latestScroll > activeTrigger) {
-      if (trainState == "parked") {
-        setTrainState("leaving");
-      }
-    }
+    // Configure observer
+    const options: IntersectionObserverInit = {
+      root: null, 
+      rootMargin: `${topMarginOffset} 0px 0px 0px`, 
+      threshold: 0, 
+    };
 
-    if (latestScroll < activeTrigger) {
-      if (trainState == "gone") {
-        setTrainState("arriving");
-      }
-    }
-  });
+    // Define behavior after crossing trigger point
+    const callback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        isIntersectingRef.current = entry.isIntersecting;
+
+        if (entry.isIntersecting) {
+          // Train scrolled into view
+          setTrainState((prev) => {
+            if (prev === "gone") return "arriving";
+            return prev;
+          });
+        } else {
+          // Train scrolled out of view
+          setTrainState((prev) => {
+            if (prev === "parked" || prev === "entering" || prev === "arriving") return "leaving";
+            return prev;
+          });
+        }
+      });
+    };
+
+    // Init observer
+    const observer = new IntersectionObserver(callback, options);
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, [windowSize.width, marginPercentage]);
 
 
   const getResponsivePositions = (width: number) => {
@@ -134,14 +175,19 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
           custom={windowSize.width}
           style={{ willChange: "transform", pointerEvents: "none" }}
           onAnimationComplete={(completedVariant) => {
-            if (completedVariant === "entering") {
+            if (completedVariant === "entering" || completedVariant === "arriving") {
               setTrainState("parked");
             }
             if (completedVariant === "leaving") {
               setTrainState("gone");
-            }
-            if (completedVariant === "arriving") {
-              setTrainState("parked");
+              if (isIntersectingRef.current) {
+                setTimeout(() => {
+                  // Double check they didn't scroll away again during this 50ms window
+                  if (isIntersectingRef.current) { 
+                    setTrainState("arriving");
+                  }
+                }, 50);
+              }
             }
           }}
         >

@@ -86,7 +86,7 @@ export default function HeroBoard() {
                 </div>
               </div>
             </div>
-            <Button text='Register Now' icon={<OpenInNew/>} className='register-button'></Button>
+            <Button text='Register Now' icon={<OpenInNew/>} link="https://docs.google.com/forms/d/e/1FAIpQLSfXfMORaXDT25FozvsYMx6te3ffq0lKBhg8qvjTxi7zqC4_tA/viewform" className='register-button'></Button>
           </div>
         </div>
       </motion.div>

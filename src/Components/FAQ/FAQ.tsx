@@ -14,25 +14,25 @@ const faqData = [
     id: "1",
     question: "Who can participate?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec consequat ipsum, non porta velit. In rhoncus odio leo, sed venenatis augue eleifend vel.",
+      "UCSD students of all levels and backgrounds are encouraged to apply! Teams are not assigned, so we encourage you to form your own groups in advance. Design teams can consist of up to four members.",
   },
   {
     id: "2",
     question: "What's in it for me?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec consequat ipsum, non porta velit. In rhoncus odio leo, sed venenatis augue eleifend vel.",
+      "Design Frontiers is a fast-paced, immersive design sprint that simulates real-world product design practice. You’ll gain hands-on experience working through the iterative design process, learn how teams move from idea to solution, and build practical skills in collaboration, problem-solving, and rapid prototyping.",
   },
   {
     id: "3",
     question: "What will the event look like?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec consequat ipsum, non porta velit. In rhoncus odio leo, sed venenatis augue eleifend vel.",
+      "Design Frontiers will be split over the course of two days. The event kicks off Saturday afternoon with lightning talks, prompt reveal, and the start of the design sprint. On Sunday, teams will continue working before presenting to the judges panel. The event will conclude with finalist presentations and a closing ceremony.",
   },
   {
     id: "4",
     question: "When is the deadline to register?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec consequat ipsum, non porta velit. In rhoncus odio leo, sed venenatis augue eleifend vel.",
+      "May _day_ at 11:59 PM. Space is limited to 80 participants, so we recommend signing up early. Waitlisted students are not guaranteed a spot, but we will keep you updated if there are any openings!",
   },
 ];
 
@@ -65,7 +65,7 @@ interface FAQProps {
   theme?: ThemeType;
 }
 
-export default function FAQ({ theme = "night" }: FAQProps) {
+export default function FAQ({ theme = "sunrise-sunset" }: FAQProps) {
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =

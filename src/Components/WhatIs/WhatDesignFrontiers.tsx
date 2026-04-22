@@ -6,6 +6,7 @@ import {
   type KeyboardEvent,
   type TransitionEvent,
 } from 'react'
+import { useSiteTheme } from '../../context/SiteThemeContext'
 import CalendarIcon from '../../SVGS/CalendarIcon'
 import RegisterNow from './registerNow'
 import { WhatIsFlowers } from './flowers'
@@ -18,27 +19,6 @@ import slide4 from './wdf-carousel/slide-4.png'
 
 //Carousel timing
 const AUTO_ADVANCE_MS = 6000
-
-//Time-of-day
-type TimeTheme = 'morning' | 'afternoon' | 'night'
-
-function getTimeTheme(): TimeTheme {
-  const hour = new Date().getHours()
-  if (hour < 12) return 'morning'
-  if (hour < 18) return 'afternoon'
-  return 'night'
-}
-
-function useTimeThemeKey() {
-  const [theme, setTheme] = useState<TimeTheme>(() => getTimeTheme())
-
-  useEffect(() => {
-    const id = window.setInterval(() => setTheme(getTimeTheme()), 60_000)
-    return () => window.clearInterval(id)
-  }, [])
-
-  return theme
-}
 
 //Static slide list (order = carousel order)
 const slides = [
@@ -64,7 +44,7 @@ export default function WhatDesignFrontiers() {
   const [index, setIndex] = useState(0)
   const [noTransition, setNoTransition] = useState(false)
   const indexRef = useRef(0)
-  const timeTheme = useTimeThemeKey()
+  const { theme: timeTheme } = useSiteTheme()
 
   const nSlides = slides.length
   const lastReal = nSlides - 1

@@ -1,21 +1,13 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import "./Agenda.scss";
-
+import { useSiteTheme, type SiteTimeTheme } from "../../context/SiteThemeContext";
 
 // Decoration images — one per time-of-day theme
 import morningImg from "../../assets/agenda-assets/Sunrise-ticket-train.png";
 import afternoonImg from "../../assets/agenda-assets/day-image.png";
 import nightImg from "../../assets/agenda-assets/sunset-image.png";
 
-// theme change - depending on the time of day
-type Theme = "morning" | "afternoon" | "night";
-
-function getThemeByTime(): Theme {
-  const hour = new Date().getHours();
-  if (hour < 12) return "morning";
-  if (hour < 18) return "afternoon";
-  return "night";
-}
+type Theme = SiteTimeTheme;
 
 type ThemeStyle = {
   day1Color: string;
@@ -41,19 +33,6 @@ const themeStyles: Record<Theme, ThemeStyle> = {
     image: nightImg,
   },
 };
-
-function useTimeTheme() {
-  const [theme, setTheme] = useState<Theme>(getThemeByTime());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTheme(getThemeByTime());
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return themeStyles[theme];
-}
 
 // actual schedule for DF, can be added on to
 type AgendaItem = {
@@ -141,7 +120,8 @@ function AgendaColumn({
 type MobileTab = "day1" | "day2";
 
 export default function Agenda() {
-  const theme = useTimeTheme();
+  const { theme: themeKey } = useSiteTheme();
+  const theme = themeStyles[themeKey];
   const [activeTab, setActiveTab] = useState<MobileTab>("day1");
 
   return (

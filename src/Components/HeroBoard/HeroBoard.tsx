@@ -1,9 +1,48 @@
 import './HeroBoard.scss'
+import { useEffect, useRef } from 'react'; // Added imports
 import OpenInNew from '../../SVGS/OpenInNew';
 import Station26Icon from '../../SVGS/Station26Icon';
 import Button from '../Button/Button';
 import { motion } from 'framer-motion';
 export default function HeroBoard() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const textRef = useRef<HTMLDivElement | null>(null);
+
+  // 2. Set up the ResizeObserver
+  useEffect(() => {
+    const container = containerRef.current;
+    const text = textRef.current;
+
+    if (!container || !text) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        // Get the available width of the header-text container
+        const availableWidth = entry.contentRect.width;
+
+        // Reset any existing scale to measure the text's true natural width
+        text.style.transform = 'none';
+        const textWidth = text.scrollWidth;
+
+        // If the text is wider than the container, calculate how much to shrink it
+        if (textWidth > availableWidth) {
+          const scaleFactor = availableWidth / textWidth;
+          text.style.transform = `scale(${scaleFactor})`;
+        } else {
+          text.style.transform = 'none';
+        }
+      }
+    });
+
+    // Start observing the container
+    resizeObserver.observe(container);
+
+    // Cleanup function when component unmounts
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   return (
     <>
       <motion.div className='hero-board'
@@ -26,8 +65,8 @@ export default function HeroBoard() {
             <div className='icon-wrapper'>
               <Station26Icon/>
             </div>
-            <div className='header-text'>
-              <p className="main-text">DESIGN FRONTIERS</p>
+            <div className='header-text' ref={containerRef}>
+              <p className="main-text" ref={textRef}>DESIGN FRONTIERS</p>
               <p className='sub-text'>Collaborate, ideate, create. Join Design Co's annual design-a-thon!</p>
             </div>
           </div>

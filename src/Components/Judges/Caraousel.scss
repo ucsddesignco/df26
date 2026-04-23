@@ -1,14 +1,27 @@
 
 $judge-card-min: 17.5rem; // 280px — same visual size on tablet + phone
+$judges-loop-gap: 1rem;
 
-.embla__viewport {
+/* Continuous infinite loop (no Embla/drag). */
+.judges-loop {
   overflow: hidden;
+  width: 100%;
 }
 
-.embla__container {
+.judges-loop__track {
   display: flex;
-  touch-action: pan-y pinch-zoom;
-  // gap: -rem;
+  width: max-content;
+  will-change: transform;
+  
+}
+
+.judges-loop__set {
+  display: flex;
+  width: max-content;
+  gap: $judges-loop-gap;
+  // Create the seam gap between end of set A and start of set B.
+  // This padding is included in setARef.offsetWidth, keeping wrap math correct.
+  padding-right: $judges-loop-gap;
 }
 
 .embla__slideThemeDecorMount {

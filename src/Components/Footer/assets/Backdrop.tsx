@@ -25,7 +25,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
         </g>
         <mask
           id="mask0_2493_10247"
-          style={{maskType:'alpha'}}
+          style={{ maskType: 'alpha' }}
           maskUnits="userSpaceOnUse"
           x="-142"
           y="-65"

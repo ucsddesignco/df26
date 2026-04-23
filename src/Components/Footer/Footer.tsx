@@ -300,10 +300,10 @@ export default function Footer() {
   const activeLayout = layoutByBreakpoint[layoutBreakpoint];
   const doorStyle: CSSProperties | undefined = activeLayout
     ? {
-        width: activeLayout.doors.width,
-        height: activeLayout.doors.height,
-        top: activeLayout.doors.top,
-      }
+      width: activeLayout.doors.width,
+      height: activeLayout.doors.height,
+      top: activeLayout.doors.top,
+    }
     : undefined;
   const wallStyleBySide: Record<"left" | "right", CSSProperties | undefined> = {
     left: activeLayout ? toWallStyle("left", activeLayout.walls.left) : undefined,

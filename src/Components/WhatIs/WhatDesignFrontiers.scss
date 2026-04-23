@@ -152,12 +152,7 @@ $wdf-stack: 1120px;
     transition: color 0.15s ease;
 
     &:hover {
-      color: #000000;
-
-      u {
-        text-decoration-thickness: 2px;
-        text-underline-offset: 3px;
-      }
+      color: #666666;
     }
 
     &:focus-visible {

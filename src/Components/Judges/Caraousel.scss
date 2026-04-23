@@ -36,6 +36,11 @@ $judges-loop-gap: 1rem;
   width: max-content;
   gap: $judges-loop-gap;
   padding-right: $judges-loop-gap;
+
+  @media (max-width: 1024px) {
+    gap: 1.5rem;        
+    padding-right: 1.5rem;
+  }
 }
 
 .embla__slideThemeDecorMount {
@@ -68,6 +73,10 @@ $judges-loop-gap: 1rem;
 
   @media (max-width: 1024px) {
     flex: 0 0 $judge-card-min;
+  }
+
+  @media (max-width: 600px) {
+    flex: 0 0 14rem; // ← adjust this, 12-15rem range works well
   }
 
   img {

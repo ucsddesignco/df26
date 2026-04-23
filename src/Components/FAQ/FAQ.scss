@@ -124,6 +124,7 @@
       filter: url(#agenda-roughen);
       z-index: 0;
     }
+
     &__item {
       position: relative;
       z-index: 2;
@@ -158,11 +159,18 @@
       justify-content: space-between;
       align-items: center;
     }
+
     &__icon {
       position: relative;
       width: 24px;
       height: 24px;
       flex-shrink: 0;
+      // Spin the whole icon — gives the + a satisfying rotation as it becomes −
+      transition: transform 0.3s ease;
+
+      &--open {
+        transform: rotate(180deg);
+      }
 
       &-horizontal {
         position: absolute;
@@ -182,11 +190,23 @@
         top: 2px;
         border: 1px solid #2B2B23;
         display: block;
-        transition: transform 0.2s ease;
+        // Slightly shorter than the wrapper so the collapse finishes
+        // just before the spin does — feels snappier
+        transition: transform 0.2s ease, opacity 0.2s ease;
       }
 
+      // Collapse vertical bar to turn + into −
       &--open &-vertical {
-        transform: rotate(-90deg);
+        transform: scaleY(0);
+        opacity: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+
+        &-vertical {
+          transition: none;
+        }
       }
     }
 

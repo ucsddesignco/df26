@@ -169,16 +169,17 @@
     gap: var(--agenda-column-gap);
   }
   
-.agenda-panel--desktop {
-  flex: 1 1 0;
-  min-width: 0;
-  display: block;
-}
 
-.agenda-panel--mobile {
-  display: none;
-  width: 100%;
-}
+  .agenda-panel--desktop {
+    flex: 1 1 0;
+    min-width: 0;
+    display: block;
+  }
+  
+  .agenda-panel--mobile {
+    display: none;
+    width: 100%;
+  }
   
   //column
   .agenda-column {

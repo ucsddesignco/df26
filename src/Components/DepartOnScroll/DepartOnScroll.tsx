@@ -1,6 +1,14 @@
 import './DepartOnScroll.scss'
 import { useState, useRef, useEffect } from "react";
-import { motion, useScroll, useTransform, useInView, type Variants } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useReducedMotion,
+  useInView,
+  useSpring,
+  useTransform, 
+  type Variants,
+} from "framer-motion";
 
 interface DepartOnScrollProps {
   children: React.ReactNode;
@@ -28,6 +36,7 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   const isIntersectingRef = useRef(true);
 
   const [trainState, setTrainState] = useState<TrainState>("entering");
+  const reduceMotion = useReducedMotion();
 
   const isBrowser = typeof window !== "undefined";
   const [windowSize, setWindowSize] = useState({
@@ -85,7 +94,16 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
 
 
   const { scrollY } = useScroll(); // Scroll sensor
-  const parallaxX = useTransform(scrollY, [0, exactTriggerPoint], [0, parallaxAmount]); // Scroll Parallax
+const rawParallaxX = useTransform(
+    scrollY, 
+    [0, exactTriggerPoint], 
+    [0, parallaxAmount],
+    { clamp: true }
+  );
+  
+  const parallaxX = reduceMotion
+    ? rawParallaxX
+    : useSpring(rawParallaxX, { stiffness: 220, damping: 40, mass: 0.35 });
 
   const topMarginOffset = `-${marginPercentage * 100}%`;
   const isInView = useInView(containerRef, {

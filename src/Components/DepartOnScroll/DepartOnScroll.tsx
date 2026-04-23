@@ -24,6 +24,7 @@ const getResponsiveTriggerPercentage = (width: number) => {
 
 export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const trainRef = useRef<HTMLDivElement>(null);
   const isIntersectingRef = useRef(true);
 
   const [trainState, setTrainState] = useState<TrainState>("entering");
@@ -33,6 +34,7 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
     width: isBrowser ? window.innerWidth : 1280,
     height: isBrowser ? window.innerHeight : 800,
   });
+  const [trainWidth, setTrainWidth] = useState(1000);
 
   const [exactTriggerPoint, setExactTriggerPoint] = useState(
     isBrowser ? window.innerHeight * 0.386 : 300
@@ -41,6 +43,10 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   // Handles updating the window width state when the screen size changes
   useEffect(() => {
     if (!isBrowser) return;
+
+    if (trainRef.current) {
+      setTrainWidth(trainRef.current.offsetWidth);
+    }
     
     let timeoutId: ReturnType<typeof setTimeout>;
     const handleResize = () => {
@@ -122,29 +128,31 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
     return parkedPosition;
   }
 
+  type VariantCustom = { winWidth: number; trainWidth: number };
+
   // Train Keyframes
   const trainVariants : Variants = {
-    offscreen: { 
-      x: "calc(-100vw - 100%)",
-    },
-    entering: (width: number) => ({ // On webpage reload
-      x: getResponsiveParkedPosition(width),
-      transition: { type:"spring", delay: 0.5, stiffness: 75, damping: 13, mass: 1.0, velocity: 0},  
+    offscreen: ({ winWidth, trainWidth }: VariantCustom) => ({ 
+      x: -(winWidth + trainWidth), 
     }),
-    parked: (width: number) => ({
-      x: getResponsiveParkedPosition(width),
+    entering: ({ winWidth }: VariantCustom) => ({ 
+      x: getResponsiveParkedPosition(winWidth),
+      transition: { type:"spring", delay: 0.5, stiffness: 75, damping: 14, mass: 1.0, velocity: 0},  
     }),
-    leaving: {
-      x: "calc(100vw + 100%)",
+    parked: ({ winWidth }: VariantCustom) => ({
+      x: getResponsiveParkedPosition(winWidth),
+    }),
+    leaving: ({ winWidth, trainWidth }: VariantCustom) => ({
+      x: winWidth + trainWidth, 
       transition: { duration: 1.5, ease: "easeInOut" },
-    },
-    gone: {
-      x: "calc(-100vw - 100%)",
+    }),
+    gone: ({ winWidth, trainWidth }: VariantCustom) => ({
+      x: -(winWidth + trainWidth),
       transition: { duration: 0 },
-    },
-    arriving: (width: number) => ({ // On scroll backup
-      x: getResponsiveParkedPosition(width),
-      transition: { type:"spring", delay: 1, stiffness: 75, damping: 13, mass: 1.0, velocity: 0},  
+    }),
+    arriving: ({ winWidth }: VariantCustom) => ({ 
+      x: getResponsiveParkedPosition(winWidth),
+      transition: { type:"spring", delay: 1, stiffness: 75, damping: 14, mass: 1.0, velocity: 0},  
     }),
   };
 
@@ -152,10 +160,11 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
     <div ref={containerRef} className='motion'>
       <motion.div style={{ x: parallaxX, z: 0 }}>
         <motion.div
+          ref={trainRef}
           variants={trainVariants}
           initial="offscreen"
           animate={trainState}
-          custom={windowSize.width}
+          custom={{ winWidth: windowSize.width, trainWidth: trainWidth }}
           style={{ willChange: "transform", pointerEvents: "none", z: 0 }}
           onAnimationComplete={(completedVariant) => {
             if (completedVariant === "entering" || completedVariant === "arriving") {

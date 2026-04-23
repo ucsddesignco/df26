@@ -129,7 +129,7 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
     },
     entering: (width: number) => ({ // On webpage reload
       x: getResponsiveParkedPosition(width),
-      transition: { type:"spring", delay: 1, stiffness: 75, damping: 13, mass: 1.0, velocity: 0},  
+      transition: { type:"spring", delay: 0.5, stiffness: 75, damping: 13, mass: 1.0, velocity: 0},  
     }),
     parked: (width: number) => ({
       x: getResponsiveParkedPosition(width),

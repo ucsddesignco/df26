@@ -1,4 +1,3 @@
-
 import {
   AnimatePresence,
   motion,
@@ -7,34 +6,32 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
-import "./Caraousel.scss"
-import { Judge1 } from "./../../SVGS/Judges/Judge1"
-import { Judge2 } from "./../../SVGS/Judges/Judge2"
-import { Judge3 } from "./../../SVGS/Judges/Judge3"
-import { Judge4 } from "./../../SVGS/Judges/Judge4"
-import { Judge5 } from "./../../SVGS/Judges/Judge5"
-import { BigFlower } from "./Themes/BigFlower"
-import { BigLeaf } from "./Themes/Bigleaf"
-import { BigStar } from "./Themes/BigStar"
-import { themeIllustrationCrossfadeTransition } from "../../context/SiteThemeContext"
+import "./Caraousel.scss";
+import { Judge1 } from "./../../SVGS/Judges/Judge1";
+import { Judge2 } from "./../../SVGS/Judges/Judge2";
+import { Judge3 } from "./../../SVGS/Judges/Judge3";
+import { Judge4 } from "./../../SVGS/Judges/Judge4";
+import { Judge5 } from "./../../SVGS/Judges/Judge5";
+import { BigFlower } from "./Themes/BigFlower";
+import { BigLeaf } from "./Themes/Bigleaf";
+import { BigStar } from "./Themes/BigStar";
+import { themeIllustrationCrossfadeTransition } from "../../context/SiteThemeContext";
 
-
-
-type EmblaCarouselTheme = "day" | "evening" | "night"
+type EmblaCarouselTheme = "day" | "evening" | "night";
 
 type EmblaCarouselProps = {
-  theme?: EmblaCarouselTheme
-}
+  theme?: EmblaCarouselTheme;
+};
 
 function EmblaSlideThemeDecor({
   theme,
   themeClassName,
 }: {
-  theme: EmblaCarouselTheme
-  themeClassName: string
+  theme: EmblaCarouselTheme;
+  themeClassName: string;
 }) {
-  const reduceMotion = useReducedMotion()
-  const t = themeIllustrationCrossfadeTransition(reduceMotion)
+  const reduceMotion = useReducedMotion();
+  const t = themeIllustrationCrossfadeTransition(reduceMotion);
   const decor =
     theme === "day" ? (
       <BigFlower className={themeClassName} />
@@ -42,7 +39,7 @@ function EmblaSlideThemeDecor({
       <BigLeaf className={themeClassName} />
     ) : (
       <BigStar className={themeClassName} />
-    )
+    );
 
   return (
     <div className="embla__slideThemeDecorMount">
@@ -59,17 +56,18 @@ function EmblaSlideThemeDecor({
         </motion.div>
       </AnimatePresence>
     </div>
-  )
+  );
 }
 
 export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = useReducedMotion();
+
   const themeClassName =
     theme === "day"
       ? "embla__themeIcon--day"
       : theme === "evening"
         ? "embla__themeIcon--evening"
-        : "embla__themeIcon--night"
+        : "embla__themeIcon--night";
 
   const slides = useMemo(
     () => [
@@ -80,46 +78,88 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
       <Judge5 key="j5" href="https://www.linkedin.com/in/jarenz/" ariaLabel="Jarenz Castillo Profile" />,
     ],
     [],
-  )
+  );
 
-  // Auto-scroll + drag (infinite wrap) ---------------------------------------
-  const setARef = useRef<HTMLDivElement | null>(null)
-  const loopWidthRef = useRef(0)
-  const isDraggingRef = useRef(false)
-  const x = useMotionValue(0)
+  const setARef = useRef<HTMLDivElement | null>(null);
+  const loopWidthRef = useRef(0);
+  const isDraggingRef = useRef(false);
+  const speedRef = useRef(1);       // 1 = full speed, 0 = fully stopped
+  const easeRafRef = useRef<number | null>(null); // tracks in-flight ease rAF
+  const x = useMotionValue(0);
 
-  // Tune speed here. (px/sec)
-  const AUTO_PX_PER_SEC = reduceMotion ? 0 : 32
+  // Tune speed here (px/sec)
+  const AUTO_PX_PER_SEC = reduceMotion ? 0 : 32;
 
   useEffect(() => {
     const measure = () => {
-      const w = setARef.current?.offsetWidth ?? 0
-      loopWidthRef.current = w
-    }
+      const w = setARef.current?.offsetWidth ?? 0;
+      loopWidthRef.current = w;
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
-    measure()
-    window.addEventListener("resize", measure)
-    return () => window.removeEventListener("resize", measure)
-  }, [])
+  // Cancel any in-flight ease rAF before starting a new one
+  const cancelEase = () => {
+    if (easeRafRef.current !== null) {
+      cancelAnimationFrame(easeRafRef.current);
+      easeRafRef.current = null;
+    }
+  };
+
+  const handleMouseEnter = () => {
+    cancelEase();
+    // Exponential decay toward 0 — lower = slower/smoother stop (try 0.80–0.92)
+    const ease = () => {
+      speedRef.current = speedRef.current * 0.85;
+      if (speedRef.current > 0.01) {
+        easeRafRef.current = requestAnimationFrame(ease);
+      } else {
+        speedRef.current = 0;
+        easeRafRef.current = null;
+      }
+    };
+    easeRafRef.current = requestAnimationFrame(ease);
+  };
+
+  const handleMouseLeave = () => {
+    cancelEase();
+    // Lerp back to 1 — lower = slower ramp-up (try 0.05–0.12)
+    const ease = () => {
+      speedRef.current = speedRef.current + (1 - speedRef.current) * 0.08;
+      if (speedRef.current < 0.99) {
+        easeRafRef.current = requestAnimationFrame(ease);
+      } else {
+        speedRef.current = 1;
+        easeRafRef.current = null;
+      }
+    };
+    easeRafRef.current = requestAnimationFrame(ease);
+  };
 
   useAnimationFrame((_, deltaMs) => {
-    if (isDraggingRef.current) return
-    const loopW = loopWidthRef.current
-    if (!loopW) return
+    if (isDraggingRef.current) return;
+    const loopW = loopWidthRef.current;
+    if (!loopW || speedRef.current === 0) return;
 
-    const deltaPx = (AUTO_PX_PER_SEC * deltaMs) / 1000
-    const next = x.get() - deltaPx
+    const deltaPx = (AUTO_PX_PER_SEC * deltaMs * speedRef.current) / 1000;
+    const next = x.get() - deltaPx;
 
     // Wrap into [-loopW, 0)
-    let wrapped = next
-    while (wrapped <= -loopW) wrapped += loopW
-    while (wrapped > 0) wrapped -= loopW
-    x.set(wrapped)
-  })
+    let wrapped = next;
+    while (wrapped <= -loopW) wrapped += loopW;
+    while (wrapped > 0) wrapped -= loopW;
+    x.set(wrapped);
+  });
 
   return (
     <div className="embla" data-theme={theme}>
-      <div className="judges-loop">
+      <div
+        className="judges-loop"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <motion.div
           className="judges-loop__track"
           style={{ x }}
@@ -127,20 +167,19 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
           dragElastic={0.08}
           dragMomentum={true}
           onDragStart={() => {
-            isDraggingRef.current = true
+            isDraggingRef.current = true;
           }}
           onDragEnd={() => {
-            isDraggingRef.current = false
-            // Snap x back into the wrapped range after a momentum fling.
-            const loopW = loopWidthRef.current
-            if (!loopW) return
-            let v = x.get()
-            while (v <= -loopW) v += loopW
-            while (v > 0) v -= loopW
-            x.set(v)
+            isDraggingRef.current = false;
+            const loopW = loopWidthRef.current;
+            if (!loopW) return;
+            let v = x.get();
+            while (v <= -loopW) v += loopW;
+            while (v > 0) v -= loopW;
+            x.set(v);
           }}
         >
-          {/* Render two identical sets for seamless looping */}
+          {/* Set A — measured for loop math */}
           <div ref={setARef} className="judges-loop__set" aria-hidden="false">
             {slides.map((judge, idx) => (
               <div key={`a-${idx}`} className="embla__slide">
@@ -149,6 +188,8 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
               </div>
             ))}
           </div>
+
+          {/* Set B — aria-hidden duplicate */}
           <div className="judges-loop__set" aria-hidden="true">
             {slides.map((judge, idx) => (
               <div key={`b-${idx}`} className="embla__slide">
@@ -160,5 +201,5 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
         </motion.div>
       </div>
     </div>
-  )
-}
+  );
+};

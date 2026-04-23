@@ -1,25 +1,40 @@
-
-$judge-card-min: 17.5rem; // 280px — same visual size on tablet + phone
+$judge-card-min: 17.5rem;
 $judges-loop-gap: 1rem;
 
-/* Continuous infinite loop (no Embla/drag). */
 .judges-loop {
   width: 100%;
+  // Fade edges for a clean infinite feel
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
 }
 
 .judges-loop__track {
   display: flex;
   width: max-content;
   will-change: transform;
-  
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 }
 
 .judges-loop__set {
   display: flex;
   width: max-content;
   gap: $judges-loop-gap;
-  // Create the seam gap between end of set A and start of set B.
-  // This padding is included in setARef.offsetWidth, keeping wrap math correct.
   padding-right: $judges-loop-gap;
 }
 
@@ -37,13 +52,11 @@ $judges-loop-gap: 1rem;
 }
 
 .embla__slide {
-  // desktop: ~3 slides visible
-  flex: 0 0 clamp(17.5rem, 22vw, 22rem); 
+  flex: 0 0 clamp(17.5rem, 22vw, 22rem);
   position: relative;
   transform: translateZ(0);
   transition: transform 160ms ease;
 
-  // tablet + phone: fixed card width so images dony keep shrinking with the viewport
   @media (max-width: 1024px) {
     flex: 0 0 $judge-card-min;
   }
@@ -54,11 +67,8 @@ $judges-loop-gap: 1rem;
     height: auto;
     aspect-ratio: 3 / 4;
     object-fit: cover;
-    // border: 2px solid black;
   }
 
-  // Judge SVG cards are clickable "link-like" SVGs.
-  // Avoid default focus outlines / decorations looking like borders.
   svg[role="link"] {
     outline: none;
     text-decoration: none;
@@ -71,12 +81,11 @@ $judges-loop-gap: 1rem;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    & {
-      transition: none;
-    }
+    transition: none;
   }
 }
 
+// Scale only — no background or color change
 .embla__slide:hover,
 .embla__slide:focus-within {
   transform: scale(1.02);
@@ -111,11 +120,10 @@ $judges-loop-gap: 1rem;
   z-index: 2;
   pointer-events: none;
 
-  @media(max-width: 1116px){
+  @media (max-width: 1116px) {
     top: 55%;
     width: 50px;
     height: auto;
-    
   }
 }
 
@@ -126,7 +134,7 @@ $judges-loop-gap: 1rem;
   z-index: 2;
   pointer-events: none;
 
-  @media(max-width: 1116px){
+  @media (max-width: 1116px) {
     top: 10%;
     left: 69%;
     width: 80px;
@@ -134,19 +142,17 @@ $judges-loop-gap: 1rem;
   }
 }
 
-.embla__themeIcon--night{
+.embla__themeIcon--night {
   position: absolute;
   top: 0;
-  // right: 70%;
   left: -3%;
   z-index: 2;
   pointer-events: none;
 
-  @media(max-width: 1116px){
+  @media (max-width: 1116px) {
     top: 5%;
     left: -3.5%;
     width: 80px;
     height: auto;
   }
-
 }

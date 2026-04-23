@@ -1,11 +1,18 @@
 export default function MedTrainSVG() {
   return (
-    <svg width="1325" height="161" viewBox="0 0 1325 161" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      className="site-theme-paint-transition"
+      width="1325"
+      height="161"
+      viewBox="0 0 1325 161"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g filter="url(#filter0_gn_2450_1438)">
         <path d="M886.226 20.5428C886.226 10.0376 894.742 1.52148 905.248 1.52148H1165.46C1252.23 1.52148 1322.58 71.8648 1322.58 158.638H886.226V20.5428Z" fill="#F3EAE3" />
       </g>
       <g filter="url(#filter1_gn_2450_1438)">
-        <path d="M885.364 112.855H1321.52V142.579H885.364V112.855Z" fill="#AEB032" />
+        <path d="M885.364 112.855H1321.52V142.579H885.364V112.855Z" fill="var(--site-train-stripe)" />
       </g>
       <g filter="url(#filter2_gn_2450_1438)">
         <path d="M908.737 33.0986H942.595V80.6519H908.737V33.0986Z" fill="#2B2B23" />
@@ -32,7 +39,7 @@ export default function MedTrainSVG() {
         <path d="M437.871 20.5428C437.871 10.0376 429.355 1.52148 418.85 1.52148H158.638C71.8649 1.52148 1.52175 71.8648 1.52175 158.638H437.871V20.5428Z" fill="#F3EAE3" />
       </g>
       <g filter="url(#filter10_gn_2450_1438)">
-        <path d="M437.522 112.521H3.5216V142.521H437.522V112.521Z" fill="#AEB032" />
+        <path d="M437.522 112.521H3.5216V142.521H437.522V112.521Z" fill="var(--site-train-stripe)" />
       </g>
       <g filter="url(#filter11_gn_2450_1438)">
         <path d="M414.284 33.0986H380.426V80.6519H414.284V33.0986Z" fill="#2B2B23" />
@@ -86,7 +93,7 @@ export default function MedTrainSVG() {
         <path d="M593.185 33.1001H627.043V80.6534H593.185V33.1001Z" fill="#2B2B23" />
       </g>
       <g filter="url(#filter28_gn_2450_1438)">
-        <path d="M443.871 113.384H880.01V142.761H443.871V113.384Z" fill="#AEB032" />
+        <path d="M443.871 113.384H880.01V142.761H443.871V113.384Z" fill="var(--site-train-stripe)" />
       </g>
       <g filter="url(#filter29_gn_2450_1438)">
         <path d="M650.858 37.2817H681.292V154.073H650.858V37.2817Z" fill="#2B2B23" />

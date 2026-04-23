@@ -8,12 +8,28 @@ $judge-card-min: 17.5rem; // 280px — same visual size on tablet + phone
 .embla__container {
   display: flex;
   touch-action: pan-y pinch-zoom;
-  gap: 0.1rem;
+  // gap: -rem;
+}
+
+.embla__slideThemeDecorMount {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.embla__slideThemeDecorMotion {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .embla__slide {
   // desktop: ~3 slides visible
   flex: 0 0 clamp(#{$judge-card-min}, 30%, 22rem);
+  position: relative;
+  transform: translateZ(0);
+  transition: transform 160ms ease;
 
   // tablet + phone: fixed card width so images dony keep shrinking with the viewport
   @media (max-width: 1024px) {
@@ -28,4 +44,97 @@ $judge-card-min: 17.5rem; // 280px — same visual size on tablet + phone
     object-fit: cover;
     // border: 2px solid black;
   }
+
+  // Judge SVG cards are clickable "link-like" SVGs.
+  // Avoid default focus outlines / decorations looking like borders.
+  svg[role="link"] {
+    outline: none;
+    text-decoration: none;
+  }
+
+  svg[role="link"]:focus,
+  svg[role="link"]:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition: none;
+    }
+  }
+}
+
+.embla__slide:hover,
+.embla__slide:focus-within {
+  transform: scale(1.02);
+  z-index: 3;
+}
+
+.embla__themeSwitch {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+
+  button {
+    appearance: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: transparent;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  button.is-active {
+    border-color: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.06);
+  }
+}
+
+.embla__themeIcon--day {
+  position: absolute;
+  top: 55%;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+
+  @media(max-width: 1116px){
+    top: 55%;
+    width: 50px;
+    height: auto;
+    
+  }
+}
+
+.embla__themeIcon--evening {
+  position: absolute;
+  top: 3%;
+  left: 67%;
+  z-index: 2;
+  pointer-events: none;
+
+  @media(max-width: 1116px){
+    top: 10%;
+    left: 69%;
+    width: 80px;
+    height: auto;
+  }
+}
+
+.embla__themeIcon--night{
+  position: absolute;
+  top: 0;
+  // right: 70%;
+  left: -3%;
+  z-index: 2;
+  pointer-events: none;
+
+  @media(max-width: 1116px){
+    top: 5%;
+    left: -3.5%;
+    width: 80px;
+    height: auto;
+  }
+
 }

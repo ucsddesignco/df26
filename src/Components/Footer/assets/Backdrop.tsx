@@ -1,12 +1,12 @@
-import { type ThemeType } from "../../../types/theme";
+import type { SiteTimeTheme } from "../../../context/SiteThemeContext";
 
 interface TrainWallProps {
-  theme: ThemeType;
+  theme: SiteTimeTheme;
 }
 
 // 1. Define your different versions here
-const ThemeBackdrops: Record<ThemeType, React.ReactNode> = {
-  "sunrise-sunset": (
+const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
+  morning: (
     <svg
       width="1280"
       height="480"

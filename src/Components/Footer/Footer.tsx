@@ -9,7 +9,7 @@ import {
 } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import "./Footer.scss";
-import type { ThemeType } from "../../types/theme";
+import { useSiteTheme } from "../../context/SiteThemeContext";
 import {
   ResponsiveBackdrop,
   ResponsiveFooterButton,
@@ -112,10 +112,10 @@ function toWallStyle(side: "left" | "right", wall: WallLayout): CSSProperties {
 }
 
 export default function Footer() {
+  const { theme } = useSiteTheme();
   const [isOpen, setIsOpen] = useState(false);
   /** When true, the door reached open state via IntersectionObserver (not banner click). */
   const [doorOpenViaViewport, setDoorOpenViaViewport] = useState(false);
-  const [currentTheme] = useState<ThemeType>("sunrise-sunset");
   const [breakpoint, setBreakpoint] = useState<FooterBreakpoint>("desktop");
   const bannerRef = useRef<HTMLDivElement>(null);
   /** Tracks last observed intersection so we only react to enter/leave, not spurious IO callbacks (common on Safari). */
@@ -330,13 +330,13 @@ export default function Footer() {
         >
           <ResponsiveTrainWall
             side="left"
-            theme={currentTheme}
+            theme={theme}
             breakpoint={breakpoint}
             style={wallStyleBySide.left}
           />
           <ResponsiveTrainWall
             side="right"
-            theme={currentTheme}
+            theme={theme}
             breakpoint={breakpoint}
             style={wallStyleBySide.right}
           />
@@ -356,7 +356,7 @@ export default function Footer() {
               }}
               transition={doorTransition}
             >
-              <ResponsiveLeftDoor theme={currentTheme} breakpoint={breakpoint} />
+              <ResponsiveLeftDoor theme={theme} breakpoint={breakpoint} />
             </motion.div>
 
             {/* RIGHT DOOR */}
@@ -374,11 +374,11 @@ export default function Footer() {
               }}
               transition={doorTransition}
             >
-              <ResponsiveRightDoor theme={currentTheme} breakpoint={breakpoint} />
+              <ResponsiveRightDoor theme={theme} breakpoint={breakpoint} />
             </motion.div>
 
             <div className="backdrop">
-              <ResponsiveBackdrop theme={currentTheme} breakpoint={breakpoint} />
+              <ResponsiveBackdrop theme={theme} breakpoint={breakpoint} />
             </div>
           </div>
 

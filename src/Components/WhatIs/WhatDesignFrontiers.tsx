@@ -6,6 +6,11 @@ import {
   type KeyboardEvent,
   type TransitionEvent,
 } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import {
+  themeIllustrationCrossfadeTransition,
+  useSiteTheme,
+} from '../../context/SiteThemeContext'
 import CalendarIcon from '../../SVGS/CalendarIcon'
 import RegisterNow from './registerNow'
 import { WhatIsFlowers } from './flowers'
@@ -18,27 +23,6 @@ import slide4 from './wdf-carousel/slide-4.png'
 
 //Carousel timing
 const AUTO_ADVANCE_MS = 6000
-
-//Time-of-day
-type TimeTheme = 'morning' | 'afternoon' | 'night'
-
-function getTimeTheme(): TimeTheme {
-  const hour = new Date().getHours()
-  if (hour < 12) return 'morning'
-  if (hour < 18) return 'afternoon'
-  return 'night'
-}
-
-function useTimeThemeKey() {
-  const [theme, setTheme] = useState<TimeTheme>(() => getTimeTheme())
-
-  useEffect(() => {
-    const id = window.setInterval(() => setTheme(getTimeTheme()), 60_000)
-    return () => window.clearInterval(id)
-  }, [])
-
-  return theme
-}
 
 //Static slide list (order = carousel order)
 const slides = [
@@ -64,7 +48,9 @@ export default function WhatDesignFrontiers() {
   const [index, setIndex] = useState(0)
   const [noTransition, setNoTransition] = useState(false)
   const indexRef = useRef(0)
-  const timeTheme = useTimeThemeKey()
+  const { theme: timeTheme } = useSiteTheme()
+  const reduceMotion = useReducedMotion()
+  const themeDecorTransition = themeIllustrationCrossfadeTransition(reduceMotion)
 
   const nSlides = slides.length
   const lastReal = nSlides - 1
@@ -306,16 +292,25 @@ export default function WhatDesignFrontiers() {
         </div>
       </div>
 
-      {/* --- Background SVG by time of day */}
-      {timeTheme === 'morning' && (
-        <WhatIsFlowers className='wdf__timeTheme' aria-hidden />
-      )}
-      {timeTheme === 'afternoon' && (
-        <WhatIsLeaves className='wdf__timeTheme' aria-hidden />
-      )}
-      {timeTheme === 'night' && (
-        <WhatIsStars className='wdf__timeTheme' aria-hidden />
-      )}
+      {/* --- Background SVG by time of day (crossfade on theme change) */}
+      <AnimatePresence initial={false} mode="sync">
+        <motion.div
+          key={timeTheme}
+          className="wdf__timeThemeMotion"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={themeDecorTransition}
+        >
+          {timeTheme === 'morning' ? (
+            <WhatIsFlowers className="wdf__timeTheme" aria-hidden />
+          ) : timeTheme === 'afternoon' ? (
+            <WhatIsLeaves className="wdf__timeTheme" aria-hidden />
+          ) : (
+            <WhatIsStars className="wdf__timeTheme" aria-hidden />
+          )}
+        </motion.div>
+      </AnimatePresence>
     </section>
   )
 }

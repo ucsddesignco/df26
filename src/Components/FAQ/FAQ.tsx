@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { styled } from "@mui/material/styles";
 import MuiAccordion, { type AccordionProps } from "@mui/material/Accordion";
 import MuiAccordionSummary, {
   type AccordionSummaryProps,
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import type { ThemeType } from "../../types/theme";
+import {
+  themeIllustrationCrossfadeTransition,
+  useSiteTheme,
+} from "../../context/SiteThemeContext";
 import { faqStickers } from "./assets/FaqStickers";
 import "./FAQ.scss";
 
@@ -61,11 +65,10 @@ const AccordionDetails = styled(MuiAccordionDetails)(() => ({
   padding: 0,
 }));
 
-interface FAQProps {
-  theme?: ThemeType;
-}
-
-export default function FAQ({ theme = "sunrise-sunset" }: FAQProps) {
+export default function FAQ() {
+  const { theme } = useSiteTheme();
+  const reduceMotion = useReducedMotion();
+  const stickerCrossfade = themeIllustrationCrossfadeTransition(reduceMotion);
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =
@@ -106,7 +109,20 @@ export default function FAQ({ theme = "sunrise-sunset" }: FAQProps) {
             key={sticker.id}
             className={`${sticker.className} ${sticker.className}--${theme}`}
           >
-            {sticker.contentByTheme[theme]}
+            <div className="faq-sticker__crossfade">
+              <AnimatePresence initial={false} mode="sync">
+                <motion.div
+                  key={theme}
+                  className="faq-sticker__crossfade-inner"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={stickerCrossfade}
+                >
+                  {sticker.contentByTheme[theme]}
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         ))}
         <p className="title">FAQ</p>

@@ -1,59 +1,25 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import "./Agenda.scss";
-
+import {
+  themeIllustrationCrossfadeTransition,
+  useSiteTheme,
+  type SiteTimeTheme,
+} from "../../context/SiteThemeContext";
 
 // Decoration images — one per time-of-day theme
 import morningImg from "../../assets/agenda-assets/Sunrise-ticket-train.png";
 import afternoonImg from "../../assets/agenda-assets/day-image.png";
 import nightImg from "../../assets/agenda-assets/sunset-image.png";
 
-// theme change - depending on the time of day
-type Theme = "morning" | "afternoon" | "night";
+type Theme = SiteTimeTheme;
 
-function getThemeByTime(): Theme {
-  const hour = new Date().getHours();
-  if (hour < 12) return "morning";
-  if (hour < 18) return "afternoon";
-  return "night";
-}
-
-type ThemeStyle = {
-  day1Color: string;
-  day2Color: string;
-  image: string;
+/** Decoration art per theme (line colors use CSS vars from `SiteThemeProvider`). */
+const themeDecorationImage: Record<Theme, string> = {
+  morning: morningImg,
+  afternoon: afternoonImg,
+  night: nightImg,
 };
-
-//color changes for the lines depending on the time of day
-const themeStyles: Record<Theme, ThemeStyle> = {
-  morning: {
-    day1Color: "#ED9699", // pink
-    day2Color: "#989713", // olive
-    image: morningImg,
-  },
-  afternoon: {
-    day1Color: "#AEB032", // light green
-    day2Color: "#F27E08", // orange
-    image: afternoonImg,
-  },
-  night: {
-    day1Color: "#E8CE8A", // yellow
-    day2Color: "#5A8CD3", // blue
-    image: nightImg,
-  },
-};
-
-function useTimeTheme() {
-  const [theme, setTheme] = useState<Theme>(getThemeByTime());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTheme(getThemeByTime());
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return themeStyles[theme];
-}
 
 // actual schedule for DF, can be added on to
 type AgendaItem = {
@@ -103,7 +69,7 @@ function AgendaColumn({
       <div className="agenda-timeline-wrapper">
         {/* color of the actual lines */}
         <span
-          className="agenda-line"
+          className="agenda-line site-theme-paint-transition"
           style={{ background: lineColor }}
           aria-hidden="true"
         />
@@ -117,7 +83,7 @@ function AgendaColumn({
               <li key={i} className="agenda-row">
                 <div className="agenda-marker-wrapper">
                   <span
-                    className="agenda-marker"
+                    className="agenda-marker site-theme-paint-transition"
                     style={{ borderColor }}
                   />
                 </div>
@@ -141,7 +107,10 @@ function AgendaColumn({
 type MobileTab = "day1" | "day2";
 
 export default function Agenda() {
-  const theme = useTimeTheme();
+  const { theme: themeKey } = useSiteTheme();
+  const reduceMotion = useReducedMotion();
+  const decorTransition = themeIllustrationCrossfadeTransition(reduceMotion);
+  const decorationSrc = themeDecorationImage[themeKey];
   const [activeTab, setActiveTab] = useState<MobileTab>("day1");
 
   return (
@@ -154,7 +123,7 @@ export default function Agenda() {
       >
         <defs>
           <filter id="agenda-roughen">
-             {/* this is the texture for the lines  */}
+            {/* this is the texture for the lines  */}
             <feTurbulence
               type="fractalNoise"
               baseFrequency="0.15"
@@ -232,31 +201,42 @@ export default function Agenda() {
 
       <div className="agenda-grid">
         <div
-          className={`agenda-panel ${
-            activeTab === "day1" ? "is-visible" : ""
-          }`}
+          className={`agenda-panel ${activeTab === "day1" ? "is-visible" : ""
+            }`}
         >
           <AgendaColumn
             dayLabel="Day One"
             dateLabel="SAT, MAY 9"
             items={dayOne}
-            lineColor={theme.day1Color}
+            lineColor="var(--site-agenda-day1)"
           >
-            {/* image for mobile/tablet view*/}
-            <img className="agenda-decoration" src={theme.image} alt="" />
+            {/* image for mobile/tablet view — crossfade when theme changes */}
+            <div className="agenda-decoration-wrap">
+              <AnimatePresence initial={false} mode="sync">
+                <motion.img
+                  key={decorationSrc}
+                  className="agenda-decoration"
+                  src={decorationSrc}
+                  alt=""
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={decorTransition}
+                />
+              </AnimatePresence>
+            </div>
           </AgendaColumn>
         </div>
 
         <div
-          className={`agenda-panel ${
-            activeTab === "day2" ? "is-visible" : ""
-          }`}
+          className={`agenda-panel ${activeTab === "day2" ? "is-visible" : ""
+            }`}
         >
           <AgendaColumn
             dayLabel="Day Two"
             dateLabel="SUN, MAY 10"
             items={dayTwo}
-            lineColor={theme.day2Color}
+            lineColor="var(--site-agenda-day2)"
           />
         </div>
       </div>

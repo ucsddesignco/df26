@@ -8,9 +8,9 @@ import {
 } from "../../context/SiteThemeContext";
 
 // Decoration images — one per time-of-day theme
-import morningImg from "../../assets/agenda-assets/Sunrise-ticket-train.png";
-import afternoonImg from "../../assets/agenda-assets/day-image.png";
-import nightImg from "../../assets/agenda-assets/sunset-image.png";
+import morningImg from "../../assets/agenda-assets/Sunrise-ticket-train.svg";
+import afternoonImg from "../../assets/agenda-assets/day-image.svg";
+import nightImg from "../../assets/agenda-assets/sunset-ticket-image.svg";
 
 type Theme = SiteTimeTheme;
 
@@ -103,7 +103,7 @@ function AgendaColumn({
   );
 }
 
-//main component 
+// main component
 type MobileTab = "day1" | "day2";
 
 export default function Agenda() {
@@ -131,13 +131,9 @@ export default function Agenda() {
               seed="4"
               result="noise"
             />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale="2"
-            />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
           </filter>
-          {/* Grainy texture for the header - softer than the lines one*/}
+          {/* Grainy texture for the header - softer than the lines one */}
           <filter id="agenda-roughen-soft">
             <feTurbulence
               type="fractalNoise"
@@ -177,7 +173,7 @@ export default function Agenda() {
 
       <h2 className="agenda-section-title">Agenda</h2>
 
-      {/* tab logic for the mobile and tablet view*/}
+      {/* tab logic for the mobile and tablet view */}
       <div className="agenda-tabs" role="tablist" aria-label="Agenda days">
         <button
           role="tab"
@@ -200,17 +196,15 @@ export default function Agenda() {
       </div>
 
       <div className="agenda-grid">
-        <div
-          className={`agenda-panel ${activeTab === "day1" ? "is-visible" : ""
-            }`}
-        >
+
+        {/* ---- DESKTOP: both columns always visible side by side ---- */}
+        <div className="agenda-panel agenda-panel--desktop">
           <AgendaColumn
             dayLabel="Day One"
             dateLabel="SAT, MAY 9"
             items={dayOne}
             lineColor="var(--site-agenda-day1)"
           >
-            {/* image for mobile/tablet view — crossfade when theme changes */}
             <div className="agenda-decoration-wrap">
               <AnimatePresence initial={false} mode="sync">
                 <motion.img
@@ -228,10 +222,7 @@ export default function Agenda() {
           </AgendaColumn>
         </div>
 
-        <div
-          className={`agenda-panel ${activeTab === "day2" ? "is-visible" : ""
-            }`}
-        >
+        <div className="agenda-panel agenda-panel--desktop">
           <AgendaColumn
             dayLabel="Day Two"
             dateLabel="SUN, MAY 10"
@@ -239,6 +230,66 @@ export default function Agenda() {
             lineColor="var(--site-agenda-day2)"
           />
         </div>
+
+        {/* ---- MOBILE/TABLET: one panel at a time, fades on tab switch ---- */}
+        <div className="agenda-panel agenda-panel--mobile">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            >
+              {activeTab === "day1" ? (
+                <AgendaColumn
+                  dayLabel="Day One"
+                  dateLabel="SAT, MAY 9"
+                  items={dayOne}
+                  lineColor="var(--site-agenda-day1)"
+                >
+                  <div className="agenda-decoration-wrap">
+                    <AnimatePresence initial={false} mode="sync">
+                      <motion.img
+                        key={decorationSrc}
+                        className="agenda-decoration"
+                        src={decorationSrc}
+                        alt=""
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={decorTransition}
+                      />
+                    </AnimatePresence>
+                  </div>
+                </AgendaColumn>
+              ) : (
+                <AgendaColumn
+                  dayLabel="Day Two"
+                  dateLabel="SUN, MAY 10"
+                  items={dayTwo}
+                  lineColor="var(--site-agenda-day2)"
+                >
+                  <div className="agenda-decoration-wrap">
+                    <AnimatePresence initial={false} mode="sync">
+                      <motion.img
+                        key={decorationSrc}
+                        className="agenda-decoration"
+                        src={decorationSrc}
+                        alt=""
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={decorTransition}
+                      />
+                    </AnimatePresence>
+                  </div>
+                </AgendaColumn>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
       </div>
     </section>
   );

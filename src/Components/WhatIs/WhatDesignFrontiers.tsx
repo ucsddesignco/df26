@@ -210,10 +210,10 @@ export default function WhatDesignFrontiers() {
         </div>
 
         <p className='wdf__body'>
-          Design Frontiers is Design Co's annual designathon—a two-day sprint
-          where teams tackle real-world challenges with creative design solutions.
-          Final projects are presented to a panel of industry professionals who
-          offer feedback and select standout work.
+        Design Frontiers is Design Co’s annual design-a-thon. 
+        Across two days, teams collaborate and innovate in response to real-world problems. 
+        Finalists present their projects to a panel of industry professionals who mentor and 
+        judge throughout the event.
         </p>
 
         <a

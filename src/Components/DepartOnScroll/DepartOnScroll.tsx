@@ -27,7 +27,7 @@ function mapRange(value: number, inMin: number, inMax: number, outMin: number, o
 const getResponsiveTriggerPercentage = (width: number) => {
   if (width <= 743) return 0.3;  // Mobile
   if (width <= 1279) return 0.4; // Tablet
-  return 0.38;                   // Desktop Default
+  return 0.42;                   // Desktop Default
 };
 
 export default function DepartOnScroll({ children }: DepartOnScrollProps) {
@@ -94,16 +94,21 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
 
 
   const { scrollY } = useScroll(); // Scroll sensor
-const rawParallaxX = useTransform(
+
+  const rawParallaxX = useTransform(
     scrollY, 
     [0, exactTriggerPoint], 
     [0, parallaxAmount],
     { clamp: true }
   );
   
-  const parallaxX = reduceMotion
-    ? rawParallaxX
-    : useSpring(rawParallaxX, { stiffness: 220, damping: 40, mass: 0.35 });
+  const springParallaxX = useSpring(rawParallaxX, { 
+    stiffness: 220, 
+    damping: 40, 
+    mass: 0.35 
+  });
+
+  const parallaxX = reduceMotion ? rawParallaxX : springParallaxX;
 
   const topMarginOffset = `-${marginPercentage * 100}%`;
   const isInView = useInView(containerRef, {

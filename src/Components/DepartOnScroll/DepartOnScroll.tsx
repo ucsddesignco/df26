@@ -1,6 +1,14 @@
 import './DepartOnScroll.scss'
 import { useState, useRef, useEffect } from "react";
-import { motion, useScroll, useMotionValueEvent, useTransform, type Variants } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useMotionValueEvent,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 
 interface DepartOnScrollProps {
   children: React.ReactNode;
@@ -28,6 +36,7 @@ const getResponsiveTriggerPoint = (width: number, height: number) => {
 export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [trainState, setTrainState] = useState<TrainState>("entering");
+  const reduceMotion = useReducedMotion();
 
   const isBrowser = typeof window !== "undefined";
   const [windowSize, setWindowSize] = useState({
@@ -56,9 +65,20 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   const parallaxAmount = isBrowser ? windowSize.width * 0.2 : 50;
 
   const { scrollY } = useScroll(); // Scroll sensor
-  const parallaxX = useTransform(scrollY, [0, currentTriggerPoint], [0, parallaxAmount]); // parallax-scroll
+  // clamp so we dont "keep accelerating" after the trigger threshold.
+  // Then spring-smooth to prevent a visible hitch right around the trigger point.
+  const rawParallaxX = useTransform(
+    scrollY,
+    [0, currentTriggerPoint],
+    [0, parallaxAmount],
+    { clamp: true },
+  );
+  const parallaxX = reduceMotion
+    ? rawParallaxX
+    : useSpring(rawParallaxX, { stiffness: 220, damping: 40, mass: 0.35 });
 
   useMotionValueEvent(scrollY, "change", (latestScroll) => {
+    if (!isBrowser) return;
     const activeTrigger = getResponsiveTriggerPoint(window.innerWidth, window.innerHeight);
 
     const previousScroll = scrollY.getPrevious() || 0;

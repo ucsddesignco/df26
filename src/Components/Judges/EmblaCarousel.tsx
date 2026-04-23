@@ -2,14 +2,14 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import useEmblaCarousel from 'embla-carousel-react'
 import "./Caraousel.scss"
-import {Judge1 }from "./../../SVGS/Judges/Judge1"
-import {Judge2 }from "./../../SVGS/Judges/Judge2"
-import {Judge3 }from "./../../SVGS/Judges/Judge3"
-import {Judge4 }from "./../../SVGS/Judges/Judge4"
-import {Judge5 }from "./../../SVGS/Judges/Judge5"
-import {BigFlower }from "./Themes/BigFlower"
-import {BigLeaf }from "./Themes/Bigleaf"
-import {BigStar }from "./Themes/BigStar"
+import { Judge1 } from "./../../SVGS/Judges/Judge1"
+import { Judge2 } from "./../../SVGS/Judges/Judge2"
+import { Judge3 } from "./../../SVGS/Judges/Judge3"
+import { Judge4 } from "./../../SVGS/Judges/Judge4"
+import { Judge5 } from "./../../SVGS/Judges/Judge5"
+import { BigFlower } from "./Themes/BigFlower"
+import { BigLeaf } from "./Themes/Bigleaf"
+import { BigStar } from "./Themes/BigStar"
 import { themeIllustrationCrossfadeTransition } from "../../context/SiteThemeContext"
 
 

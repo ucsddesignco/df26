@@ -1,6 +1,6 @@
 import './DepartOnScroll.scss'
 import { useState, useRef, useEffect } from "react";
-import { motion, useScroll, useTransform, type Variants } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, type Variants } from "framer-motion";
 
 interface DepartOnScrollProps {
   children: React.ReactNode;
@@ -17,8 +17,8 @@ function mapRange(value: number, inMin: number, inMax: number, outMin: number, o
 
 /** Helper function that calculates a single trigger threshold across the component */
 const getResponsiveTriggerPercentage = (width: number) => {
-  if (width <= 743) return 0.38;  // Mobile
-  if (width <= 1279) return 0.38; // Tablet
+  if (width <= 743) return 0.3;  // Mobile
+  if (width <= 1279) return 0.4; // Tablet
   return 0.38;                   // Desktop Default
 };
 
@@ -42,15 +42,19 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   useEffect(() => {
     if (!isBrowser) return;
     
+    let timeoutId: ReturnType<typeof setTimeout>;
     const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      }, 150); 
     };
     
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timeoutId);
+    };
   }, [isBrowser]);
 
 
@@ -77,113 +81,95 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   const { scrollY } = useScroll(); // Scroll sensor
   const parallaxX = useTransform(scrollY, [0, exactTriggerPoint], [0, parallaxAmount]); // Scroll Parallax
 
+  const topMarginOffset = `-${marginPercentage * 100}%`;
+  const isInView = useInView(containerRef, {
+    margin: `${topMarginOffset} 0px 0px 0px` as `${number}% 0px 0px 0px`,
+    amount: 0 // Equivalent to threshold: 0
+  });
+
   useEffect(() => {
-    if (!containerRef.current) return;
+    isIntersectingRef.current = isInView;
 
-    // Define trigger point
-    const topMarginOffset = `-${marginPercentage * 100}%`;
+    const stateTimer = setTimeout(() => {
+      if (isInView) {
+        setTrainState((prev) => {
+          if (prev === "gone") return "arriving";
+          return prev;
+        });
+      } else {
+        setTrainState((prev) => {
+        if (prev === "parked" || prev === "arriving") return "leaving";
+          return prev;
+        });
+      }
+    }, 0);
 
-    // Configure observer
-    const options: IntersectionObserverInit = {
-      root: null, 
-      rootMargin: `${topMarginOffset} 0px 0px 0px`, 
-      threshold: 0, 
-    };
-
-    // Define behavior after crossing trigger point
-    const callback: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        isIntersectingRef.current = entry.isIntersecting;
-
-        if (entry.isIntersecting) {
-          // Train scrolled into view
-          setTrainState((prev) => {
-            if (prev === "gone") return "arriving";
-            return prev;
-          });
-        } else {
-          // Train scrolled out of view
-          setTrainState((prev) => {
-            if (prev === "parked" || prev === "entering" || prev === "arriving") return "leaving";
-            return prev;
-          });
-        }
-      });
-    };
-
-    // Init observer
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(containerRef.current);
-
-    return () => observer.disconnect();
-  }, [windowSize.width, marginPercentage]);
+    return () => clearTimeout(stateTimer);
+  }, [isInView]);
 
 
-  const getResponsivePositions = (width: number) => {
-    let parkedPosition = "-98%"; // Default Desktop
-    let offscreenPosition = "-160%"; // Default Desktop
+  const getResponsiveParkedPosition = (width: number) => {
+    let parkedPosition = "-98%"; 
 
     if (width <= 743) {
-      // Mobile: As window grows from 390 to 743, smoothly scale x from -35% to -50%
       const fluidPark = mapRange(width, 390, 743, -197, -103);
-      const fluidOff = mapRange(width, 390, 743, -270, -155)
       parkedPosition = `${fluidPark}%`;
-      offscreenPosition = `${fluidOff}%`;
     } else if (width <= 1279) {
-      // Tablet: As window grows from 744 to 1279, smoothly scale x from -50% to -75%
       const fluidPark = mapRange(width, 744, 1279, -142, -83);
-      const fluidOff = mapRange(width, 744, 1279, -200, -125);
       parkedPosition = `${fluidPark}%`;
-      offscreenPosition = `${fluidOff}%`;
     }
 
-    return { parkedPosition, offscreenPosition };
+    return parkedPosition;
   }
+
   // Train Keyframes
   const trainVariants : Variants = {
-    offscreen: (width: number) => ({
-      x: getResponsivePositions(width).offscreenPosition,
-    }),
+    offscreen: { 
+      x: "calc(-100vw - 100%)",
+    },
     entering: (width: number) => ({ // On webpage reload
-      x: getResponsivePositions(width).parkedPosition,
+      x: getResponsiveParkedPosition(width),
       transition: { type:"spring", delay: 1, stiffness: 75, damping: 13, mass: 1.0, velocity: 0},  
     }),
     parked: (width: number) => ({
-      x: getResponsivePositions(width).parkedPosition,
+      x: getResponsiveParkedPosition(width),
     }),
     leaving: {
-      x: '120%',
+      x: "calc(100vw + 100%)",
       transition: { duration: 1.5, ease: "easeInOut" },
     },
-    gone: (width: number) => ({
-      x: getResponsivePositions(width).offscreenPosition,
+    gone: {
+      x: "calc(-100vw - 100%)",
       transition: { duration: 0 },
-    }),
+    },
     arriving: (width: number) => ({ // On scroll backup
-      x: getResponsivePositions(width).parkedPosition,
+      x: getResponsiveParkedPosition(width),
       transition: { type:"spring", delay: 1, stiffness: 75, damping: 13, mass: 1.0, velocity: 0},  
     }),
   };
 
   return (
     <div ref={containerRef} className='motion'>
-      <motion.div style={{ x: parallaxX }}>
+      <motion.div style={{ x: parallaxX, z: 0 }}>
         <motion.div
           variants={trainVariants}
           initial="offscreen"
           animate={trainState}
           custom={windowSize.width}
-          style={{ willChange: "transform", pointerEvents: "none" }}
+          style={{ willChange: "transform", pointerEvents: "none", z: 0 }}
           onAnimationComplete={(completedVariant) => {
             if (completedVariant === "entering" || completedVariant === "arriving") {
-              setTrainState("parked");
+              if (isIntersectingRef.current) {
+                setTrainState("parked");
+              } else {
+                setTrainState("leaving");
+              }
             }
             if (completedVariant === "leaving") {
               setTrainState("gone");
               if (isIntersectingRef.current) {
                 setTimeout(() => {
-                  // Double check they didn't scroll away again during this 50ms window
-                  if (isIntersectingRef.current) { 
+                  if (isIntersectingRef.current) { // Double Check Scroll
                     setTrainState("arriving");
                   }
                 }, 50);

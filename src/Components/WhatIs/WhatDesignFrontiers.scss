@@ -194,6 +194,12 @@ $wdf-stack: 1120px;
     margin-bottom: -28px;
   }
 
+  //Afternoon leaves: visual only (transform does not change layout vs flowers/stars)
+  &__timeTheme--afternoon {
+    transform: translateY(-30px) scale(0.88);
+    transform-origin: bottom right;
+  }
+
   //Register
   &__button {
     align-self: flex-start;
@@ -247,6 +253,7 @@ $wdf-stack: 1120px;
     flex-shrink: 0;
     line-height: 0;
     color: inherit;
+    transform: translateY(1px);
 
     svg {
       width: 14px;
@@ -259,7 +266,7 @@ $wdf-stack: 1120px;
     display: inline-flex;
     align-items: center;
     line-height: 1;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
   }
 
   //≤1120px
@@ -333,6 +340,11 @@ $wdf-stack: 1120px;
       margin-top: -36px;
       margin-right: 0;
       margin-bottom: -30px;
+    }
+
+    &__timeTheme--afternoon {
+      transform: translateY(-22px) scale(0.88);
+      transform-origin: bottom right;
     }
   }
 

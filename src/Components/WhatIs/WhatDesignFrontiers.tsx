@@ -291,7 +291,10 @@ export default function WhatDesignFrontiers() {
         <WhatIsFlowers className='wdf__timeTheme' aria-hidden />
       )}
       {timeTheme === 'afternoon' && (
-        <WhatIsLeaves className='wdf__timeTheme' aria-hidden />
+        <WhatIsLeaves
+          className='wdf__timeTheme wdf__timeTheme--afternoon'
+          aria-hidden
+        />
       )}
       {timeTheme === 'night' && (
         <WhatIsStars className='wdf__timeTheme' aria-hidden />

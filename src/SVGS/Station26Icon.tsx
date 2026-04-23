@@ -1,4 +1,4 @@
-export default function Station26Icon() { //currently green only 
+export default function Station26Icon() {
   return (
     <>
       <style>{`
@@ -15,7 +15,14 @@ export default function Station26Icon() { //currently green only
       `}</style>
     <svg className="station-icon" viewBox="0 0 51 52" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_n_2229_3089)">
-        <ellipse cx="25.2579" cy="25.6464" rx="21.3721" ry="21.7607" fill="#989713" />
+        <ellipse
+          className="site-theme-paint-transition"
+          cx="25.2579"
+          cy="25.6464"
+          rx="21.3721"
+          ry="21.7607"
+          fill="var(--site-station-accent)"
+        />
         <path d="M25.2579 1.94238C38.1673 1.94238 48.5734 12.5885 48.5734 25.6465C48.5733 38.7044 38.1673 49.3496 25.2579 49.3496C12.3486 49.3496 1.94255 38.7044 1.9425 25.6465C1.9425 12.5885 12.3486 1.94238 25.2579 1.94238Z" stroke="#EEF0F1" strokeWidth="3.88583" />
       </g>
       <g filter="url(#filter1_n_2229_3089)">

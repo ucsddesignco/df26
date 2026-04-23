@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { SiteTimeTheme } from "../../context/SiteThemeContext";
 import { useSiteTheme } from "../../context/SiteThemeContext";
@@ -11,7 +11,6 @@ import "./Toggle.scss";
 const OPTION_H = 68;
 const NUM_OPTS = 3;
 const OPTIONS_HEIGHT = OPTION_H * NUM_OPTS;
-const TRIGGER_H = OPTION_H;
 
 const MODE_ORDER: { mode: "moon" | "flower" | "leaf"; theme: SiteTimeTheme; label: string }[] = [
     { mode: "moon", theme: "night", label: "Night mode" },
@@ -41,32 +40,29 @@ function TriggerIcon({ theme }: { theme: SiteTimeTheme }) {
     return <Leaf />;
 }
 
-/** After a theme pick, ignore trigger hover briefly so layout/pointer doesn’t immediately re-open (matches intent of HTML click → close while cursor stays put). */
-const HOVER_OPEN_COOLDOWN_MS = 420;
+const SUPPRESS_MS = 480;
 
 export const Toggle = () => {
     const { theme, setTheme } = useSiteTheme();
     const pillRef = useRef<HTMLDivElement | null>(null);
-    const lastPickAtRef = useRef(0);
+    const suppressHoverOpenRef = useRef(false);
+    const suppressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [isOpen, setIsOpen] = useState(false);
-    const [pillHeightPx, setPillHeightPx] = useState(TRIGGER_H);
-    const textureFilterId = `toggle-tex-${useId().replace(/:/g, "")}`;
+    const [suppressPointer, setSuppressPointer] = useState(false);
     const noHover = useMediaQuery("(hover: none)");
     const reduceMotion = useReducedMotion();
     const [iconPickCount, setIconPickCount] = useState(0);
+    const textureFilterId = useId().replace(/:/g, "");
+    const textureViewHeight = 68 + (isOpen ? OPTIONS_HEIGHT : 0);
 
-    useLayoutEffect(() => {
-        const el = pillRef.current;
-        if (!el) return;
-        const measure = () => {
-            const h = el.getBoundingClientRect().height;
-            if (h > 0) setPillHeightPx(Math.max(TRIGGER_H, Math.round(h * 1000) / 1000));
-        };
-        measure();
-        const ro = new ResizeObserver(() => measure());
-        ro.observe(el);
-        return () => ro.disconnect();
+    const clearSuppressTimer = useCallback(() => {
+        if (suppressTimerRef.current) {
+            clearTimeout(suppressTimerRef.current);
+            suppressTimerRef.current = null;
+        }
     }, []);
+
+    useEffect(() => () => clearSuppressTimer(), [clearSuppressTimer]);
 
     const openToggle = useCallback(() => {
         setIsOpen(true);
@@ -87,8 +83,7 @@ export const Toggle = () => {
     }, [noHover, isOpen]);
 
     const onTriggerEnter = () => {
-        if (noHover || isOpen) return;
-        if (performance.now() - lastPickAtRef.current < HOVER_OPEN_COOLDOWN_MS) return;
+        if (suppressHoverOpenRef.current || noHover || isOpen) return;
         openToggle();
     };
 
@@ -105,35 +100,40 @@ export const Toggle = () => {
     };
 
     const onPick = (next: SiteTimeTheme) => {
-        lastPickAtRef.current = performance.now();
         setTheme(next);
         setIconPickCount((c) => c + 1);
         closeToggle();
+        /* Hover desktops: pointer stays over the pill — block reopen + ignore events until close finishes */
+        if (noHover) return;
+        suppressHoverOpenRef.current = true;
+        setSuppressPointer(true);
+        clearSuppressTimer();
+        suppressTimerRef.current = setTimeout(() => {
+            suppressHoverOpenRef.current = false;
+            setSuppressPointer(false);
+            suppressTimerRef.current = null;
+        }, SUPPRESS_MS);
     };
 
-    // sushi_theme_toggle_v2.html: open container elastic ~0.45s; close height 0.32s delay 0.08 power3.inOut
     const springOpen = reduceMotion
         ? { duration: 0.15 }
-        : { type: "spring" as const, stiffness: 200, damping: 14, mass: 0.9 };
+        : { type: "spring" as const, stiffness: 220, damping: 16, mass: 0.9 };
 
+    /** Softer shutdown than a hard snap — closer to GSAP power3.inOut on height */
     const heightClose = reduceMotion
         ? { duration: 0.12 }
-        : { duration: 0.34, delay: 0, ease: [0.65, 0, 0.35, 1] as const };
+        : { duration: 0.42, delay: 0.06, ease: [0.45, 0, 0.55, 1] as const };
 
     return (
         <div className="theme-toggle">
             <div
                 ref={pillRef}
-                className="toggle-pill"
+                className={`toggle-pill${suppressPointer ? " is-suppressing-pointer" : ""}`}
                 onMouseLeave={onPillLeave}
             >
-                {!reduceMotion && (
-                    <Texture
-                        className="toggle-pill-texture"
-                        filterId={textureFilterId}
-                        viewBoxHeight={Math.max(TRIGGER_H, pillHeightPx)}
-                    />
-                )}
+                <div className="toggle-pill__texture" aria-hidden>
+                    <Texture filterId={textureFilterId} viewBoxHeight={textureViewHeight} />
+                </div>
                 <button
                     type="button"
                     className="toggle-trigger"
@@ -165,7 +165,7 @@ export const Toggle = () => {
                                 ? { duration: 0 }
                                 : isOpen
                                     ? { duration: 0.2 }
-                                    : { duration: 0.25, ease: [0.34, 1.56, 0.64, 1] }
+                                    : { duration: 0.28, ease: [0.33, 1.4, 0.68, 1] }
                         }
                     >
                         <motion.span
@@ -224,14 +224,14 @@ export const Toggle = () => {
                                         }
                                         : {
                                             opacity: {
-                                                duration: 0.18,
-                                                delay: i * 0.03,
-                                                ease: [0.55, 0.085, 0.68, 0.53],
+                                                duration: 0.24,
+                                                delay: i * 0.04,
+                                                ease: [0.4, 0, 0.2, 1],
                                             },
                                             y: {
-                                                duration: 0.18,
-                                                delay: i * 0.03,
-                                                ease: [0.55, 0.085, 0.68, 0.53],
+                                                duration: 0.24,
+                                                delay: i * 0.04,
+                                                ease: [0.4, 0, 0.2, 1],
                                             },
                                         }
                             }

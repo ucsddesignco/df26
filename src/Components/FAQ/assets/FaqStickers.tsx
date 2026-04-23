@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { ThemeType } from "../../../types/theme";
+import type { SiteTimeTheme } from "../../../context/SiteThemeContext";
 import { FaqBottomLeftSunriseSunset } from "./FaqBottomLeftSunriseSunset";
 import { FaqBottomLeftAfternoon } from "./FaqBottomLeftAfternoon";
 import { FaqBottomLeftNight } from "./FaqBottomLeftNight";
@@ -18,23 +18,23 @@ export type FaqStickerSlot =
 export interface FaqStickerConfig {
   id: FaqStickerSlot;
   className: string;
-  contentByTheme: Record<ThemeType, ReactNode>;
+  contentByTheme: Record<SiteTimeTheme, ReactNode>;
 }
 
-const faqBottomLeftByTheme: Record<ThemeType, ReactNode> = {
-  "sunrise-sunset": <FaqBottomLeftSunriseSunset />,
+const faqBottomLeftByTheme: Record<SiteTimeTheme, ReactNode> = {
+  morning: <FaqBottomLeftSunriseSunset />,
   afternoon: <FaqBottomLeftAfternoon />,
   night: <FaqBottomLeftNight />,
 };
 
-const faqTopRightByTheme: Record<ThemeType, ReactNode> = {
-  "sunrise-sunset": <FaqTopRightSunriseSunset />,
+const faqTopRightByTheme: Record<SiteTimeTheme, ReactNode> = {
+  morning: <FaqTopRightSunriseSunset />,
   afternoon: <FaqTopRightAfternoon />,
   night: <FaqTopRightNight />,
 };
 
-const faqBottomRightByTheme: Record<ThemeType, ReactNode> = {
-  "sunrise-sunset": <FaqBottomRightSunriseSunset />,
+const faqBottomRightByTheme: Record<SiteTimeTheme, ReactNode> = {
+  morning: <FaqBottomRightSunriseSunset />,
   afternoon: <FaqBottomRightAfternoon />,
   night: <FaqBottomRightNight />,
 };

@@ -1,18 +1,14 @@
-import { type ThemeType } from "../../../types/theme";
 import { forwardRef } from "react";
 
 interface DoorProps {
-  theme: ThemeType;
   className?: string;
 }
 
 export const RightDoor = forwardRef<SVGSVGElement, DoorProps>(
-  ({ theme, className }, ref) => {
-    const windowStrokeColors: Record<ThemeType, string> = {
-      "sunrise-sunset": "#AEB032",
-      afternoon: "#FA9025",
-      night: "#5A8CD3",
-    };
+  ({ className }, ref) => {
+    const svgClass = [className, "site-theme-paint-transition"]
+      .filter(Boolean)
+      .join(" ");
 
     return (
       <svg
@@ -21,7 +17,7 @@ export const RightDoor = forwardRef<SVGSVGElement, DoorProps>(
         viewBox="0 0 552 1230"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={className}
+        className={svgClass}
         ref={ref}
         preserveAspectRatio="xMinYMax meet"
       >
@@ -40,7 +36,7 @@ export const RightDoor = forwardRef<SVGSVGElement, DoorProps>(
             width="264"
             height="401"
             rx="50.0749"
-            stroke={windowStrokeColors[theme]}
+            stroke="var(--site-train-stripe)"
             strokeWidth="14"
           />
           {/* Door Handle / Detail Group */}

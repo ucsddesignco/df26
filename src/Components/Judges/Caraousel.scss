@@ -11,6 +11,19 @@ $judge-card-min: 17.5rem; // 280px — same visual size on tablet + phone
   // gap: -rem;
 }
 
+.embla__slideThemeDecorMount {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.embla__slideThemeDecorMotion {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
 .embla__slide {
   // desktop: ~3 slides visible
   flex: 0 0 clamp(#{$judge-card-min}, 30%, 22rem);

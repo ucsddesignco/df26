@@ -4,6 +4,7 @@ import OpenInNew from '../../SVGS/OpenInNew';
 import Station26Icon from '../../SVGS/Station26Icon';
 import Button from '../Button/Button';
 import { motion } from 'framer-motion';
+
 export default function HeroBoard() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const textRef = useRef<HTMLDivElement | null>(null);
@@ -67,8 +68,8 @@ export default function HeroBoard() {
             <div className='icon-wrapper'>
               <Station26Icon/>
             </div>
-            <div className='header-text'>
-              <p className="main-text">DESIGN FRONTIERS</p>
+            <div className='header-text' ref={containerRef}>
+              <p className="main-text" ref={textRef}>DESIGN FRONTIERS</p>
               <p className='sub-text'>Collaborate, ideate, create. Join Design Co&apos;s annual design-a-thon!</p>
             </div>
           </div>

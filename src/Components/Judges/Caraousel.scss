@@ -21,6 +21,11 @@ $judges-loop-gap: 1rem;
   // Create the seam gap between end of set A and start of set B.
   // This padding is included in setARef.offsetWidth, keeping wrap math correct.
   padding-right: $judges-loop-gap;
+
+  @media (max-width: 1024px) {
+    gap: 1.5rem;        
+    padding-right: 1.5rem;
+  }
 }
 
 .embla__slideThemeDecorMount {
@@ -46,6 +51,10 @@ $judges-loop-gap: 1rem;
   // tablet + phone: fixed card width so images dony keep shrinking with the viewport
   @media (max-width: 1024px) {
     flex: 0 0 $judge-card-min;
+  }
+
+  @media (max-width: 600px) {
+    flex: 0 0 14rem; // ← adjust this, 12-15rem range works well
   }
 
   img {

@@ -28,7 +28,7 @@ export default function HeroBoard() {
             </div>
             <div className='header-text'>
               <p className="main-text">DESIGN FRONTIERS</p>
-              <p className='sub-text'>Collaborate, ideate, create. Join Design Co's annual design-a-thon!</p>
+              <p className='sub-text'>Collaborate, ideate, create. Join Design Co&apos;s annual design-a-thon!</p>
             </div>
           </div>
           <div className="details-section">

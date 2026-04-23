@@ -68,6 +68,7 @@ body {
   -webkit-font-smoothing: antialiased;
   // background-color: #f3f3f3;
   color: #111111;
+  background-color: #F5F5F5;
 }
 
 img,
@@ -124,4 +125,45 @@ h6 {
 
 p {
   text-wrap: pretty;
+}
+
+/* Theme color transitions: variables set on `.site-theme-root` in `SiteThemeProvider`. */
+@media (prefers-reduced-motion: no-preference) {
+  .site-theme-root {
+    --site-theme-paint-duration: 0.48s;
+    --site-theme-paint-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-theme-root {
+    --site-theme-paint-duration: 0.01ms;
+    --site-theme-paint-easing: linear;
+  }
+}
+
+.site-theme-paint-transition {
+  transition:
+    background-color var(--site-theme-paint-duration) var(--site-theme-paint-easing),
+    background var(--site-theme-paint-duration) var(--site-theme-paint-easing),
+    color var(--site-theme-paint-duration) var(--site-theme-paint-easing),
+    fill var(--site-theme-paint-duration) var(--site-theme-paint-easing),
+    stroke var(--site-theme-paint-duration) var(--site-theme-paint-easing),
+    border-color var(--site-theme-paint-duration) var(--site-theme-paint-easing),
+    box-shadow var(--site-theme-paint-duration) var(--site-theme-paint-easing),
+    stop-color var(--site-theme-paint-duration) var(--site-theme-paint-easing),
+    opacity var(--site-theme-paint-duration) var(--site-theme-paint-easing);
+}
+
+/* SVG `fill`/`stroke` are on shapes, not the root `<svg>` — inherit paint transitions into common primitives. */
+svg.site-theme-paint-transition :where(path, rect, circle, ellipse, line, polygon, polyline) {
+  transition:
+    fill var(--site-theme-paint-duration) var(--site-theme-paint-easing),
+    stroke var(--site-theme-paint-duration) var(--site-theme-paint-easing);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  svg.site-theme-paint-transition :where(path, rect, circle, ellipse, line, polygon, polyline) {
+    transition: none;
+  }
 }

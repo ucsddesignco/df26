@@ -1,11 +1,18 @@
 export default function BigTrainSVG() {
   return (
-    <svg width="2013" height="183" viewBox="0 0 2013 183" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      className="site-theme-paint-transition"
+      width="2013"
+      height="183"
+      viewBox="0 0 2013 183"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g filter="url(#filter0_gn_2450_1439)">
         <path d="M1512.91 23.4359C1512.91 11.4513 1522.63 1.73584 1534.61 1.73584H1831.47C1930.46 1.73584 2010.71 81.9855 2010.71 180.979H1512.91V23.4359Z" fill="#F3EAE3" />
       </g>
       <g filter="url(#filter1_gn_2450_1439)">
-        <path d="M1513.16 128.749H2010.74V162.658H1513.16V128.749Z" fill="#AEB032" />
+        <path d="M1513.16 128.749H2010.74V162.658H1513.16V128.749Z" fill="var(--site-train-stripe)" />
       </g>
       <g filter="url(#filter2_gn_2450_1439)">
         <path d="M1539.82 37.7603H1578.45V92.0105H1539.82V37.7603Z" fill="#2B2B23" />
@@ -32,7 +39,7 @@ export default function BigTrainSVG() {
         <path d="M499.536 23.4369C499.536 11.4523 489.821 1.73682 477.836 1.73682H180.979C81.9858 1.73682 1.73601 81.9865 1.73601 180.98H499.536V23.4369Z" fill="#F3EAE3" />
       </g>
       <g filter="url(#filter10_gn_2450_1439)">
-        <path d="M499.736 128.736H1.73604V162.736H499.736V128.736Z" fill="#AEB032" />
+        <path d="M499.736 128.736H1.73604V162.736H499.736V128.736Z" fill="var(--site-train-stripe)" />
       </g>
       <g filter="url(#filter11_gn_2450_1439)">
         <path d="M472.628 37.7612H434.002V92.0114H472.628V37.7612Z" fill="#2B2B23" />
@@ -86,7 +93,7 @@ export default function BigTrainSVG() {
         <path d="M1179.61 37.7617H1218.24V92.0119H1179.61V37.7617Z" fill="#2B2B23" />
       </g>
       <g filter="url(#filter28_gn_2450_1439)">
-        <path d="M1009.27 129.352H1506.83V162.866H1009.27V129.352Z" fill="#AEB032" />
+        <path d="M1009.27 129.352H1506.83V162.866H1009.27V129.352Z" fill="var(--site-train-stripe)" />
       </g>
       <g filter="url(#filter29_gn_2450_1439)">
         <path d="M1245.41 42.5322H1280.13V175.771H1245.41V42.5322Z" fill="#2B2B23" />
@@ -125,7 +132,7 @@ export default function BigTrainSVG() {
         <path d="M675.856 37.7617H714.482V92.0119H675.856V37.7617Z" fill="#2B2B23" />
       </g>
       <g filter="url(#filter41_gn_2450_1439)">
-        <path d="M505.514 129.352H1003.07V162.866H505.514V129.352Z" fill="#AEB032" />
+        <path d="M505.514 129.352H1003.07V162.866H505.514V129.352Z" fill="var(--site-train-stripe)" />
       </g>
       <g filter="url(#filter42_gn_2450_1439)">
         <path d="M741.651 42.5322H776.371V175.771H741.651V42.5322Z" fill="#2B2B23" />

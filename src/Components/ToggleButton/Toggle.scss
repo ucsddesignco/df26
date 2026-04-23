@@ -20,20 +20,34 @@
   background: #2b2b23;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
   isolation: isolate;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
 }
 
-.theme-toggle .toggle-pill-texture {
+/* Full-bleed noise shell — z-index 0; interactive content stacks above */
+.theme-toggle .toggle-pill__texture {
   position: absolute;
   inset: 0;
   z-index: 0;
   width: 100%;
+  min-width: 100%;
   height: 100%;
-  pointer-events: none;
-  display: block;
+  min-height: 100%;
   border-radius: 34px;
   overflow: hidden;
+  /* Align with pill rounding so filter + displacement don’t get a flat clip on one side */
+  clip-path: inset(0 round 34px);
+  pointer-events: none;
+}
+
+.theme-toggle .toggle-pill__texture svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.theme-toggle .toggle-pill.is-suppressing-pointer {
+  pointer-events: none;
 }
 
 .theme-toggle .toggle-trigger {
@@ -73,17 +87,17 @@
 //   width: 44px;
 //   height: 44px;
 //   border-radius: 50%;
-//   background: #1a1a1a;
-//   border: 3px solid #2a2a2a;
+// //   background: #2B2B23;
+// //   border: 3px solid #2a2a2a;
 //   display: flex;
 //   align-items: center;
 //   justify-content: center;
 //   pointer-events: none;
 // }
 
-.theme-toggle .nori-ring svg {
-  display: block;
-}
+// .theme-toggle .nori-ring svg {
+//   display: block;
+// }
 
 .theme-toggle .options-container {
   width: 68px;
@@ -131,13 +145,11 @@
   pointer-events: none;
 }
 
-.theme-toggle .mode-option.is-selected .option-bg {
-  opacity: 1;
-}
-
 .theme-toggle .mode-option:hover .option-bg {
   opacity: 1;
 }
+
+/* Match sushi_theme_toggle_v2: trigger stays visible while options are open */
 
 .theme-toggle .mode-option svg {
   position: relative;

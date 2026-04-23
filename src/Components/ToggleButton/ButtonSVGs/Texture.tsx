@@ -31,7 +31,8 @@ export function Texture({ filterId, viewBoxHeight, className }: TextureProps) {
             viewBox={`0 0 ${VB_W} ${viewBoxHeight}`}
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="xMidYMid meet"
+            /* Stretch to the pill — `meet` letterboxes and leaves a hard vertical edge on one side */
+            preserveAspectRatio="none"
             aria-hidden
         >
             <g filter={`url(#${filterId})`}>

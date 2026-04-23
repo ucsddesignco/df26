@@ -3,7 +3,6 @@ import OpenInNew from '../../SVGS/OpenInNew';
 import Station26Icon from '../../SVGS/Station26Icon';
 import Button from '../Button/Button';
 import { motion } from 'framer-motion';
-
 export default function HeroBoard() {
   return (
     <>
@@ -29,7 +28,7 @@ export default function HeroBoard() {
             </div>
             <div className='header-text'>
               <p className="main-text">DESIGN FRONTIERS</p>
-              <p className='sub-text'>Solve real world problems in Design Co&apos;s two day design-a-thon!</p>
+              <p className='sub-text'>Collaborate, ideate, create. Join Design Co&apos;s annual design-a-thon!</p>
             </div>
           </div>
           <div className="details-section">
@@ -37,7 +36,12 @@ export default function HeroBoard() {
               {/* Column 1 -- Remark*/}
               <div className='column'>
                 <div className='column-header'>
-                  <p className='header-text'>Line</p>
+                  <p
+                    className="header-text site-theme-paint-transition"
+                    style={{ color: "var(--site-column-header)" }}
+                  >
+                    Line
+                  </p>
                 </div>
                 <div className='card'>
                   <p className='card-text'>DAY 1</p>
@@ -50,7 +54,12 @@ export default function HeroBoard() {
               {/* Column 1 -- Date*/}
               <div className='column'>
                 <div className='column-header'>
-                  <p className='header-text'>Date</p>
+                  <p
+                    className="header-text site-theme-paint-transition"
+                    style={{ color: "var(--site-column-header)" }}
+                  >
+                    Date
+                  </p>
                 </div>
                 <div className='card'>
                   <p className='card-text'>MAY 9</p>
@@ -63,20 +72,30 @@ export default function HeroBoard() {
               {/* Column 1 -- Time*/}
               <div className='column'>
                 <div className='column-header'>
-                  <p className='header-text'>Time</p>
+                  <p
+                    className="header-text site-theme-paint-transition"
+                    style={{ color: "var(--site-column-header)" }}
+                  >
+                    Time
+                  </p>
                 </div>
                 <div className='card'>
-                  <p className='card-text'>2 PM - 5 PM</p>
+                  <p className='card-text'>2 PM - 6 PM</p>
                 </div>
                 <div className='card'>
-                  <p className='card-text'>10 AM - 3 PM</p>
+                  <p className='card-text'>10 AM - 4 PM</p>
                 </div>
               </div>
 
               {/* Column 1 -- Platform*/}
               <div className='column'>
                 <div className='column-header'>
-                  <p className='header-text'>Platform</p>
+                  <p
+                    className="header-text site-theme-paint-transition"
+                    style={{ color: "var(--site-column-header)" }}
+                  >
+                    Platform
+                  </p>
                 </div>
                 <div className='card'>
                   <p className='card-text'>DIB 208</p>

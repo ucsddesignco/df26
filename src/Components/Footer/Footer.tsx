@@ -9,7 +9,9 @@ import {
 } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import "./Footer.scss";
-import type { ThemeType } from "../../types/theme";
+import { useSiteTheme } from "../../context/SiteThemeContext";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ResponsiveBackdrop,
   ResponsiveFooterButton,
@@ -25,10 +27,6 @@ const MOBILE_BREAKPOINT = 440;
 const TABLET_CUSTOM_BREAKPOINT = 712;
 const TABLET_BREAKPOINT = 744;
 const DESKTOP_EDGE_BREAKPOINT = 1280;
-const DOOR_MOTION_EASE: [number, number, number, number] = [0.45, 0, 0.35, 1];
-const DOOR_MOTION_TRANSITION = { duration: 0.95, ease: DOOR_MOTION_EASE };
-/** Delay door open only when opened by scrolling into view; click-to-open stays immediate. */
-const DOOR_VIEWPORT_OPEN_DELAY_S = 0.42;
 
 type LayoutPreset = {
   doors: {
@@ -112,14 +110,13 @@ function toWallStyle(side: "left" | "right", wall: WallLayout): CSSProperties {
 }
 
 export default function Footer() {
-  const [isOpen, setIsOpen] = useState(false);
-  /** When true, the door reached open state via IntersectionObserver (not banner click). */
-  const [doorOpenViaViewport, setDoorOpenViaViewport] = useState(false);
-  const [currentTheme] = useState<ThemeType>("sunrise-sunset");
+  const { theme } = useSiteTheme();
   const [breakpoint, setBreakpoint] = useState<FooterBreakpoint>("desktop");
   const bannerRef = useRef<HTMLDivElement>(null);
-  /** Tracks last observed intersection so we only react to enter/leave, not spurious IO callbacks (common on Safari). */
-  const wasIntersectingRef = useRef(false);
+  const leftDoorRef = useRef<HTMLDivElement>(null);
+  const rightDoorRef = useRef<HTMLDivElement>(null);
+  const [isButtonVisible, setIsButtonVisible] = useState(false);
+  const isButtonVisibleRef = useRef(false);
   /** Pixel `x` for Framer (closed matches prior ~0.5% of door width; open = peek past wall inner edges). */
   const [doorMotionPx, setDoorMotionPx] = useState<DoorMotionPx>({
     leftClosed: 0,
@@ -127,7 +124,6 @@ export default function Footer() {
     rightClosed: 0,
     rightOpen: 0,
   });
-  const isOpenRef = useRef(isOpen);
   /** After at least one good layout measure; avoids locking motion at 0 if Safari opens before first measure. */
   const doorMotionTrustRef = useRef(false);
   const useSimpleDoorOpenMotion = isLikelyAppleSafari();
@@ -135,8 +131,8 @@ export default function Footer() {
   const updateDoorMotionPx = useCallback(() => {
     const banner = bannerRef.current;
     if (!banner) return;
-    // Re-measuring while open retargets Framer mid-animation — skip only once layout is trusted.
-    if (isOpenRef.current && doorMotionTrustRef.current) return;
+    // Once we have a good measure, avoid thrashing state on every ResizeObserver tick.
+    if (doorMotionTrustRef.current) return;
     const container = banner.querySelector(".container") as HTMLElement | null;
     const leftWall = banner.querySelector(".wall--left") as HTMLElement | null;
     const rightWall = banner.querySelector(".wall--right") as HTMLElement | null;
@@ -185,16 +181,6 @@ export default function Footer() {
   }, [updateDoorMotionPx]);
 
   useLayoutEffect(() => {
-    isOpenRef.current = isOpen;
-  }, [isOpen]);
-
-  useLayoutEffect(() => {
-    if (!isOpen) {
-      scheduleRemeasureDoorMotion();
-    }
-  }, [isOpen, scheduleRemeasureDoorMotion]);
-
-  useLayoutEffect(() => {
     doorMotionTrustRef.current = false;
     scheduleRemeasureDoorMotion();
     const banner = bannerRef.current;
@@ -214,6 +200,73 @@ export default function Footer() {
     if (document.readyState === "complete") onLoad();
     return () => window.removeEventListener("load", onLoad);
   }, [scheduleRemeasureDoorMotion]);
+
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const banner = bannerRef.current;
+    const leftEl = leftDoorRef.current;
+    const rightEl = rightDoorRef.current;
+    if (!banner || !leftEl || !rightEl) return;
+
+    // Ensure initial state is "closed" before ScrollTrigger starts.
+    gsap.set(leftEl, { x: doorMotionPx.leftClosed, scale: 1, force3D: true });
+    gsap.set(rightEl, { x: doorMotionPx.rightClosed, scale: 1, force3D: true });
+
+    const setDoorPosition = (open01: number) => {
+      const t = Math.min(1, Math.max(0, open01));
+      const doorScale = (layoutByBreakpoint[breakpoint]?.doors.scale ?? 1) as number;
+
+      if (useSimpleDoorOpenMotion) {
+        const lx = doorMotionPx.leftClosed + (doorMotionPx.leftOpen - doorMotionPx.leftClosed) * t;
+        const rx =
+          doorMotionPx.rightClosed + (doorMotionPx.rightOpen - doorMotionPx.rightClosed) * t;
+        gsap.set(leftEl, { x: lx, scale: doorScale });
+        gsap.set(rightEl, { x: rx, scale: doorScale });
+      } else {
+        // Keep the same subtle "bounce" feel, but driven by scroll progress.
+        const lKeys = withOpenBounce(doorMotionPx.leftClosed, doorMotionPx.leftOpen);
+        const rKeys = withOpenBounce(doorMotionPx.rightClosed, doorMotionPx.rightOpen);
+        const lIdx = Math.min(lKeys.length - 1, Math.floor(t * (lKeys.length - 1)));
+        const rIdx = Math.min(rKeys.length - 1, Math.floor(t * (rKeys.length - 1)));
+        const lLocalT = (t * (lKeys.length - 1)) - lIdx;
+        const rLocalT = (t * (rKeys.length - 1)) - rIdx;
+        const lx = lKeys[lIdx] + (lKeys[lIdx + 1] - lKeys[lIdx]) * (isFinite(lLocalT) ? lLocalT : 0);
+        const rx = rKeys[rIdx] + (rKeys[rIdx + 1] - rKeys[rIdx]) * (isFinite(rLocalT) ? rLocalT : 0);
+        gsap.set(leftEl, { x: lx, scale: doorScale });
+        gsap.set(rightEl, { x: rx, scale: doorScale });
+      }
+
+      const nextButtonVisible = t > 0.82;
+      if (nextButtonVisible !== isButtonVisibleRef.current) {
+        isButtonVisibleRef.current = nextButtonVisible;
+        setIsButtonVisible(nextButtonVisible);
+      }
+    };
+
+    const trigger = ScrollTrigger.create({
+      trigger: banner,
+      // More scroll distance => slower open/close.
+      start: "top 75%",
+      end: "bottom 5%",
+      // Add a bit of smoothing so motion feels heavier/slower.
+      scrub: 3,
+      onUpdate: (self) => {
+        // Open as we approach center, then close as we leave (door "breathes" with scroll).
+        const p = self.progress; // 0..1
+        const open01 = p <= 0.5 ? p * 2 : (1 - p) * 2; // 0..1..0
+        setDoorPosition(open01);
+      },
+      onRefresh: () => {
+        // Keep visuals in sync after layout refresh.
+        setDoorPosition(isButtonVisibleRef.current ? 1 : 0);
+      },
+    });
+
+    return () => {
+      trigger.kill();
+    };
+  }, [breakpoint, doorMotionPx, useSimpleDoorOpenMotion]);
 
   useEffect(() => {
     const updateBreakpoint = () => {
@@ -242,52 +295,19 @@ export default function Footer() {
     return () => window.removeEventListener("resize", updateBreakpoint);
   }, []);
 
-  useEffect(() => {
-    const banner = bannerRef.current;
-    if (!banner) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const intersecting = entry.isIntersecting;
-        const wasIntersecting = wasIntersectingRef.current;
-        wasIntersectingRef.current = intersecting;
-
-        if (intersecting && !wasIntersecting) {
-          setDoorOpenViaViewport(true);
-          setIsOpen(true);
-        } else if (!intersecting && wasIntersecting) {
-          setDoorOpenViaViewport(false);
-          setIsOpen(false);
-        }
-      },
-      {
-        threshold: 0.2,
-      },
-    );
-
-    observer.observe(banner);
-    return () => observer.disconnect();
-  }, []);
-
   const layoutBreakpoint: FooterBreakpoint =
     breakpoint === "tablet" ? "tablet-custom" : breakpoint;
   const activeLayout = layoutByBreakpoint[layoutBreakpoint];
-  const doorScale = activeLayout?.doors.scale ?? 1;
   const doorStyle: CSSProperties | undefined = activeLayout
     ? {
-        width: activeLayout.doors.width,
-        height: activeLayout.doors.height,
-        top: activeLayout.doors.top,
-      }
+      width: activeLayout.doors.width,
+      height: activeLayout.doors.height,
+      top: activeLayout.doors.top,
+    }
     : undefined;
   const wallStyleBySide: Record<"left" | "right", CSSProperties | undefined> = {
     left: activeLayout ? toWallStyle("left", activeLayout.walls.left) : undefined,
     right: activeLayout ? toWallStyle("right", activeLayout.walls.right) : undefined,
-  };
-
-  const doorTransition = {
-    ...DOOR_MOTION_TRANSITION,
-    delay: isOpen && doorOpenViaViewport ? DOOR_VIEWPORT_OPEN_DELAY_S : 0,
   };
 
   const footerButtonVariants = useMemo(
@@ -300,9 +320,7 @@ export default function Footer() {
         scale: 1,
         transition: {
           duration: 0.34,
-          delay:
-            FOOTER_BUTTON_ENTER_DELAY_S +
-            (doorOpenViaViewport ? DOOR_VIEWPORT_OPEN_DELAY_S : 0),
+          delay: FOOTER_BUTTON_ENTER_DELAY_S,
           ease: [0.65, 0, 0.35, 1],
         },
       },
@@ -314,7 +332,7 @@ export default function Footer() {
         transition: { duration: 0.36, ease: [0.65, 0, 1, 1] },
       },
     }),
-    [doorOpenViaViewport],
+    [],
   );
 
   return (
@@ -323,67 +341,45 @@ export default function Footer() {
         <div
           ref={bannerRef}
           className={`banner banner--${breakpoint}`}
-          onClick={() => {
-            setDoorOpenViaViewport(false);
-            setIsOpen((prev) => !prev);
-          }}
         >
           <ResponsiveTrainWall
             side="left"
-            theme={currentTheme}
+            theme={theme}
             breakpoint={breakpoint}
             style={wallStyleBySide.left}
           />
           <ResponsiveTrainWall
             side="right"
-            theme={currentTheme}
+            theme={theme}
             breakpoint={breakpoint}
             style={wallStyleBySide.right}
           />
           <div className="container">
             {/* Left Door Wrapper */}
-            <motion.div
+            <div
+              ref={leftDoorRef}
               className="door-wrapper left"
-              initial={false}
               style={doorStyle}
-              animate={{
-                x: isOpen
-                  ? useSimpleDoorOpenMotion
-                    ? doorMotionPx.leftOpen
-                    : withOpenBounce(doorMotionPx.leftClosed, doorMotionPx.leftOpen)
-                  : doorMotionPx.leftClosed,
-                scale: doorScale,
-              }}
-              transition={doorTransition}
             >
-              <ResponsiveLeftDoor theme={currentTheme} breakpoint={breakpoint} />
-            </motion.div>
+              <ResponsiveLeftDoor theme={theme} breakpoint={breakpoint} />
+            </div>
 
             {/* RIGHT DOOR */}
-            <motion.div
+            <div
+              ref={rightDoorRef}
               className="door-wrapper right"
-              initial={false}
               style={doorStyle}
-              animate={{
-                x: isOpen
-                  ? useSimpleDoorOpenMotion
-                    ? doorMotionPx.rightOpen
-                    : withOpenBounce(doorMotionPx.rightClosed, doorMotionPx.rightOpen)
-                  : doorMotionPx.rightClosed,
-                scale: doorScale,
-              }}
-              transition={doorTransition}
             >
-              <ResponsiveRightDoor theme={currentTheme} breakpoint={breakpoint} />
-            </motion.div>
+              <ResponsiveRightDoor theme={theme} breakpoint={breakpoint} />
+            </div>
 
             <div className="backdrop">
-              <ResponsiveBackdrop theme={currentTheme} breakpoint={breakpoint} />
+              <ResponsiveBackdrop theme={theme} breakpoint={breakpoint} />
             </div>
           </div>
 
           <AnimatePresence>
-            {isOpen && (
+            {isButtonVisible && (
               <motion.button
                 type="button"
                 className="footer-banner-button"
@@ -392,7 +388,6 @@ export default function Footer() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                onClick={(e) => e.stopPropagation()}
               >
                 <ResponsiveFooterButton breakpoint={breakpoint} />
               </motion.button>

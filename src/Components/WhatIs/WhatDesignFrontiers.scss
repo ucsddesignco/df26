@@ -9,7 +9,7 @@ $wdf-stack: 1120px;
   row-gap: 20px;
   padding: 120px 120px 0;
   margin-bottom: -64px;
-  background: #ffffff;
+  background: #F5F5F5;
   color: #111111;
 
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -134,7 +134,7 @@ $wdf-stack: 1120px;
   &__meta {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 6px;
     color: #111111;
   }
 
@@ -151,9 +151,6 @@ $wdf-stack: 1120px;
     text-decoration: none;
     transition: color 0.15s ease;
 
-    &:hover {
-      color: #666666;
-    }
 
     &:focus-visible {
       outline: 2px solid #111111;
@@ -164,6 +161,7 @@ $wdf-stack: 1120px;
 
   &__meta-icon {
     flex-shrink: 0;
+    margin-top: 2px;
   }
 
   &__body {
@@ -173,20 +171,25 @@ $wdf-stack: 1120px;
     color: #333333;
   }
 
-  //Flowers \ leaves \ stars SVG (time-of-day)
-  &__timeTheme {
+  // Wrapper for Framer crossfade (matches former &__timeTheme placement in grid)
+  &__timeThemeMotion {
     grid-area: flowers;
     justify-self: end;
     align-self: end;
+    z-index: 1;
+    margin-top: 8px;
+    margin-bottom: -28px;
+    line-height: 0;
+  }
+
+  //Flowers \ leaves \ stars SVG (time-of-day)
+  &__timeTheme {
     width: min(500px, 100%);
     max-width: 100%;
     height: auto;
     display: block;
     user-select: none;
     pointer-events: none;
-    z-index: 1;
-    margin-top: 8px;
-    margin-bottom: -28px;
   }
 
   //Afternoon leaves: visual only (transform does not change layout vs flowers/stars)
@@ -329,9 +332,8 @@ $wdf-stack: 1120px;
       aspect-ratio: 16 / 9;
     }
 
-    &__timeTheme {
+    &__timeThemeMotion {
       z-index: 3;
-      width: min(340px, 100%);
       margin-top: -36px;
       margin-right: 0;
       margin-bottom: -30px;
@@ -340,6 +342,8 @@ $wdf-stack: 1120px;
     &__timeTheme--afternoon {
       transform: translateY(-22px) scale(0.88);
       transform-origin: bottom right;
+    &__timeTheme {
+      width: min(340px, 100%);
     }
   }
 
@@ -377,12 +381,15 @@ $wdf-stack: 1120px;
       margin-inline: 0;
     }
 
-    &__timeTheme {
+    &__timeThemeMotion {
       z-index: 3;
-      width: 268px;
-      max-width: min(268px, calc(100% - 80px));
       margin: 0;
       margin-top: 8px;
+    }
+
+    &__timeTheme {
+      width: 268px;
+      max-width: min(268px, calc(100% - 80px));
     }
   }
 

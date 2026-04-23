@@ -6,7 +6,11 @@ import {
   type KeyboardEvent,
   type TransitionEvent,
 } from 'react'
-import { useSiteTheme } from '../../context/SiteThemeContext'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import {
+  themeIllustrationCrossfadeTransition,
+  useSiteTheme,
+} from '../../context/SiteThemeContext'
 import CalendarIcon from '../../SVGS/CalendarIcon'
 import RegisterNow from './registerNow'
 import { WhatIsFlowers } from './flowers'
@@ -45,6 +49,8 @@ export default function WhatDesignFrontiers() {
   const [noTransition, setNoTransition] = useState(false)
   const indexRef = useRef(0)
   const { theme: timeTheme } = useSiteTheme()
+  const reduceMotion = useReducedMotion()
+  const themeDecorTransition = themeIllustrationCrossfadeTransition(reduceMotion)
 
   const nSlides = slides.length
   const lastReal = nSlides - 1
@@ -204,10 +210,10 @@ export default function WhatDesignFrontiers() {
         </div>
 
         <p className='wdf__body'>
-          Design Frontiers is Design Co's annual designathon—a two-day sprint
-          where teams tackle real-world challenges with creative design solutions.
-          Final projects are presented to a panel of industry professionals who
-          offer feedback and select standout work.
+        Design Frontiers is Design Co’s annual design-a-thon. 
+        Across two days, teams collaborate and innovate in response to real-world problems. 
+        Finalists present their projects to a panel of industry professionals who mentor and 
+        judge throughout the event.
         </p>
 
         <a
@@ -286,19 +292,25 @@ export default function WhatDesignFrontiers() {
         </div>
       </div>
 
-      {/* --- Background SVG by time of day */}
-      {timeTheme === 'morning' && (
-        <WhatIsFlowers className='wdf__timeTheme' aria-hidden />
-      )}
-      {timeTheme === 'afternoon' && (
-        <WhatIsLeaves
-          className='wdf__timeTheme wdf__timeTheme--afternoon'
-          aria-hidden
-        />
-      )}
-      {timeTheme === 'night' && (
-        <WhatIsStars className='wdf__timeTheme' aria-hidden />
-      )}
+      {/* --- Background SVG by time of day (crossfade on theme change) */}
+      <AnimatePresence initial={false} mode="sync">
+        <motion.div
+          key={timeTheme}
+          className="wdf__timeThemeMotion"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={themeDecorTransition}
+        >
+          {timeTheme === 'morning' ? (
+            <WhatIsFlowers className="wdf__timeTheme" aria-hidden />
+          ) : timeTheme === 'afternoon' ? (
+            <WhatIsLeaves className="wdf__timeTheme" aria-hidden />
+          ) : (
+            <WhatIsStars className="wdf__timeTheme" aria-hidden />
+          )}
+        </motion.div>
+      </AnimatePresence>
     </section>
   )
 }

@@ -169,11 +169,16 @@
     gap: var(--agenda-column-gap);
   }
   
-  .agenda-panel {
-    flex: 1 1 0;
-    display: block;
-    min-width: 0; /* allow flex children to shrink */
-  }
+.agenda-panel--desktop {
+  flex: 1 1 0;
+  min-width: 0;
+  display: block;
+}
+
+.agenda-panel--mobile {
+  display: none;
+  width: 100%;
+}
   
   //column
   .agenda-column {
@@ -363,12 +368,11 @@
       gap: 0;
     }
   
-    .agenda-panel {
+    .agenda-panel--desktop {
       display: none;
-      width: 100%;
     }
   
-    .agenda-panel.is-visible {
+    .agenda-panel--mobile {
       display: block;
     }
   
@@ -435,5 +439,16 @@
     .agenda-tab__date {
       font-size: 12px;
       line-height: 14px;
+    }
+
+    
+  }
+  .agenda-decoration-wrap--mobile-only {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    .agenda-decoration-wrap--mobile-only {
+    display: grid; 
     }
   }

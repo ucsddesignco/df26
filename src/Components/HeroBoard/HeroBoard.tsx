@@ -28,7 +28,7 @@ export default function HeroBoard() {
             </div>
             <div className='header-text'>
               <p className="main-text">DESIGN FRONTIERS</p>
-              <p className='sub-text'>Solve real world problems in Design Co&apos;s two day design-a-thon!</p>
+              <p className='sub-text'>Collaborate, ideate, create. Join Design Co&apos;s annual design-a-thon!</p>
             </div>
           </div>
           <div className="details-section">
@@ -80,10 +80,10 @@ export default function HeroBoard() {
                   </p>
                 </div>
                 <div className='card'>
-                  <p className='card-text'>2 PM - 5 PM</p>
+                  <p className='card-text'>2 PM - 6 PM</p>
                 </div>
                 <div className='card'>
-                  <p className='card-text'>10 AM - 3 PM</p>
+                  <p className='card-text'>10 AM - 4 PM</p>
                 </div>
               </div>
 

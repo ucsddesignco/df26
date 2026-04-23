@@ -39,7 +39,7 @@ $judges-loop-gap: 1rem;
 
 .embla__slide {
   // desktop: ~3 slides visible
-  flex: 0 0 clamp(#{$judge-card-min}, 30%, 22rem);
+  flex: 0 0 clamp(17.5rem, 22vw, 22rem); 
   position: relative;
   transform: translateZ(0);
   transition: transform 160ms ease;

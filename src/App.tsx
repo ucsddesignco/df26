@@ -12,12 +12,16 @@ import { Judges } from "./Components/Judges/Judges";
 import Hero from "./Components/Hero/Hero";
 import { Toggle } from "./Components/ToggleButton/Toggle";
 import { SiteThemeProvider } from "./context/SiteThemeContext";
+import "./App.scss";
 function App() {
   useEffect(() => {
+    const ua = navigator.userAgent;
+    const isSafari = /Safari/i.test(ua) && !/(Chrome|Chromium|CriOS|Edg|OPR)/i.test(ua);
+    if (isSafari) return;
+
     gsap.registerPlugin(ScrollTrigger);
 
-    // One Lenis instance for the whole page (smooth scroll + smoother scroll-driven parallax).
-    // We drive Lenis via GSAP's ticker so ScrollTrigger stays in sync.
+    // Keep smooth/parallax scroll behavior for non-Safari browsers.
     const lenis = new Lenis({ autoRaf: false });
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
@@ -43,11 +47,13 @@ function App() {
         <Navbar />
         <Toggle />
         <Hero />
-        <WhatDesignFrontiers />
-        <Agenda />
-        <Judges />
-        <FAQ />
-        <Footer />
+        <main className="main-sections">
+          <WhatDesignFrontiers />
+          <Agenda />
+          <Judges />
+          <FAQ />
+          <Footer />
+        </main>
       </>
     </SiteThemeProvider>
   );

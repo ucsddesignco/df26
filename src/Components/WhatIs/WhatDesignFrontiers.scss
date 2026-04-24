@@ -8,16 +8,18 @@ $wdf-stack: 1120px;
   column-gap: 64px;
   row-gap: 20px;
   // Bottom flush with next section: overlap mirrors tight Judges → FAQ band
-  padding: 120px 120px 0;
-  margin-bottom: -48px;
+  // padding: 120px 120px 0;
+  padding: 0 120px 72px 120px;
+  margin-bottom: -144px;
+  padding-top: 72px;
   background: #f5f5f5;
   color: #111111;
 
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-areas:
-    'media copyTop'
-    'media copyBody'
-    'media flowers';
+    "media copyTop"
+    "media copyBody"
+    "media flowers";
 
   //Right column: carousel + dots
   &__media {
@@ -199,6 +201,10 @@ $wdf-stack: 1120px;
     margin-bottom: 0;
   }
 
+  &__timeTheme.wdf__timeTheme--flower {
+    width: 60%;
+  }
+
   //Register
   &__button {
     align-self: flex-start;
@@ -213,7 +219,7 @@ $wdf-stack: 1120px;
     border-radius: 0;
     background-color: #191919;
     color: #ffffff;
-    font-family: 'Neue Plak', sans-serif;
+    font-family: "Neue Plak", sans-serif;
     font-size: 1rem;
     line-height: 1;
     text-decoration: none;
@@ -271,14 +277,13 @@ $wdf-stack: 1120px;
   //≤1120px
   @media (max-width: $wdf-stack) {
     column-gap: 0;
-
     row-gap: 20px;
     grid-template-columns: 1fr;
     grid-template-areas:
-      'copyTop'
-      'copyBody'
-      'media'
-      'flowers';
+      "copyTop"
+      "copyBody"
+      "media"
+      "flowers";
 
     &__copyTop {
       align-self: stretch;
@@ -309,13 +314,13 @@ $wdf-stack: 1120px;
 
   //Tablet
   @media (max-width: $wdf-stack) and (min-width: 601px) {
-    padding: 80px 48px 0;
+    // padding: 72px 80px;
 
     &__copyTop,
     &__copyBody {
-      max-width: 584px;
       width: 100%;
-      margin-inline: auto;
+      max-width: none;
+      // margin-inline: auto;
     }
 
     &__title {
@@ -323,9 +328,9 @@ $wdf-stack: 1120px;
     }
 
     &__media {
-      max-width: min(720px, 100%);
       width: 100%;
-      margin-inline: auto;
+      max-width: none;
+      // margin-inline: auto;
       margin-top: 48px;
     }
 
@@ -341,10 +346,14 @@ $wdf-stack: 1120px;
       max-width: 100%;
       height: auto;
       margin-top: -36px;
-      margin-right: max(0px, calc((100% - min(720px, 100%)) / 2));
+      margin-right: 0;
       margin-bottom: 0;
       transform: none;
       pointer-events: none;
+    }
+
+    &__timeTheme.wdf__timeTheme--flower {
+      width: min(250px, 68%);
     }
   }
 
@@ -393,15 +402,46 @@ $wdf-stack: 1120px;
       transform: none;
       pointer-events: none;
     }
+
+    &__timeTheme.wdf__timeTheme--flower {
+      width: 180px;
+      max-width: min(180px, calc(100% - 80px));
+    }
+
+    &__button {
+      margin-bottom: 20px;
+    }
   }
 
   //most narrow
   @media (max-width: 480px) {
     padding: 80px 40px 0;
 
-  
     &__timeTheme {
       max-width: min(268px, calc(100% - 80px));
+    }
+
+    &__timeTheme.wdf__timeTheme--flower {
+      width: 170px;
+      max-width: min(170px, calc(100% - 80px));
+    }
+  }
+}
+
+@media (max-width: 744px) {
+  .wdf {
+    padding: 72px 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wdf {
+    padding: 72px 40px;
+
+    &__timeTheme {
+      justify-self: center;
+      margin-inline: auto;
+      // outline: 2px solid red;
     }
   }
 }

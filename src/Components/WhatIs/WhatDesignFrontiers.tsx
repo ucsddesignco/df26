@@ -166,7 +166,7 @@ export default function WhatDesignFrontiers() {
   }
 
   return (
-    <section className='wdf'>
+    <section id="what-is" className='wdf'>
       {/* --- Heading */}
       <div className='wdf__copyTop'>
         <h1 className='wdf__title'>What is Design Frontiers?</h1>
@@ -288,7 +288,7 @@ export default function WhatDesignFrontiers() {
 
       {/* --- Background SVG by time of day */}
       {timeTheme === 'morning' && (
-        <WhatIsFlowers className='wdf__timeTheme' aria-hidden />
+        <WhatIsFlowers className='wdf__timeTheme wdf__timeTheme--flower' aria-hidden />
       )}
       {timeTheme === 'afternoon' && (
         <WhatIsLeaves className='wdf__timeTheme' aria-hidden />

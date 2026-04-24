@@ -1,7 +1,7 @@
 footer {
   all: initial;
   display: block;
-  background: #F5F5F5;
+  background: white;
   width: 100%;
   padding-top: 72px;
   display: flex;
@@ -142,9 +142,8 @@ footer {
 
         z-index: 10;
         pointer-events: none;
-        // Isolate from heavy SVG filter compositing (Safari); Framer owns `transform` on this node.
-        isolation: isolate;
         will-change: transform;
+        transform: translateZ(0);
         backface-visibility: hidden;
 
         svg,

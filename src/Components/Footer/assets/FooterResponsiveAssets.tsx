@@ -30,13 +30,13 @@ import mobileBackdropSunriseSunset from "../mobile-backdrop-sunrise-sunset.svg";
 import mobileBackdropAfternoon from "../mobile-backdrop-afternoon.svg";
 import mobileBackdropNight from "../mobile-backdrop-night.svg";
 import type { CSSProperties } from "react";
-import type { SiteTimeTheme } from "../../../context/SiteThemeContext";
+import type { ThemeType } from "../../../types/theme";
 
 export type FooterBreakpoint = "desktop" | "desktop-edge" | "tablet" | "tablet-custom" | "mobile";
 
 interface ResponsiveAssetProps {
   breakpoint: FooterBreakpoint;
-  theme: SiteTimeTheme;
+  theme: ThemeType;
 }
 
 interface ResponsiveTrainWallProps extends ResponsiveAssetProps {
@@ -48,39 +48,45 @@ interface ResponsiveDoorProps extends ResponsiveAssetProps {
   className?: string;
 }
 
-const tabletTrainwallByTheme: Record<SiteTimeTheme, Record<"left" | "right", string>> = {
-  morning: { left: tabletTrainwallLeft, right: tabletTrainwallRight },
+const windowStrokeColors: Record<ThemeType, string> = {
+  "sunrise-sunset": "#AEB032",
+  afternoon: "#FA9025",
+  night: "#5A8CD3",
+};
+
+const tabletTrainwallByTheme: Record<ThemeType, Record<"left" | "right", string>> = {
+  "sunrise-sunset": { left: tabletTrainwallLeft, right: tabletTrainwallRight },
   afternoon: { left: tabletTrainwallLeftAfternoon, right: tabletTrainwallRightAfternoon },
   night: { left: tabletTrainwallLeftNight, right: tabletTrainwallRightNight },
 };
 
-const mobileTrainwallByTheme: Record<SiteTimeTheme, Record<"left" | "right", string>> = {
-  morning: { left: mobileTrainwallLeft, right: mobileTrainwallRight },
+const mobileTrainwallByTheme: Record<ThemeType, Record<"left" | "right", string>> = {
+  "sunrise-sunset": { left: mobileTrainwallLeft, right: mobileTrainwallRight },
   afternoon: { left: mobileTrainwallLeftAfternoon, right: mobileTrainwallRightAfternoon },
   night: { left: mobileTrainwallLeftNight, right: mobileTrainwallRightNight },
 };
 
-const tabletBackdropByTheme: Record<SiteTimeTheme, string> = {
-  morning: tabletBackdropSunriseSunset,
+const tabletBackdropByTheme: Record<ThemeType, string> = {
+  "sunrise-sunset": tabletBackdropSunriseSunset,
   afternoon: tabletBackdropAfternoon,
   night: tabletBackdropNight,
 };
 
-const mobileBackdropByTheme: Record<SiteTimeTheme, string> = {
-  morning: mobileBackdropSunriseSunset,
+const mobileBackdropByTheme: Record<ThemeType, string> = {
+  "sunrise-sunset": mobileBackdropSunriseSunset,
   afternoon: mobileBackdropAfternoon,
   night: mobileBackdropNight,
 };
 
-const mobileDoorByTheme: Record<SiteTimeTheme, Record<"left" | "right", string>> = {
-  morning: { left: mobileLeftDoor, right: mobileRightDoor },
+const mobileDoorByTheme: Record<ThemeType, Record<"left" | "right", string>> = {
+  "sunrise-sunset": { left: mobileLeftDoor, right: mobileRightDoor },
   afternoon: { left: mobileLeftDoorAfternoon, right: mobileRightDoorAfternoon },
   night: { left: mobileLeftDoorNight, right: mobileRightDoorNight },
 };
 
 export function ResponsiveTrainWall({ side, breakpoint, theme, style }: ResponsiveTrainWallProps) {
   if (breakpoint === "desktop" || breakpoint === "desktop-edge") {
-    return <TrainWall side={side} />;
+    return <TrainWall side={side} theme={theme} />;
   }
 
   if (breakpoint === "tablet" || breakpoint === "tablet-custom") {
@@ -100,20 +106,13 @@ export function ResponsiveTrainWall({ side, breakpoint, theme, style }: Responsi
 
 export function ResponsiveLeftDoor({ breakpoint, theme, className }: ResponsiveDoorProps) {
   if (breakpoint === "desktop" || breakpoint === "desktop-edge") {
-    return <LeftDoor className={className} />;
+    return <LeftDoor theme={theme} className={className} />;
   }
 
   if (breakpoint === "tablet" || breakpoint === "tablet-custom") {
     return (
       <div className={className}>
-        <svg
-          className="site-theme-paint-transition"
-          width="321"
-          height="715"
-          viewBox="0 0 321 715"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="321" height="715" viewBox="0 0 321 715" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g filter="url(#filter0_gn_2343_9434)">
             <path
               d="M19.3174 4.2041H301.227C309.573 4.2041 316.339 10.9709 316.339 19.3174V695.318C316.339 703.665 309.573 710.432 301.227 710.432H19.3174C10.9709 710.432 4.2041 703.665 4.2041 695.318V19.3174C4.2041 10.9709 10.9709 4.2041 19.3174 4.2041ZM163.469 185.992C151.27 185.992 141.381 195.881 141.381 208.08V383.593C141.381 395.791 151.27 405.68 163.469 405.68H258.992C271.191 405.68 281.08 395.791 281.08 383.593V208.08C281.08 195.881 271.191 185.992 258.992 185.992H163.469Z"
@@ -127,7 +126,7 @@ export function ResponsiveLeftDoor({ breakpoint, theme, className }: ResponsiveD
               width="153.452"
               height="233.084"
               rx="29.1064"
-              stroke="var(--site-train-stripe)"
+              stroke={windowStrokeColors[theme]}
               strokeWidth="8.1376"
             />
             <g clipPath="url(#clip0_2343_9434)">
@@ -223,20 +222,13 @@ export function ResponsiveLeftDoor({ breakpoint, theme, className }: ResponsiveD
 
 export function ResponsiveRightDoor({ breakpoint, theme, className }: ResponsiveDoorProps) {
   if (breakpoint === "desktop" || breakpoint === "desktop-edge") {
-    return <RightDoor className={className} />;
+    return <RightDoor theme={theme} className={className} />;
   }
 
   if (breakpoint === "tablet" || breakpoint === "tablet-custom") {
     return (
       <div className={className}>
-        <svg
-          className="site-theme-paint-transition"
-          width="321"
-          height="715"
-          viewBox="0 0 321 715"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="321" height="715" viewBox="0 0 321 715" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g transform="translate(321 0) scale(-1 1)">
             <g filter="url(#filter0_gn_2343_9434_right)">
               <path
@@ -251,7 +243,7 @@ export function ResponsiveRightDoor({ breakpoint, theme, className }: Responsive
                 width="153.452"
                 height="233.084"
                 rx="29.1064"
-                stroke="var(--site-train-stripe)"
+                stroke={windowStrokeColors[theme]}
                 strokeWidth="8.1376"
               />
               {/* <g clipPath="url(#clip0_2343_9434_right)">

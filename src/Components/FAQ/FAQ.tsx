@@ -83,7 +83,7 @@ export default function FAQ() {
       setExpanded(newExpanded ? panel : false);
     };
   return (
-    <div className="container">
+    <div id="faq" className="container">
        <svg
         width="0"
         height="0"
@@ -150,7 +150,7 @@ export default function FAQ() {
                     initial={false}
                     animate={{ rotate: isExpanded ? 180 : 0 }}
                     transition={
-                      reduceMotion ? { duration: 0 } : { duration: 0.25, ease: "easeOut" }
+                      reduceMotion ? { duration: 0 } : { duration: 0.14, ease: "easeOut" }
                     }
                   >
                     <span className="faq__icon-horizontal" />
@@ -161,8 +161,9 @@ export default function FAQ() {
                         scaleY: isExpanded ? 0 : 1,
                         opacity: isExpanded ? 0 : 1,
                       }}
+                      style={{ transformOrigin: "50% 50%" }}
                       transition={
-                        reduceMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }
+                        reduceMotion ? { duration: 0 } : { duration: 0.12, ease: "easeOut" }
                       }
                     />
                   </motion.span>

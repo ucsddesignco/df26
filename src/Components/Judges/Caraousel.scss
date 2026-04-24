@@ -51,14 +51,17 @@ $judges-loop-gap: 1rem;
 .embla__slideThemeDecorMount {
   position: absolute;
   inset: 0;
+  
   z-index: 2;
   pointer-events: none;
+  
 }
 
 .embla__slideThemeDecorMotion {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  
 }
 
 .embla__slide {
@@ -67,7 +70,7 @@ $judges-loop-gap: 1rem;
   overflow: hidden;
   // outline: 2px solid #ff2d55;
   outline-offset: -2px;
-  transform: translateZ(0);
+  transform: translateZ();
   transition: transform 160ms ease;
   line-height: 0;
   // filter: grayscale(100%);

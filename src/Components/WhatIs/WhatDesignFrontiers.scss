@@ -201,6 +201,10 @@ $wdf-stack: 1120px;
     margin-bottom: 0;
   }
 
+  &__timeTheme.wdf__timeTheme--flower {
+    width: 60%;
+  }
+
   //Register
   &__button {
     align-self: flex-start;
@@ -347,6 +351,10 @@ $wdf-stack: 1120px;
       transform: none;
       pointer-events: none;
     }
+
+    &__timeTheme.wdf__timeTheme--flower {
+      width: min(250px, 68%);
+    }
   }
 
   //Phone
@@ -394,6 +402,15 @@ $wdf-stack: 1120px;
       transform: none;
       pointer-events: none;
     }
+
+    &__timeTheme.wdf__timeTheme--flower {
+      width: 180px;
+      max-width: min(180px, calc(100% - 80px));
+    }
+
+    &__button {
+      margin-bottom: 20px;
+    }
   }
 
   //most narrow
@@ -402,6 +419,11 @@ $wdf-stack: 1120px;
 
     &__timeTheme {
       max-width: min(268px, calc(100% - 80px));
+    }
+
+    &__timeTheme.wdf__timeTheme--flower {
+      width: 170px;
+      max-width: min(170px, calc(100% - 80px));
     }
   }
 }
@@ -415,5 +437,11 @@ $wdf-stack: 1120px;
 @media (max-width: 480px) {
   .wdf {
     padding: 72px 40px;
+
+    &__timeTheme {
+      justify-self: center;
+      margin-inline: auto;
+      // outline: 2px solid red;
+    }
   }
 }

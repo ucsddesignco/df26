@@ -114,7 +114,7 @@ export default function Agenda() {
   const [activeTab, setActiveTab] = useState<MobileTab>("day1");
 
   return (
-    <section className="agenda-section">
+    <section id="agenda" className="agenda-section">
       <svg
         width="0"
         height="0"

@@ -176,8 +176,10 @@
         position: absolute;
         width: 20px;
         height: 0px;
-        left: 2px;
-        top: 12px;
+        left: 50%;
+        top: 50%;
+        margin-left: -10px;
+        margin-top: -1px;
         border: 1px solid #2B2B23;
         display: block;
       }
@@ -186,10 +188,13 @@
         position: absolute;
         width: 0px;
         height: 20px;
-        left: 12px;
-        top: 2px;
+        left: 50%;
+        top: 50%;
+        margin-left: -1px;
+        margin-top: -10px;
         border: 1px solid #2B2B23;
         display: block;
+        transform-origin: center center;
         // Slightly shorter than the wrapper so the collapse finishes
         // just before the spin does — feels snappier
         transition: transform 0.2s ease, opacity 0.2s ease;

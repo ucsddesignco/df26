@@ -5,13 +5,27 @@ import { Logo } from "./Logo";
 import { MenuIcon, type MenuIconHandle } from "./Hamburger";
 
 const NAV_LINKS = [
-  { label: "About", href: "https://designatucsd.com/about" },
-  { label: "Events", href: "https://designatucsd.com/events" },
-  { label: "Community", href: "https://designatucsd.com/community" },
-  { label: "Contact", href: "https://designatucsd.com/contact" },
+  { label: "About", href: "#what-is" },
+  { label: "Agenda", href: "#agenda" },
+  { label: "Judges", href: "#judges" },
+  { label: "FAQ", href: "#faq" },
 ] as const;
 
 export const Navbar = () => {
+  const SCROLL_OFFSET_PX = 32;
+
+  const smoothScrollToElement = (el: HTMLElement) => {
+    const top = window.scrollY + el.getBoundingClientRect().top - SCROLL_OFFSET_PX;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  const scrollToSection = (href: string) => {
+    const targetId = href.startsWith("#") ? href.slice(1) : "";
+    const target = targetId ? document.getElementById(targetId) : null;
+    if (!target) return;
+    smoothScrollToElement(target);
+  };
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuIconRef = useRef<MenuIconHandle | null>(null);
   const navRef = useRef<HTMLDivElement | null>(null);
@@ -97,7 +111,15 @@ export const Navbar = () => {
       >
         <span className="navbar-logo">
           <Logo />
-          <a href="https://designatucsd.com/" className="navbar-logo-text">
+          <a
+            href="#hero"
+            className="navbar-logo-text"
+            onClick={(e) => {
+              e.preventDefault();
+              const hero = document.getElementById("hero");
+              if (hero) smoothScrollToElement(hero);
+            }}
+          >
             Design Co
           </a>
         </span>
@@ -105,7 +127,15 @@ export const Navbar = () => {
         <ul className="span-navbar" aria-label="Primary navigation">
           {NAV_LINKS.map((l) => (
             <li key={l.href}>
-              <a href={l.href}>{l.label}</a>
+              <a
+                href={l.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(l.href);
+                }}
+              >
+                {l.label}
+              </a>
             </li>
           ))}
         </ul>
@@ -147,7 +177,14 @@ export const Navbar = () => {
                   <ul className="navbar-drawer__list">
                     {NAV_LINKS.map((l) => (
                       <li key={l.href}>
-                        <a href={l.href} onClick={() => setIsMenuOpen(false)}>
+                        <a
+                          href={l.href}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            scrollToSection(l.href);
+                            setIsMenuOpen(false);
+                          }}
+                        >
                           {l.label}
                         </a>
                       </li>

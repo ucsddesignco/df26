@@ -75,8 +75,8 @@ export default function FAQ() {
   useEffect(() => {
     const ua = navigator.userAgent;
     const isSafari = /Safari/i.test(ua) && !/(Chrome|Chromium|CriOS|Edg|OPR)/i.test(ua);
-    setDisableTexture(Boolean(reduceMotion) || isSafari);
-  }, [reduceMotion]);
+    setDisableTexture(isSafari);
+  }, []);
 
   const handleChange =
     (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {

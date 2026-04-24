@@ -145,6 +145,16 @@
       }
     }
 
+    &.faq--no-texture {
+      &::before {
+        filter: none;
+      }
+
+      .faq__item:not(:last-child)::after {
+        filter: none;
+      }
+    }
+
     &__question {
       padding: 0;
       width: 100%;

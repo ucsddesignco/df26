@@ -5,7 +5,7 @@ import {
   useMotionValue,
   useReducedMotion,
 } from "framer-motion";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import "./Caraousel.scss";
 import { Judge1 } from "./../../SVGS/Judges/Judge1";
 import { Judge2 } from "./../../SVGS/Judges/Judge2";
@@ -81,6 +81,8 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
   );
 
   const setARef = useRef<HTMLDivElement | null>(null);
+  const setBRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
   const loopWidthRef = useRef(0);
   const isDraggingRef = useRef(false);
   const speedRef = useRef(1);       // 1 = full speed, 0 = fully stopped
@@ -90,14 +92,47 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
   // Tune speed here (px/sec)
   const AUTO_PX_PER_SEC = reduceMotion ? 0 : 32;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const measure = () => {
-      const w = setARef.current?.offsetWidth ?? 0;
-      loopWidthRef.current = w;
+      const setA = setARef.current;
+      const setB = setBRef.current;
+      const track = trackRef.current;
+      if (!setA || !setB || !track) return;
+
+      // The start-to-start distance between duplicated sets is the true loop size.
+      const startToStart = setB.offsetLeft - setA.offsetLeft;
+      // Safari can occasionally report unstable offset positions; scrollWidth/2 is
+      // a reliable fallback because track contains exactly two identical sets.
+      const halfTrackWidth = track.scrollWidth / 2;
+      const measured = halfTrackWidth > 0 ? halfTrackWidth : startToStart;
+
+      if (measured > 0) {
+        loopWidthRef.current = measured;
+      }
     };
+
     measure();
+
+    // iOS Safari can finalize layout after first paint; re-measure again.
+    const rafId = requestAnimationFrame(measure);
+    const timeoutId = window.setTimeout(measure, 180);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && setARef.current) {
+      resizeObserver = new ResizeObserver(measure);
+      resizeObserver.observe(setARef.current);
+    }
+
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    window.addEventListener("orientationchange", measure);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.clearTimeout(timeoutId);
+      resizeObserver?.disconnect();
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("orientationchange", measure);
+    };
   }, []);
 
   // Cancel any in-flight ease rAF before starting a new one
@@ -106,6 +141,16 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
       cancelAnimationFrame(easeRafRef.current);
       easeRafRef.current = null;
     }
+  };
+
+  const wrapToLoopRange = (value: number) => {
+    const loopW = loopWidthRef.current;
+    if (!loopW) return value;
+
+    let wrapped = value;
+    while (wrapped <= -loopW) wrapped += loopW;
+    while (wrapped > 0) wrapped -= loopW;
+    return wrapped;
   };
 
   const handleMouseEnter = () => {
@@ -147,10 +192,7 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
     const next = x.get() - deltaPx;
 
     // Wrap into [-loopW, 0)
-    let wrapped = next;
-    while (wrapped <= -loopW) wrapped += loopW;
-    while (wrapped > 0) wrapped -= loopW;
-    x.set(wrapped);
+    x.set(wrapToLoopRange(next));
   });
 
   return (
@@ -159,8 +201,21 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
         className="judges-loop"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onWheel={(event) => {
+          const loopW = loopWidthRef.current;
+          if (!loopW) return;
+
+          // Only react to explicit horizontal wheel/trackpad movement.
+          if (event.deltaX === 0) return;
+
+          event.preventDefault();
+          isDraggingRef.current = false;
+          const WHEEL_SCROLL_MULTIPLIER = 0.65;
+          x.set(wrapToLoopRange(x.get() - event.deltaX * WHEEL_SCROLL_MULTIPLIER));
+        }}
       >
         <motion.div
+          ref={trackRef}
           className="judges-loop__track"
           style={{ x }}
           drag="x"
@@ -171,12 +226,7 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
           }}
           onDragEnd={() => {
             isDraggingRef.current = false;
-            const loopW = loopWidthRef.current;
-            if (!loopW) return;
-            let v = x.get();
-            while (v <= -loopW) v += loopW;
-            while (v > 0) v -= loopW;
-            x.set(v);
+            x.set(wrapToLoopRange(x.get()));
           }}
         >
           {/* Set A — measured for loop math */}
@@ -190,7 +240,7 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
           </div>
 
           {/* Set B — aria-hidden duplicate */}
-          <div className="judges-loop__set" aria-hidden="true">
+          <div ref={setBRef} className="judges-loop__set" aria-hidden="true">
             {slides.map((judge, idx) => (
               <div key={`b-${idx}`} className="embla__slide">
                 {judge}

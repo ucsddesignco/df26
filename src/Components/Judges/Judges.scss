@@ -4,6 +4,7 @@
     h1{
         margin-bottom: 1rem;
         font-size: 2rem;
+        line-height: 1.05;
         // background-color: red;
         max-width: fit-content;
         margin-left: 1rem;
@@ -11,10 +12,10 @@
 
     @media (max-width: 818px)
     {
-        padding: 0 0 0 4rem;
+        padding: 3rem 0 0 4rem;
     }
 
     @media (max-width: 650px){
-        padding: 0 0 0 2rem;
+        padding: 2.5rem 0 0 2rem;
     }
 }

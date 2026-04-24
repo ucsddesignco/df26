@@ -30,11 +30,11 @@ type AgendaItem = {
 const dayOne: AgendaItem[] = [
   { time: "2:00 PM PT", title: "Kickoff + Lightning Talk" },
   { time: "3:00 PM PT", title: "Prompt Reveal + Work Time" },
-  { time: "5:00 PM PT", title: "Day 1 Closing" },
+  { time: "6:00 PM PT", title: "Day 1 Closing" },
 ];
 
 const dayTwo: AgendaItem[] = [
-  { time: "10:30 AM PT", title: "Check-in + Work Time" },
+  { time: "10:00 AM PT", title: "Check-in + Work Time" },
   { time: "1:00 PM PT", title: "Submissions Due" },
   { time: "2:00 PM PT", title: "Finalists Revealed" },
   { time: "2:30 PM PT", title: "Finalist Presentations" },
@@ -114,7 +114,7 @@ export default function Agenda() {
   const [activeTab, setActiveTab] = useState<MobileTab>("day1");
 
   return (
-    <section className="agenda-section">
+    <section id="agenda" className="agenda-section">
       <svg
         width="0"
         height="0"

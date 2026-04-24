@@ -5,8 +5,8 @@ import { EmblaCarousel } from "./EmblaCarousel";
 export const Judges = () => {
     const { theme } = useSiteTheme();
     return (
-        <section className="judges-section">
-            <h1>Meet Your Judges & Speaker</h1>
+        <section id="judges" className="judges-section">
+            <h1>Meet Your Judges</h1>
             <EmblaCarousel theme={siteThemeToEmbla(theme)} />
         </section>
     )

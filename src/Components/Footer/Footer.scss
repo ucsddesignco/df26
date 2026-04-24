@@ -3,7 +3,7 @@ footer {
   display: block;
   background: #F5F5F5;
   width: 100%;
-  padding-top: 72px;
+  // padding-top: 72px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -142,9 +142,8 @@ footer {
 
         z-index: 10;
         pointer-events: none;
-        // Isolate from heavy SVG filter compositing (Safari); Framer owns `transform` on this node.
-        isolation: isolate;
         will-change: transform;
+        transform: translateZ(0);
         backface-visibility: hidden;
 
         svg,
@@ -177,7 +176,6 @@ footer {
     letter-spacing: 0.72px;
   }
 }
-
 
 .footer-button {
   position: absolute;

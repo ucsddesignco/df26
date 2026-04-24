@@ -6,11 +6,7 @@ import {
   type KeyboardEvent,
   type TransitionEvent,
 } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import {
-  themeIllustrationCrossfadeTransition,
-  useSiteTheme,
-} from '../../context/SiteThemeContext'
+import { useSiteTheme } from '../../context/SiteThemeContext'
 import CalendarIcon from '../../SVGS/CalendarIcon'
 import RegisterNow from './registerNow'
 import { WhatIsFlowers } from './flowers'
@@ -49,8 +45,6 @@ export default function WhatDesignFrontiers() {
   const [noTransition, setNoTransition] = useState(false)
   const indexRef = useRef(0)
   const { theme: timeTheme } = useSiteTheme()
-  const reduceMotion = useReducedMotion()
-  const themeDecorTransition = themeIllustrationCrossfadeTransition(reduceMotion)
 
   const nSlides = slides.length
   const lastReal = nSlides - 1
@@ -172,7 +166,7 @@ export default function WhatDesignFrontiers() {
   }
 
   return (
-    <section className='wdf'>
+    <section id="what-is" className='wdf'>
       {/* --- Heading */}
       <div className='wdf__copyTop'>
         <h1 className='wdf__title'>What is Design Frontiers?</h1>
@@ -183,7 +177,7 @@ export default function WhatDesignFrontiers() {
         <div className='wdf__meta'>
           <p className='wdf__meta-line'>
             <a
-              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%201&dates=20260509T140000/20260509T170000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=Design%20and%20Innovation%20Building%2C%209510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
+              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%201&dates=20260509T140000/20260509T180000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=Design%20and%20Innovation%20Building%2C%209510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
               className='wdf__meta-link'
               target='_blank'
               rel='noreferrer'
@@ -191,12 +185,12 @@ export default function WhatDesignFrontiers() {
               <span className='wdf__meta-icon' aria-hidden>
                 <CalendarIcon />
               </span>
-              <u>Day 1 | Sat, May 9 | 2 PM - 5 PM</u>
+              <u>Day 1 | Sat, May 9 | 2 PM - 6 PM</u>
             </a>
           </p>
           <p className='wdf__meta-line'>
             <a
-              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%202&dates=20260510T100000/20260510T150000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=9510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
+              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%202&dates=20260510T100000/20260510T160000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=Design%20and%20Innovation%20Building%2C%209510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
               className='wdf__meta-link'
               target='_blank'
               rel='noreferrer'
@@ -204,16 +198,16 @@ export default function WhatDesignFrontiers() {
               <span className='wdf__meta-icon' aria-hidden>
                 <CalendarIcon />
               </span>
-              <u>Day 2 | Sun, May 10 | 10 AM - 3 PM</u>
+              <u>Day 2 | Sun, May 10 | 10 AM - 4 PM</u>
             </a>
           </p>
         </div>
 
         <p className='wdf__body'>
-        Design Frontiers is Design Co’s annual design-a-thon. 
-        Across two days, teams collaborate and innovate in response to real-world problems. 
-        Finalists present their projects to a panel of industry professionals who mentor and 
-        judge throughout the event.
+          Design Frontiers is Design Co's annual designathon—a two-day sprint
+          where teams tackle real-world challenges with creative design solutions.
+          Final projects are presented to a panel of industry professionals who
+          offer feedback and select standout work.
         </p>
 
         <a
@@ -292,25 +286,16 @@ export default function WhatDesignFrontiers() {
         </div>
       </div>
 
-      {/* --- Background SVG by time of day (crossfade on theme change) */}
-      <AnimatePresence initial={false} mode="sync">
-        <motion.div
-          key={timeTheme}
-          className="wdf__timeThemeMotion"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={themeDecorTransition}
-        >
-          {timeTheme === 'morning' ? (
-            <WhatIsFlowers className="wdf__timeTheme" aria-hidden />
-          ) : timeTheme === 'afternoon' ? (
-            <WhatIsLeaves className="wdf__timeTheme" aria-hidden />
-          ) : (
-            <WhatIsStars className="wdf__timeTheme" aria-hidden />
-          )}
-        </motion.div>
-      </AnimatePresence>
+      {/* --- Background SVG by time of day */}
+      {timeTheme === 'morning' && (
+        <WhatIsFlowers className='wdf__timeTheme wdf__timeTheme--flower' aria-hidden />
+      )}
+      {timeTheme === 'afternoon' && (
+        <WhatIsLeaves className='wdf__timeTheme' aria-hidden />
+      )}
+      {timeTheme === 'night' && (
+        <WhatIsStars className='wdf__timeTheme' aria-hidden />
+      )}
     </section>
   )
 }

@@ -341,10 +341,10 @@
   //breakpoints
   
   /* tab + mobile*/
-  @media (max-width: 1024px) {
+  @media (max-width: 744px) {
     .agenda-section {
       --agenda-section-padding-y: 32px;
-      --agenda-section-padding-x: 32px;
+      --agenda-section-padding-x: 80px;
       --agenda-title-size: 28px;
       --agenda-title-line-height: 30px;
       --agenda-event-title-size: 22px;
@@ -391,7 +391,6 @@
   /* mobile */
   @media (max-width: 768px) {
     .agenda-section {
-      --agenda-section-padding-x: 20px;
       --agenda-event-title-size: 20px;
       --agenda-event-title-lh: 24px;
       --agenda-row-padding: 16px;
@@ -412,8 +411,6 @@
   /* small mobie */
   @media (max-width: 480px) {
     .agenda-section {
-      --agenda-section-padding-x: 16px;
-      --agenda-title-size: 24px;
       --agenda-event-title-size: 18px;
       --agenda-event-title-lh: 22px;
       --agenda-time-size: 14px;
@@ -450,5 +447,11 @@
   @media (max-width: 1024px) {
     .agenda-decoration-wrap--mobile-only {
     display: grid; 
+    }
+  }
+
+  @media (max-width: 480px) {
+    .agenda-section {
+      --agenda-section-padding-x: 40px;
     }
   }

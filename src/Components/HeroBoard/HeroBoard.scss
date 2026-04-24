@@ -108,6 +108,9 @@
         color: #EEF0F1;
         line-height: 1.2;
 
+        flex: 1; 
+        min-width: 0;
+
         /* Size for Mobile */
         gap: 4px;
 
@@ -118,6 +121,9 @@
         
         .main-text {
           font-weight: 600;
+          white-space: nowrap;
+          transform-origin: left center;
+          width: max-content;
 
           /* Size for Mobile */
           font-size: 1.85rem;

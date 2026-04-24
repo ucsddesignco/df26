@@ -1,12 +1,12 @@
-import type { SiteTimeTheme } from "../../../context/SiteThemeContext";
+import { type ThemeType } from "../../../types/theme";
 
 interface TrainWallProps {
-  theme: SiteTimeTheme;
+  theme: ThemeType;
 }
 
 // 1. Define your different versions here
-const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
-  morning: (
+const ThemeBackdrops: Record<ThemeType, React.ReactNode> = {
+  "sunrise-sunset": (
     <svg
       width="1280"
       height="480"
@@ -15,7 +15,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid slice"
     >
-      <g clip-path="url(#clip0_2493_10247)">
+      <g clipPath="url(#clip0_2493_10247)">
         <rect width="1280" height="480" fill="#F8CABA" />
         <g filter="url(#filter0_ng_2493_10247)">
           <path
@@ -25,7 +25,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
         </g>
         <mask
           id="mask0_2493_10247"
-          style={{ maskType: 'alpha' }}
+          style={{maskType:'alpha'}}
           maskUnits="userSpaceOnUse"
           x="-142"
           y="-65"
@@ -82,9 +82,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="503.07"
           height="123.617"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -116,7 +116,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -161,9 +161,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="531.923"
           height="179.574"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -195,7 +195,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -232,9 +232,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="73.2813"
           height="73.2788"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -267,9 +267,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="58.5901"
           height="58.5891"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -302,9 +302,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="48.0805"
           height="48.0809"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -431,9 +431,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="503.069"
           height="123.617"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -465,7 +465,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -510,9 +510,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="531.923"
           height="179.574"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -544,7 +544,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -581,9 +581,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="64.29"
           height="50.2285"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -616,9 +616,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="26.1934"
           height="32.7969"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -651,9 +651,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="31.3154"
           height="27.4702"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -686,9 +686,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="58.7041"
           height="53.5649"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -721,9 +721,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="31.585"
           height="27.1108"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -856,9 +856,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="503.069"
           height="123.617"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -890,7 +890,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -935,9 +935,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="531.923"
           height="179.574"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -969,7 +969,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -1006,9 +1006,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="168.586"
           height="174.799"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -1058,7 +1058,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -1077,9 +1077,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="33.8461"
           height="33.848"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -1129,7 +1129,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -1148,9 +1148,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="37.9941"
           height="37.9921"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -1200,7 +1200,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -1219,9 +1219,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="21.4138"
           height="21.4138"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -1271,7 +1271,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -1290,9 +1290,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="21.4138"
           height="21.4138"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -1342,7 +1342,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"
@@ -1361,9 +1361,9 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
           width="13.815"
           height="13.815"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -1413,7 +1413,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
             in="coloredNoise1"
             result="noise1Clipped"
           />
-          <feFlood flood-color="#F1EBE5" result="color1Flood" />
+          <feFlood floodColor="#F1EBE5" result="color1Flood" />
           <feComposite
             operator="in"
             in2="noise1Clipped"

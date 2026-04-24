@@ -30,8 +30,12 @@ const Button = ({
           rel={isExternalLink ? "noopener noreferrer" : undefined}
           className={classNames}
         >
-          {text}
-          {icon && icon}
+          <div className="content-container">
+            <div className='icon-container'>
+              {icon && icon}
+            </div>
+            <span>{text}</span>
+          </div>
         </a>
       ) : (
         <button
@@ -39,14 +43,7 @@ const Button = ({
           onClick={onClick}
           className={classNames}
           disabled={disabled}
-        >
-          <div className="content-container">
-            <div className='icon-container'>
-              {icon && icon}
-            </div>
-            <span>{text}</span>
-          </div>
-        </button>
+        />
       )}
     </>
   );

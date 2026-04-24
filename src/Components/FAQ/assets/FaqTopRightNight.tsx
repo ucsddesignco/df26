@@ -34,9 +34,9 @@ export const FaqTopRightNight = () => {
             width="34.5394"
             height="34.5384"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feBlend
               mode="normal"
               in="SourceGraphic"
@@ -86,7 +86,7 @@ export const FaqTopRightNight = () => {
               in="coloredNoise1"
               result="noise1Clipped"
             />
-            <feFlood flood-color="#F1EBE5" result="color1Flood" />
+            <feFlood floodColor="#F1EBE5" result="color1Flood" />
             <feComposite
               operator="in"
               in2="noise1Clipped"
@@ -105,9 +105,9 @@ export const FaqTopRightNight = () => {
             width="58.2269"
             height="57.847"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feBlend
               mode="normal"
               in="SourceGraphic"
@@ -157,7 +157,7 @@ export const FaqTopRightNight = () => {
               in="coloredNoise1"
               result="noise1Clipped"
             />
-            <feFlood flood-color="#F1EBE5" result="color1Flood" />
+            <feFlood floodColor="#F1EBE5" result="color1Flood" />
             <feComposite
               operator="in"
               in2="noise1Clipped"
@@ -176,9 +176,9 @@ export const FaqTopRightNight = () => {
             width="34.5394"
             height="34.5384"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feBlend
               mode="normal"
               in="SourceGraphic"
@@ -228,7 +228,7 @@ export const FaqTopRightNight = () => {
               in="coloredNoise1"
               result="noise1Clipped"
             />
-            <feFlood flood-color="#F1EBE5" result="color1Flood" />
+            <feFlood floodColor="#F1EBE5" result="color1Flood" />
             <feComposite
               operator="in"
               in2="noise1Clipped"

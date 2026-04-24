@@ -12,6 +12,7 @@ import { Judges } from "./Components/Judges/Judges";
 import Hero from "./Components/Hero/Hero";
 import { Toggle } from "./Components/ToggleButton/Toggle";
 import { SiteThemeProvider } from "./context/SiteThemeContext";
+import "./App.scss";
 function App() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -43,11 +44,13 @@ function App() {
         <Navbar />
         <Toggle />
         <Hero />
-        <WhatDesignFrontiers />
-        <Agenda />
-        <Judges />
-        <FAQ />
-        <Footer />
+        <main className="main-sections">
+          <WhatDesignFrontiers />
+          <Agenda />
+          <Judges />
+          <FAQ />
+          <Footer />
+        </main>
       </>
     </SiteThemeProvider>
   );

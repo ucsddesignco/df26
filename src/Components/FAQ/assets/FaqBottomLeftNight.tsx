@@ -28,9 +28,9 @@ export const FaqBottomLeftNight = () => {
             width="82.9274"
             height="86.0602"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feBlend
               mode="normal"
               in="SourceGraphic"
@@ -80,7 +80,7 @@ export const FaqBottomLeftNight = () => {
               in="coloredNoise1"
               result="noise1Clipped"
             />
-            <feFlood flood-color="#F1EBE5" result="color1Flood" />
+            <feFlood floodColor="#F1EBE5" result="color1Flood" />
             <feComposite
               operator="in"
               in2="noise1Clipped"
@@ -99,9 +99,9 @@ export const FaqBottomLeftNight = () => {
             width="34.5394"
             height="34.5384"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feBlend
               mode="normal"
               in="SourceGraphic"
@@ -151,7 +151,7 @@ export const FaqBottomLeftNight = () => {
               in="coloredNoise1"
               result="noise1Clipped"
             />
-            <feFlood flood-color="#F1EBE5" result="color1Flood" />
+            <feFlood floodColor="#F1EBE5" result="color1Flood" />
             <feComposite
               operator="in"
               in2="noise1Clipped"

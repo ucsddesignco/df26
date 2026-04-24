@@ -5,8 +5,8 @@ export function SmallStar({ className }: { className?: string }) {
                 <circle cx="5.2334" cy="5.2334" r="4" fill="#F1E6C7" />
             </g>
             <defs>
-                <filter id="filter0_gn_2272_2904" x="3.38554e-05" y="3.38554e-05" width="10.4667" height="10.4667" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <filter id="filter0_gn_2272_2904" x="3.38554e-05" y="3.38554e-05" width="10.4667" height="10.4667" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
                     <feTurbulence type="fractalNoise" baseFrequency="0.238467738032341 0.238467738032341" numOctaves="3" seed="5210" />
                     <feDisplacementMap in="shape" scale="2.4667291641235352" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
@@ -19,7 +19,7 @@ export function SmallStar({ className }: { className?: string }) {
                         <feFuncA type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 " />
                     </feComponentTransfer>
                     <feComposite operator="in" in2="effect1_texture_2272_2904" in="coloredNoise1" result="noise1Clipped" />
-                    <feFlood flood-color="#F1EBE5" result="color1Flood" />
+                    <feFlood floodColor="#F1EBE5" result="color1Flood" />
                     <feComposite operator="in" in2="noise1Clipped" in="color1Flood" result="color1" />
                     <feMerge result="effect2_noise_2272_2904">
                         <feMergeNode in="effect1_texture_2272_2904" />

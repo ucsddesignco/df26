@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { styled } from "@mui/material/styles";
 import MuiAccordion, { type AccordionProps } from "@mui/material/Accordion";
@@ -70,6 +70,13 @@ export default function FAQ() {
   const reduceMotion = useReducedMotion();
   const stickerCrossfade = themeIllustrationCrossfadeTransition(reduceMotion);
   const [expanded, setExpanded] = useState<string | false>(false);
+  const [disableTexture, setDisableTexture] = useState(false);
+
+  useEffect(() => {
+    const ua = navigator.userAgent;
+    const isSafari = /Safari/i.test(ua) && !/(Chrome|Chromium|CriOS|Edg|OPR)/i.test(ua);
+    setDisableTexture(Boolean(reduceMotion) || isSafari);
+  }, [reduceMotion]);
 
   const handleChange =
     (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -126,28 +133,46 @@ export default function FAQ() {
           </div>
         ))}
         <p className="title">FAQ</p>
-        <div className="faq">
-          {faqData.map((item) => (
-            <Accordion
-              key={item.id}
-              expanded={expanded === item.id}
-              onChange={handleChange(item.id)}
-              className="faq__item"
-            >
-              <AccordionSummary className="faq__question">
-                {item.question}
-                <span
-                  className={`faq__icon ${expanded === item.id ? "faq__icon--open" : ""}`}
-                >
-                  <span className="faq__icon-horizontal" />
-                  <span className="faq__icon-vertical" />
-                </span>
-              </AccordionSummary>
-              <AccordionDetails className="faq__answer">
-                {item.answer}
-              </AccordionDetails>
-            </Accordion>
-          ))}
+        <div className={`faq ${disableTexture ? "faq--no-texture" : ""}`}>
+          {faqData.map((item) => {
+            const isExpanded = expanded === item.id;
+            return (
+              <Accordion
+                key={item.id}
+                expanded={isExpanded}
+                onChange={handleChange(item.id)}
+                className="faq__item"
+              >
+                <AccordionSummary className="faq__question">
+                  {item.question}
+                  <motion.span
+                    className={`faq__icon ${isExpanded ? "faq__icon--open" : ""}`}
+                    initial={false}
+                    animate={{ rotate: isExpanded ? 180 : 0 }}
+                    transition={
+                      reduceMotion ? { duration: 0 } : { duration: 0.25, ease: "easeOut" }
+                    }
+                  >
+                    <span className="faq__icon-horizontal" />
+                    <motion.span
+                      className="faq__icon-vertical"
+                      initial={false}
+                      animate={{
+                        scaleY: isExpanded ? 0 : 1,
+                        opacity: isExpanded ? 0 : 1,
+                      }}
+                      transition={
+                        reduceMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }
+                      }
+                    />
+                  </motion.span>
+                </AccordionSummary>
+                <AccordionDetails className="faq__answer">
+                  {item.answer}
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
         </div>
       </div>
     </div>

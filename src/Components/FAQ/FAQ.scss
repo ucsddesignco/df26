@@ -1,5 +1,5 @@
 .container {
-  padding: 72px 120px;
+  padding: 0 120px 72px 120px;
   font-family: "NB International";
 }
 
@@ -229,7 +229,7 @@
 
 @media (max-width: 744px) {
   .container {
-    padding: 72px 80px;
+    padding: 0 80px 72px 80px;
   }
 }
 
@@ -271,6 +271,6 @@
 
 @media (max-width: 480px) {
   .container {
-    padding: 72px 40px;
+    padding: 0 40px 72px 40px;
   }
 }

@@ -177,7 +177,7 @@ export default function WhatDesignFrontiers() {
         <div className='wdf__meta'>
           <p className='wdf__meta-line'>
             <a
-              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%202&dates=20260510T100000/20260510T160000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=Design%20and%20Innovation%20Building%2C%209510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
+              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%201&dates=20260509T140000/20260509T180000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=Design%20and%20Innovation%20Building%2C%209510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
               className='wdf__meta-link'
               target='_blank'
               rel='noreferrer'
@@ -190,7 +190,7 @@ export default function WhatDesignFrontiers() {
           </p>
           <p className='wdf__meta-line'>
             <a
-              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%201&dates=20260509T140000/20260509T180000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=Design%20and%20Innovation%20Building%2C%209510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
+              href='https://www.google.com/calendar/render?action=TEMPLATE&text=Design%20Frontiers%202026%20%7C%20Day%202&dates=20260510T100000/20260510T160000&details=Solve%20real%20world%20problems%20at%20Design%20Co%27s%20annual%20design-a-thon!&location=Design%20and%20Innovation%20Building%2C%209510%20Innovation%20Ln%2C%20La%20Jolla%2C%20CA%2092093%2C%20USA&sf=true&output=xml'
               className='wdf__meta-link'
               target='_blank'
               rel='noreferrer'

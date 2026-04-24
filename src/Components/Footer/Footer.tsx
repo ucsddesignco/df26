@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import "./Footer.scss";
 import type { ThemeType } from "../../types/theme";
+import { useSiteTheme } from "../../context/SiteThemeContext";
 import {
   ResponsiveBackdrop,
   ResponsiveFooterButton,
@@ -11,23 +12,8 @@ import {
   type FooterBreakpoint,
 } from "./assets/FooterResponsiveAssets";
 
-const footerButtonVariants: Variants = {
-  hidden: { opacity: 0, x: "-50%", y: "-50%", scale: 0.97 },
-  visible: {
-    opacity: 1,
-    x: "-50%",
-    y: "-50%",
-    scale: 1,
-    transition: { duration: 0.28, delay: 0.2, ease: [0.65, 0, 0.35, 1] },
-  },
-  exit: {
-    opacity: 0,
-    x: "-50%",
-    y: "-50%",
-    scale: 0.985,
-    transition: { duration: 0.3, ease: [0.65, 0, 1, 1] },
-  },
-};
+const FOOTER_BUTTON_ENTER_DELAY_S = 0.2;
+const VIEWPORT_OPEN_DELAY_S = 0.2;
 
 const MOBILE_BREAKPOINT = 440;
 const TABLET_CUSTOM_BREAKPOINT = 712;
@@ -110,9 +96,16 @@ function toWallStyle(side: "left" | "right", wall: WallLayout): CSSProperties {
   };
 }
 
+function siteThemeToFooterTheme(theme: "morning" | "afternoon" | "night"): ThemeType {
+  if (theme === "morning") return "sunrise-sunset";
+  return theme;
+}
+
 export default function Footer() {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentTheme] = useState<ThemeType>("sunrise-sunset");
+  const [openedViaViewport, setOpenedViaViewport] = useState(false);
+  const { theme: siteTheme } = useSiteTheme();
+  const currentTheme = siteThemeToFooterTheme(siteTheme);
   const [breakpoint, setBreakpoint] = useState<FooterBreakpoint>("desktop");
   const bannerRef = useRef<HTMLDivElement>(null);
   /** Pixel `x` for Framer (closed matches prior ~0.5% of door width; open = peek past wall inner edges). */
@@ -207,7 +200,9 @@ export default function Footer() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsOpen((prev) => (prev === entry.isIntersecting ? prev : entry.isIntersecting));
+        const next = entry.isIntersecting;
+        setOpenedViaViewport(next);
+        setIsOpen((prev) => (prev === next ? prev : next));
       },
       {
         threshold: 0.2,
@@ -233,6 +228,35 @@ export default function Footer() {
     left: activeLayout ? toWallStyle("left", activeLayout.walls.left) : undefined,
     right: activeLayout ? toWallStyle("right", activeLayout.walls.right) : undefined,
   };
+  const shouldDelayOpen = isOpen && openedViaViewport;
+  const doorTransition = {
+    ...DOOR_MOTION_TRANSITION,
+    delay: shouldDelayOpen ? VIEWPORT_OPEN_DELAY_S : 0,
+  };
+  const footerButtonVariants = useMemo(
+    (): Variants => ({
+      hidden: { opacity: 0, x: "-50%", y: "-50%", scale: 0.97 },
+      visible: {
+        opacity: 1,
+        x: "-50%",
+        y: "-50%",
+        scale: 1,
+        transition: {
+          duration: 0.28,
+          delay: FOOTER_BUTTON_ENTER_DELAY_S + (shouldDelayOpen ? VIEWPORT_OPEN_DELAY_S : 0),
+          ease: [0.65, 0, 0.35, 1],
+        },
+      },
+      exit: {
+        opacity: 0,
+        x: "-50%",
+        y: "-50%",
+        scale: 0.985,
+        transition: { duration: 0.3, ease: [0.65, 0, 1, 1] },
+      },
+    }),
+    [shouldDelayOpen],
+  );
 
   return (
     <footer>
@@ -240,7 +264,10 @@ export default function Footer() {
         <div
           ref={bannerRef}
           className={`banner banner--${breakpoint}`}
-          onClick={() => setIsOpen((prev) => !prev)}
+          onClick={() => {
+            setOpenedViaViewport(false);
+            setIsOpen((prev) => !prev);
+          }}
         >
           <ResponsiveTrainWall
             side="left"
@@ -266,7 +293,7 @@ export default function Footer() {
                   : doorMotionPx.leftClosed,
                 scale: doorScale,
               }}
-              transition={DOOR_MOTION_TRANSITION}
+              transition={doorTransition}
             >
               <ResponsiveLeftDoor theme={currentTheme} breakpoint={breakpoint} />
             </motion.div>
@@ -282,7 +309,7 @@ export default function Footer() {
                   : doorMotionPx.rightClosed,
                 scale: doorScale,
               }}
-              transition={DOOR_MOTION_TRANSITION}
+              transition={doorTransition}
             >
               <ResponsiveRightDoor theme={currentTheme} breakpoint={breakpoint} />
             </motion.div>

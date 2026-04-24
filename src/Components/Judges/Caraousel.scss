@@ -3,6 +3,8 @@ $judges-loop-gap: 1rem;
 
 .judges-loop {
   width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
   // Fade edges for a clean infinite feel
   mask-image: linear-gradient(
     to right,

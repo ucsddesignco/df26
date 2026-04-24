@@ -7,9 +7,9 @@ $wdf-stack: 1120px;
   align-items: start;
   column-gap: 64px;
   row-gap: 20px;
-  padding: 120px 120px 0;
-  margin-bottom: -64px;
-  background: #F5F5F5;
+  padding: 120px 120px 8px;
+  margin-bottom: -24px;
+  background: #f5f5f5;
   color: #111111;
 
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -126,15 +126,18 @@ $wdf-stack: 1120px;
     line-height: 1.2;
     margin: 0;
     max-width: 100%;
+    word-break: normal;
+    overflow-wrap: normal;
     hyphens: manual;
     text-wrap: balance;
+    white-space: normal;
   }
 
   //Calendar lines + icons
   &__meta {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 14px;
     color: #111111;
   }
 
@@ -151,6 +154,14 @@ $wdf-stack: 1120px;
     text-decoration: none;
     transition: color 0.15s ease;
 
+    &:hover {
+      color: #000000;
+
+      u {
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
+    }
 
     &:focus-visible {
       outline: 2px solid #111111;
@@ -161,7 +172,6 @@ $wdf-stack: 1120px;
 
   &__meta-icon {
     flex-shrink: 0;
-    margin-top: 2px;
   }
 
   &__body {
@@ -171,31 +181,20 @@ $wdf-stack: 1120px;
     color: #333333;
   }
 
-  // Wrapper for Framer crossfade (matches former &__timeTheme placement in grid)
-  &__timeThemeMotion {
+  //Flowers \ leaves \ stars SVG (time-of-day)
+  &__timeTheme {
     grid-area: flowers;
     justify-self: end;
     align-self: end;
-    z-index: 1;
-    margin-top: 8px;
-    margin-bottom: -28px;
-    line-height: 0;
-  }
-
-  //Flowers \ leaves \ stars SVG (time-of-day)
-  &__timeTheme {
-    width: min(500px, 100%);
+    width: min(395px, 100%);
     max-width: 100%;
     height: auto;
     display: block;
     user-select: none;
     pointer-events: none;
-  }
-
-  //Afternoon leaves: visual only (transform does not change layout vs flowers/stars)
-  &__timeTheme--afternoon {
-    transform: translateY(-30px) scale(0.88);
-    transform-origin: bottom right;
+    z-index: 1;
+    margin-top: 8px;
+    margin-bottom: 0;
   }
 
   //Register
@@ -207,7 +206,7 @@ $wdf-stack: 1120px;
     gap: 0.5rem;
     width: fit-content;
     max-width: 100%;
-    padding: 10px 18px 12px;
+    padding: 10px 18px;
     border: none;
     border-radius: 0;
     background-color: #191919;
@@ -220,6 +219,7 @@ $wdf-stack: 1120px;
     cursor: pointer;
     transition:
       background-color 0.18s ease,
+      color 0.18s ease,
       box-shadow 0.18s ease;
 
     &:hover {
@@ -246,8 +246,6 @@ $wdf-stack: 1120px;
 
   &__button-icon {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
     line-height: 0;
     color: inherit;
@@ -264,7 +262,6 @@ $wdf-stack: 1120px;
     display: inline-flex;
     align-items: center;
     line-height: 1;
-    transform: translateY(-1px);
   }
 
   //≤1120px
@@ -307,14 +304,14 @@ $wdf-stack: 1120px;
   }
 
   //Tablet
-  @media (max-width: 1024px) and (min-width: 601px) {
-    padding: 80px 80px 0;
+  @media (max-width: $wdf-stack) and (min-width: 601px) {
+    padding: 80px 48px 8px;
 
     &__copyTop,
     &__copyBody {
-      max-width: none;
+      max-width: 584px;
       width: 100%;
-      margin-inline: 0;
+      margin-inline: auto;
     }
 
     &__title {
@@ -322,9 +319,9 @@ $wdf-stack: 1120px;
     }
 
     &__media {
-      max-width: 100%;
+      max-width: min(720px, 100%);
       width: 100%;
-      margin-inline: 0;
+      margin-inline: auto;
       margin-top: 48px;
     }
 
@@ -332,25 +329,24 @@ $wdf-stack: 1120px;
       aspect-ratio: 16 / 9;
     }
 
-    &__timeThemeMotion {
-      z-index: 3;
-      margin-top: -36px;
-      margin-right: 0;
-      margin-bottom: -30px;
-    }
-
-    &__timeTheme--afternoon {
-      transform: translateY(-22px) scale(0.88);
-      transform-origin: bottom right;
     &__timeTheme {
-      width: min(340px, 100%);
+      z-index: 3;
+      justify-self: end;
+      align-self: end;
+      width: min(395px, 92%);
+      max-width: 100%;
+      height: auto;
+      margin-top: -36px;
+      margin-right: max(0px, calc((100% - min(720px, 100%)) / 2));
+      margin-bottom: 0;
+      transform: none;
+      pointer-events: none;
     }
   }
 
   //Phone
   @media (max-width: 600px) {
-    padding: 80px 40px 0;
-    margin-bottom: -20px;
+    padding: 80px 40px 8px;
     row-gap: 20px;
 
     &__copyTop {
@@ -381,21 +377,23 @@ $wdf-stack: 1120px;
       margin-inline: 0;
     }
 
-    &__timeThemeMotion {
-      z-index: 3;
-      margin: 0;
-      margin-top: 8px;
-    }
-
     &__timeTheme {
+      justify-self: end;
+      align-self: end;
+      z-index: 3;
       width: 268px;
       max-width: min(268px, calc(100% - 80px));
+      height: auto;
+      margin: 0;
+      margin-top: 8px;
+      transform: none;
+      pointer-events: none;
     }
   }
 
   //most narrow
   @media (max-width: 480px) {
-    padding: 80px 40px 0;
+    padding: 80px 40px 8px;
 
   
     &__timeTheme {

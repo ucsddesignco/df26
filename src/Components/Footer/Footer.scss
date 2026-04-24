@@ -142,9 +142,8 @@ footer {
 
         z-index: 10;
         pointer-events: none;
-        // Isolate from heavy SVG filter compositing (Safari); Framer owns `transform` on this node.
-        isolation: isolate;
         will-change: transform;
+        transform: translateZ(0);
         backface-visibility: hidden;
 
         svg,

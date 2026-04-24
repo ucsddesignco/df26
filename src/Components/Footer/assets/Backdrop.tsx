@@ -1,12 +1,12 @@
-import type { SiteTimeTheme } from "../../../context/SiteThemeContext";
+import { type ThemeType } from "../../../types/theme";
 
 interface TrainWallProps {
-  theme: SiteTimeTheme;
+  theme: ThemeType;
 }
 
 // 1. Define your different versions here
-const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
-  morning: (
+const ThemeBackdrops: Record<ThemeType, React.ReactNode> = {
+  "sunrise-sunset": (
     <svg
       width="1280"
       height="480"
@@ -25,7 +25,7 @@ const ThemeBackdrops: Record<SiteTimeTheme, React.ReactNode> = {
         </g>
         <mask
           id="mask0_2493_10247"
-          style={{ maskType: 'alpha' }}
+          style={{maskType:'alpha'}}
           maskUnits="userSpaceOnUse"
           x="-142"
           y="-65"

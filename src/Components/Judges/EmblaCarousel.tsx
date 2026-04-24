@@ -5,7 +5,7 @@ import {
   useMotionValue,
   useReducedMotion,
 } from "framer-motion";
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useLayoutEffect, useMemo, useRef } from "react";
 import "./Caraousel.scss";
 import { Judge1 } from "./../../SVGS/Judges/Judge1";
 import { Judge2 } from "./../../SVGS/Judges/Judge2";

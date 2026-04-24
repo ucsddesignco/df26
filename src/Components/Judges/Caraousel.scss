@@ -1,94 +1,23 @@
-$judge-card-min: 17.5rem;
-$judges-loop-gap: 1rem;
 
-.judges-loop {
-  width: 100%;
-  overflow-x: hidden;
-  overflow-x: clip;
-  line-height: 0;
-  // Fade edges for a clean infinite feel
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 5%,
-    black 95%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 5%,
-    black 95%,
-    transparent 100%
-  );
+$judge-card-min: 17.5rem; // 280px — same visual size on tablet + phone
+
+.embla__viewport {
+  overflow: hidden;
 }
 
-.judges-loop__track {
+.embla__container {
   display: flex;
-  align-items: flex-start;
-  width: max-content;
-  will-change: transform;
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
-}
-
-.judges-loop__set {
-  display: flex;
-  align-items: flex-start;
-  width: max-content;
-  gap: $judges-loop-gap;
-  padding-right: $judges-loop-gap;
-
-  @media (max-width: 1024px) {
-    gap: 1.5rem;        
-    padding-right: 1.5rem;
-  }
-}
-
-.embla__slideThemeDecorMount {
-  position: absolute;
-  inset: 0;
-  
-  z-index: 2;
-  pointer-events: none;
-  
-}
-
-.embla__slideThemeDecorMotion {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  
+  touch-action: pan-y pinch-zoom;
+  gap: 0.1rem;
 }
 
 .embla__slide {
-  flex: 0 0 clamp(17.5rem, 22vw, 22rem);
-  position: relative;
-  overflow: hidden;
-  // outline: 2px solid #ff2d55;
-  outline-offset: -2px;
-  transform: translateZ();
-  transition: transform 160ms ease;
-  line-height: 0;
-  // filter: grayscale(100%);
-  // transition: transform 160ms ease, filter 300ms ease;
+  // desktop: ~3 slides visible
+  flex: 0 0 clamp(#{$judge-card-min}, 30%, 22rem);
 
-  // &:hover,
-  // &:focus-within {
-  //   filter: grayscale(0%);
-  //   transform: scale(1.02);
-  //   z-index: 3;
-  // }
-
+  // tablet + phone: fixed card width so images dony keep shrinking with the viewport
   @media (max-width: 1024px) {
     flex: 0 0 $judge-card-min;
-  }
-
-  @media (max-width: 600px) {
-    flex: 0 0 14rem; // ← adjust this, 12-15rem range works well
   }
 
   img {
@@ -97,108 +26,6 @@ $judges-loop-gap: 1rem;
     height: auto;
     aspect-ratio: 3 / 4;
     object-fit: cover;
-  }
-
-  > svg[role="link"] {
-    display: block;
-    width: 100%;
-    height: auto;
-    transform: translateY(-18px);
-    outline: 2px solid #00a3ff;
-    outline-offset: -2px;
-  }
-
-  > svg,
-  > a,
-  > div {
-    display: block;
-  }
-
-  svg[role="link"] {
-    outline: none;
-    text-decoration: none;
-  }
-
-  svg[role="link"]:focus,
-  svg[role="link"]:focus-visible {
-    outline: none;
-    box-shadow: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-}
-
-// Scale only — no background or color change
-.embla__slide:hover,
-.embla__slide:focus-within {
-  transform: scale(1.02);
-  z-index: 3;
-}
-
-.embla__themeSwitch {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-
-  button {
-    appearance: none;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    background: transparent;
-    padding: 0.35rem 0.6rem;
-    border-radius: 999px;
-    font: inherit;
-    cursor: pointer;
-  }
-
-  button.is-active {
-    border-color: rgba(0, 0, 0, 0.6);
-    background: rgba(0, 0, 0, 0.06);
-  }
-}
-
-.embla__themeIcon--day {
-  position: absolute;
-  top: 49%;
-  left: -2%;
-  z-index: 2;
-  pointer-events: none;
-
-  @media (max-width: 1116px) {
-    top: 49%;
-    left: -3%;
-    width: 50px;
-    height: auto;
-  }
-}
-
-.embla__themeIcon--evening {
-  position: absolute;
-  top: 3%;
-  left: 67%;
-  z-index: 2;
-  pointer-events: none;
-
-  @media (max-width: 1116px) {
-    top: 10%;
-    left: 69%;
-    width: 80px;
-    height: auto;
-  }
-}
-
-.embla__themeIcon--night {
-  position: absolute;
-  top: 0;
-  left: -3%;
-  z-index: 2;
-  pointer-events: none;
-
-  @media (max-width: 1116px) {
-    top: 5%;
-    left: -3.5%;
-    width: 80px;
-    height: auto;
+    // border: 2px solid black;
   }
 }

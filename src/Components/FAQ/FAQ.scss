@@ -1,5 +1,5 @@
 .container {
-  padding: 0 120px 72px 120px;
+  padding: 72px 120px;
   font-family: "NB International";
 }
 
@@ -7,100 +7,37 @@
   position: relative;
   z-index: 1;
 
-  .faq-sticker {
+  .sticker-1, .sticker-2, .sticker-3, .sticker-4 {
     z-index: 999;
-    pointer-events: none;
-
-    .faq-sticker__crossfade {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr;
-    }
-
-    .faq-sticker__crossfade-inner {
-      grid-area: 1 / 1;
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      transition:
-        left var(--site-theme-paint-duration, 0.48s)
-          var(--site-theme-paint-easing, cubic-bezier(0.4, 0, 0.2, 1)),
-        top var(--site-theme-paint-duration, 0.48s)
-          var(--site-theme-paint-easing, cubic-bezier(0.4, 0, 0.2, 1)),
-        right var(--site-theme-paint-duration, 0.48s)
-          var(--site-theme-paint-easing, cubic-bezier(0.4, 0, 0.2, 1)),
-        transform var(--site-theme-paint-duration, 0.48s)
-          var(--site-theme-paint-easing, cubic-bezier(0.4, 0, 0.2, 1));
-    }
   }
 
-  .faq-sticker--bottom-left {
+  .sticker-1 {
     position: absolute;
+    left: -45px;
+    top: 343.932px;
     transform-origin: center;
-
-    &.faq-sticker--bottom-left--morning {
-      left: -60px;
-      top: 373.932px;
-      transform: scale(1.2) rotate(0deg);
-    }
-
-    &.faq-sticker--bottom-left--afternoon {
-      left: -80px;
-      top: 343.932px;
-      transform: scale(1.2) rotate(2deg);
-    }
-
-    &.faq-sticker--bottom-left--night {
-      left: -120px;
-      top: 260px;
-      transform: scale(1) rotate(0deg);
-    }
+    transform: scale(0.8) rotate(136.629deg);
   }
-
-  .faq-sticker--top-right {
+  .sticker-2 {
     position: absolute;
+    left: -90px;
+    top: 410.932px;
     transform-origin: center;
-
-    &.faq-sticker--top-right--morning {
-      right: 80px;
-      top: 0.932px;
-      transform: scale(1.1) rotate(0deg);
-    }
-
-    &.faq-sticker--top-right--afternoon {
-      right: 90px;
-      top: 0.932px;
-      transform: scale(1.1) rotate(0deg);
-    }
-
-    &.faq-sticker--top-right--night {
-      right: 140px;
-      top: -30px;
-      transform: scale(1.1) rotate(0deg);
-    }
+    transform: scale(0.6) rotate(120.24deg);
   }
-
-  .faq-sticker--bottom-right {
+  .sticker-3 {
     position: absolute;
+    right: 50px;
+    top: 0.932px;
     transform-origin: center;
-
-    &.faq-sticker--bottom-right--morning {
-      right: -30px;
-      top: 230px;
-      transform: scale(1) rotate(0deg);
-    }
-
-    &.faq-sticker--bottom-right--afternoon {
-      right: -20px;
-      top: 250px;
-      transform: scale(1.2) rotate(0deg);
-    }
-
-    &.faq-sticker--bottom-right--night {
-      right: -25px;
-      top: 440px;
-      transform: scale(1.2) rotate(0);
-    }
+    transform: scale(1.1) rotate(62.656deg);
+  }
+  .sticker-4 {
+    position: absolute;
+    right: -50px;
+    top: 194.469px;
+    transform-origin: center;
+    transform: scale(0.7) rotate(165.964deg);
   }
 
   .title {
@@ -110,48 +47,18 @@
   }
 
   .faq {
-    position: relative;
+    border: 1px solid #000000;
     width: 100%;
     z-index: 2;
-    border: none;
-
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border: 1.5px solid #2B2B23;
-      pointer-events: none;
-      filter: url(#agenda-roughen);
-      z-index: 0;
-    }
-
     &__item {
-      position: relative;
+      border-bottom: 1px solid #000000;
       z-index: 2;
       padding: 32px 40px;
       display: flex;
       flex-direction: column;
-
-      &:not(:last-child)::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 1.5px;
-        background: #2B2B23;
-        filter: url(#agenda-roughen);
-        pointer-events: none;
-      }
-    }
-
-    &.faq--no-texture {
-      &::before {
-        filter: none;
-      }
-
-      .faq__item:not(:last-child)::after {
-        filter: none;
+      // gap: 16px;
+      &:last-child {
+        border-bottom: none;
       }
     }
 
@@ -169,28 +76,19 @@
       justify-content: space-between;
       align-items: center;
     }
-
     &__icon {
       position: relative;
       width: 24px;
       height: 24px;
       flex-shrink: 0;
-      // Spin the whole icon — gives the + a satisfying rotation as it becomes −
-      transition: transform 0.3s ease;
-
-      &--open {
-        transform: rotate(180deg);
-      }
 
       &-horizontal {
         position: absolute;
         width: 20px;
         height: 0px;
-        left: 50%;
-        top: 50%;
-        margin-left: -10px;
-        margin-top: -1px;
-        border: 1px solid #2B2B23;
+        left: 2px;
+        top: 12px;
+        border: 1px solid #191919;
         display: block;
       }
 
@@ -198,94 +96,35 @@
         position: absolute;
         width: 0px;
         height: 20px;
-        left: 50%;
-        top: 50%;
-        margin-left: -1px;
-        margin-top: -10px;
-        border: 1px solid #2B2B23;
+        left: 12px;
+        top: 2px;
+        border: 1px solid #191919;
         display: block;
-        transform-origin: center center;
-        // Slightly shorter than the wrapper so the collapse finishes
-        // just before the spin does — feels snappier
-        transition: transform 0.2s ease, opacity 0.2s ease;
+        transition: transform 0.2s ease;
       }
 
-      // Collapse vertical bar to turn + into −
       &--open &-vertical {
-        transform: scaleY(0);
-        opacity: 0;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        transition: none;
-
-        &-vertical {
-          transition: none;
-        }
+        transform: rotate(-90deg);
       }
     }
 
     &__answer {
       font-size: 16px;
-      margin-top: 16px;
-    }
-  }
-}
-
-@media (max-width: 1024px) {
-  .faq-wrapper {
-    .faq-sticker--top-right {
-      &.faq-sticker--top-right--night {
-        right: 100px;
-      }
     }
   }
 }
 
 @media (max-width: 744px) {
   .container {
-    padding: 0 80px 72px 80px;
+    padding: 72px 80px;
   }
 }
 
-@media (max-width: 650px) {
-  .faq-wrapper {
-    .faq-sticker--bottom-right {
-      &.faq-sticker--bottom-right--night {
-        right: -20px;
-        top: 325px;
-      }
-    }
-
-    .faq-sticker--top-right {
-      &.faq-sticker--top-right--night {
-        right: -50px;
-        top: 0px;
-      }
-    }
-
-    .faq-sticker--bottom-left {
-      &.faq-sticker--bottom-left--night {
-        left: -105px;
-        top: 320px;
-      }
-
-      &.faq-sticker--bottom-left--morning {
-        left: -45px;
-        top: 373.932px;
-        transform: scale(1.2) rotate(0deg);
-      }
-    }
-
-    .faq-sticker > * {
-      transform: scale(0.7);
-      transform-origin: center;
-    }
-  }
-}
-
-@media (max-width: 480px) {
+@media (max-width: 390px) {
   .container {
-    padding: 0 40px 72px 40px;
+    padding: 72px 40px;
+  }
+  .sticker-1, .sticker-2, .sticker-3, .sticker-4 {
+    transform: scale(0.3);
   }
 }

@@ -1,5 +1,7 @@
-import "./Button.scss";
-import type { ReactElement } from "react";
+import './Button.scss'
+import type { ReactElement } from 'react';
+import { Link } from "react-router-dom";
+
 
 interface ButtonProps {
   text: string;
@@ -19,31 +21,26 @@ const Button = ({
   disabled,
 }: ButtonProps) => {
   const isExternalLink = link?.startsWith("http");
-  const classNames = ["button", className].filter(Boolean).join(" ");
-
   return (
     <>
       {link ? (
-        <a
-          href={link}
-          target={isExternalLink ? "_blank" : undefined}
-          rel={isExternalLink ? "noopener noreferrer" : undefined}
-          className={classNames}
+        <Link
+          to={link}
+          target={isExternalLink ? "_blank" : "_self"}
+          className={`button ${className}`}
         >
-          <div className="content-container">
-            <div className='icon-container'>
-              {icon && icon}
-            </div>
-            <span>{text}</span>
-          </div>
-        </a>
+          {text}
+          {icon && icon}
+        </Link>
       ) : (
         <button
-          type="button"
           onClick={onClick}
-          className={classNames}
+          className={`button ${className}`}
           disabled={disabled}
-        />
+        >
+          <span>{text}</span>
+          {icon && icon}
+        </button>
       )}
     </>
   );

@@ -345,8 +345,6 @@
     .agenda-section {
       --agenda-section-padding-y: 32px;
       --agenda-section-padding-x: 80px;
-      --agenda-title-size: 28px;
-      --agenda-title-line-height: 30px;
       --agenda-event-title-size: 22px;
       --agenda-event-title-lh: 26px;
       --agenda-row-padding: 20px;
@@ -375,32 +373,31 @@
     .agenda-panel--mobile {
       display: block;
     }
-  
-    /* Contain the decoration so it never overflows the column */
-    .agenda-decoration-wrap {
-      max-width: 56px;
-      margin-top: 0px;
-    }
 
-    .agenda-decoration {
-      width: 100%;
-      max-width: 560px;
+    .agenda-decoration-wrap {
+      margin-top: 56px;
+      margin-bottom: 0;
     }
+  
+  
   }
   
   /* mobile */
   @media (max-width: 768px) {
     .agenda-section {
+      --agenda-section-padding-y: 32px;
+      --agenda-section-padding-x: 80px;
       --agenda-event-title-size: 20px;
       --agenda-event-title-lh: 24px;
       --agenda-row-padding: 16px;
       --agenda-marker-size: 26px;
       --agenda-marker-border: 3px;
+      padding-bottom: 16px;
     }
   
     .agenda-decoration-wrap {
-      max-width: 100%;
-      margin-top: 40px;
+      margin-top: 56px;  
+      margin-bottom: 0;
     }
 
     .agenda-decoration {
@@ -444,7 +441,7 @@
     display: none;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 744px) {
     .agenda-decoration-wrap--mobile-only {
     display: grid; 
     }

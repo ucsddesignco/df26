@@ -42,10 +42,6 @@ $judges-loop-gap: 1rem;
   gap: $judges-loop-gap;
   padding-right: $judges-loop-gap;
 
-  @media (max-width: 1024px) {
-    gap: 1.5rem;        
-    padding-right: 1.5rem;
-  }
 }
 
 .embla__slideThemeDecorMount {

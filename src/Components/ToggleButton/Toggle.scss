@@ -1,0 +1,174 @@
+/* Ported from sushi_theme_toggle_v2.html — scoped under .theme-toggle for fixed placement */
+
+.theme-toggle {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 2.5rem;
+  z-index: 1100;
+  box-sizing: border-box;
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+.theme-toggle .toggle-pill {
+  width: 68px;
+  border-radius: 34px;
+  background: #2b2b23;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Full-bleed noise shell — z-index 0; interactive content stacks above */
+.theme-toggle .toggle-pill__texture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  min-height: 100%;
+  border-radius: 34px;
+  overflow: hidden;
+  /* Align with pill rounding so filter + displacement don’t get a flat clip on one side */
+  clip-path: inset(0 round 34px);
+  pointer-events: none;
+}
+
+.theme-toggle .toggle-pill__texture svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.theme-toggle .toggle-pill.is-suppressing-pointer {
+  pointer-events: none;
+}
+
+.theme-toggle .toggle-trigger {
+  width: 68px;
+  height: 68px;
+  border-radius: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.theme-toggle .toggle-trigger:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.theme-toggle .toggle-trigger:focus {
+  outline: none;
+}
+
+.theme-toggle .toggle-trigger:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 2px;
+}
+
+// .theme-toggle .nori-ring {
+//   width: 44px;
+//   height: 44px;
+//   border-radius: 50%;
+// //   background: #2B2B23;
+// //   border: 3px solid #2a2a2a;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   pointer-events: none;
+// }
+
+// .theme-toggle .nori-ring svg {
+//   display: block;
+// }
+
+.theme-toggle .options-container {
+  width: 68px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.theme-toggle .mode-option {
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.theme-toggle .mode-option:focus {
+  outline: none;
+}
+
+.theme-toggle .mode-option:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: -4px;
+}
+
+.theme-toggle .option-bg {
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+
+.theme-toggle .mode-option:hover .option-bg {
+  opacity: 1;
+}
+
+/* Match sushi_theme_toggle_v2: trigger stays visible while options are open */
+
+.theme-toggle .mode-option svg {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.18s ease;
+}
+
+.theme-toggle .mode-option:hover svg {
+  transform: scale(1.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle .toggle-trigger,
+  .theme-toggle .option-bg,
+  .theme-toggle .mode-option svg {
+    transition: none;
+  }
+
+  .theme-toggle .mode-option:hover svg {
+    transform: none;
+  }
+}

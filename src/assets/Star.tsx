@@ -29,9 +29,9 @@ export const Star = ({ className }: { className?: string }) => {
             width="80.8276"
             height="80.8276"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feBlend
               mode="normal"
               in="SourceGraphic"
@@ -81,7 +81,7 @@ export const Star = ({ className }: { className?: string }) => {
               in="coloredNoise1"
               result="noise1Clipped"
             />
-            <feFlood flood-color="#F1EBE5" result="color1Flood" />
+            <feFlood floodColor="#F1EBE5" result="color1Flood" />
             <feComposite
               operator="in"
               in2="noise1Clipped"

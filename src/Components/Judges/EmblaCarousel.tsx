@@ -7,11 +7,17 @@ import {
 } from "framer-motion";
 import { useLayoutEffect, useMemo, useRef } from "react";
 import "./Caraousel.scss";
-import { Judge1 } from "./../../SVGS/Judges/Judge1";
-import { Judge2 } from "./../../SVGS/Judges/Judge2";
-import { Judge3 } from "./../../SVGS/Judges/Judge3";
-import { Judge4 } from "./../../SVGS/Judges/Judge4";
-import { Judge5 } from "./../../SVGS/Judges/Judge5";
+// import { Judge1 } from "./../../SVGS/Judges/Judge1";
+// import { Judge2 } from "./../../SVGS/Judges/Judge2";
+// import { Judge3 } from "./../../SVGS/Judges/Judge3";
+// import { Judge4 } from "./../../SVGS/Judges/Judge4";
+// import { Judge5 } from "./../../SVGS/Judges/Judge5";
+import { ImgJudge } from "./ImgJudge";
+import judge1 from "../../assets/judges/Judge1.webp";
+import judge2 from "../../assets/judges/Judge2.webp";
+import judge3 from "../../assets/judges/Judge3.webp";
+import judge4 from "../../assets/judges/Judge4.webp";
+import judge5 from "../../assets/judges/Judge5.webp";
 import { BigFlower } from "./Themes/BigFlower";
 import { BigLeaf } from "./Themes/Bigleaf";
 import { BigStar } from "./Themes/BigStar";
@@ -71,11 +77,11 @@ export const EmblaCarousel = ({ theme = "day" }: EmblaCarouselProps) => {
 
   const slides = useMemo(
     () => [
-      <Judge1 key="j1" href="https://www.linkedin.com/in/jiamingjessyli/" ariaLabel="Jessy Li Profile" />,
-      <Judge2 key="j2" href="https://www.linkedin.com/in/wyemunchin/" ariaLabel="Wye Mun Chin Profile" />,
-      <Judge3 key="j3" href="https://www.linkedin.com/in/rheaacharyadesign/" ariaLabel="Rhea Acharya Profile" />,
-      <Judge4 key="j4" href="https://www.linkedin.com/in/rinatakikawa/" ariaLabel="Rina Takikawa Profile" />,
-      <Judge5 key="j5" href="https://www.linkedin.com/in/jarenz/" ariaLabel="Jarenz Castillo Profile" />,
+      <ImgJudge key="j1" href="https://www.linkedin.com/in/jiamingjessyli/" ariaLabel="Jessy Li Profile" image={judge1} name="Jessy Li" />,
+      <ImgJudge key="j2" href="https://www.linkedin.com/in/wyemunchin/" ariaLabel="Wye Mun Chin Profile" image={judge2} name="Wye Mun Chin" />,
+      <ImgJudge key="j3" href="https://www.linkedin.com/in/rheaacharyadesign/" ariaLabel="Rhea Acharya Profile" image={judge3} name="Rhea Acharya" />,
+      <ImgJudge key="j4" href="https://www.linkedin.com/in/rinatakikawa/" ariaLabel="Rina Takikawa Profile" image={judge4} name="Rina Takikawa" />,
+      <ImgJudge key="j5" href="https://www.linkedin.com/in/jarenz/" ariaLabel="Jarenz Castillo Profile" image={judge5} name="Jarenz Castillo" />,
     ],
     [],
   );

@@ -12,10 +12,10 @@ import RegisterNow from './registerNow'
 import { WhatIsFlowers } from './flowers'
 import { WhatIsLeaves } from './leaves'
 import { WhatIsStars } from './stars'
-import slide1 from './wdf-carousel/slide-1.png'
-import slide2 from './wdf-carousel/slide-2.png'
-import slide3 from './wdf-carousel/slide-3.png'
-import slide4 from './wdf-carousel/slide-4.png'
+import slide1 from '../../assets/wdf-carousel/slide-1.webp'
+import slide2 from '../../assets/wdf-carousel/slide-2.webp'
+import slide3 from '../../assets/wdf-carousel/slide-3.webp'
+import slide4 from '../../assets/wdf-carousel/slide-4.webp'
 
 //Carousel timing
 const AUTO_ADVANCE_MS = 6000

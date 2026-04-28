@@ -8,9 +8,9 @@ import {
 } from "../../context/SiteThemeContext";
 
 // Decoration images — one per time-of-day theme
-import morningImg from "../../assets/agenda-assets/Sunrise-ticket-train.svg";
-import afternoonImg from "../../assets/agenda-assets/day-image.svg";
-import nightImg from "../../assets/agenda-assets/sunset-ticket-image.svg";
+import morningImg from "../../assets/agenda-assets/morning-ticket.png";
+import afternoonImg from "../../assets/agenda-assets/afternoon-ticket.png";
+import nightImg from "../../assets/agenda-assets/night-ticket.png";
 
 type Theme = SiteTimeTheme;
 

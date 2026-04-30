@@ -1,5 +1,5 @@
 import './DepartOnScroll.scss'
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import {
   motion,
   useScroll,
@@ -30,6 +30,33 @@ const getResponsiveTriggerPercentage = (width: number) => {
   return 0.42;                   // Desktop Default
 };
 
+const getResponsiveParkedPosition = (width: number) => {
+  let parkedPosition = "-98%";
+
+  if (width <= 743) {
+    const fluidPark = mapRange(width, 390, 743, -197, -103);
+    parkedPosition = `${fluidPark}%`;
+  } else if (width <= 1279) {
+    const fluidPark = mapRange(width, 744, 1279, -142, -83);
+    parkedPosition = `${fluidPark}%`;
+  }
+
+  return parkedPosition;
+};
+
+/**
+ * Fully off-screen left, expressed as % of the animated element width, so Framer/CSS
+ * always matches layout without depending on stale width state before measurement.
+ *
+ * Mirrors: parked_px - (viewport + elementWidth) → parked_% - (ratio)*100%.
+ */
+function getOffscreenLeftAsPercent(winWidth: number, elementWidth: number) {
+  const parkedPct = parseFloat(getResponsiveParkedPosition(winWidth));
+  const w = Math.max(1, elementWidth);
+  const deltaPct = ((winWidth + w) / w) * 100;
+  return `${parkedPct - deltaPct}%`;
+}
+
 export default function DepartOnScroll({ children }: DepartOnScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const trainRef = useRef<HTMLDivElement>(null);
@@ -43,28 +70,42 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
     width: isBrowser ? window.innerWidth : 1280,
     height: isBrowser ? window.innerHeight : 800,
   });
-  const [trainWidth, setTrainWidth] = useState(1000);
+  const [trainWidth, setTrainWidth] = useState<number | null>(null);
 
   const [exactTriggerPoint, setExactTriggerPoint] = useState(
     isBrowser ? window.innerHeight * 0.386 : 300
   );
 
+  const bumpTrainWidthMeasure = () => {
+    const el = trainRef.current;
+    if (!el) return;
+    const next = el.offsetWidth;
+    setTrainWidth((prev) => (prev === next ? prev : next));
+  };
+
+  useLayoutEffect(() => {
+    if (!isBrowser) return;
+    bumpTrainWidthMeasure();
+    if (typeof ResizeObserver === "undefined") return;
+    const el = trainRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => bumpTrainWidthMeasure());
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [isBrowser, windowSize.width, windowSize.height, trainState]);
+
   // Handles updating the window width state when the screen size changes
   useEffect(() => {
     if (!isBrowser) return;
 
-    if (trainRef.current) {
-      setTrainWidth(trainRef.current.offsetWidth);
-    }
-    
     let timeoutId: ReturnType<typeof setTimeout>;
     const handleResize = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-      }, 150); 
+      }, 150);
     };
-    
+
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -136,46 +177,33 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
     return () => clearTimeout(stateTimer);
   }, [isInView]);
 
-
-  const getResponsiveParkedPosition = (width: number) => {
-    let parkedPosition = "-98%"; 
-
-    if (width <= 743) {
-      const fluidPark = mapRange(width, 390, 743, -197, -103);
-      parkedPosition = `${fluidPark}%`;
-    } else if (width <= 1279) {
-      const fluidPark = mapRange(width, 744, 1279, -142, -83);
-      parkedPosition = `${fluidPark}%`;
-    }
-
-    return parkedPosition;
-  }
-
   type VariantCustom = { winWidth: number; trainWidth: number };
+
+  const measuredOrFallbackW = trainWidth ?? windowSize.width;
 
   // Train Keyframes
   const trainVariants : Variants = {
-    offscreen: ({ winWidth, trainWidth }: VariantCustom) => ({ 
-      x: -(winWidth + trainWidth), 
+    offscreen: ({ winWidth, trainWidth }: VariantCustom) => ({
+      x: getOffscreenLeftAsPercent(winWidth, trainWidth),
     }),
-    entering: ({ winWidth }: VariantCustom) => ({ 
+    entering: ({ winWidth }: VariantCustom) => ({
       x: getResponsiveParkedPosition(winWidth),
-      transition: { type:"spring", delay: 0.5, stiffness: 75, damping: 14, mass: 1.0, velocity: 0},  
+      transition: { type:"spring", delay: 0.5, stiffness: 75, damping: 14, mass: 1.0, velocity: 0},
     }),
     parked: ({ winWidth }: VariantCustom) => ({
       x: getResponsiveParkedPosition(winWidth),
     }),
     leaving: ({ winWidth, trainWidth }: VariantCustom) => ({
-      x: winWidth + trainWidth, 
+      x: winWidth + trainWidth,
       transition: { duration: 1.5, ease: "easeInOut" },
     }),
     gone: ({ winWidth, trainWidth }: VariantCustom) => ({
-      x: -(winWidth + trainWidth),
+      x: getOffscreenLeftAsPercent(winWidth, trainWidth),
       transition: { duration: 0 },
     }),
-    arriving: ({ winWidth }: VariantCustom) => ({ 
+    arriving: ({ winWidth }: VariantCustom) => ({
       x: getResponsiveParkedPosition(winWidth),
-      transition: { type:"spring", delay: 1, stiffness: 75, damping: 14, mass: 1.0, velocity: 0},  
+      transition: { type:"spring", delay: 1, stiffness: 75, damping: 14, mass: 1.0, velocity: 0},
     }),
   };
 
@@ -187,7 +215,7 @@ export default function DepartOnScroll({ children }: DepartOnScrollProps) {
           variants={trainVariants}
           initial="offscreen"
           animate={trainState}
-          custom={{ winWidth: windowSize.width, trainWidth: trainWidth }}
+          custom={{ winWidth: windowSize.width, trainWidth: measuredOrFallbackW }}
           style={{ willChange: "transform", pointerEvents: "none", z: 0 }}
           onAnimationComplete={(completedVariant) => {
             if (completedVariant === "entering" || completedVariant === "arriving") {
